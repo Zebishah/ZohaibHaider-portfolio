@@ -106,33 +106,78 @@ const tabs = [
   ...categories.map((c) => ({ key: c.key, label: c.label })),
 ];
 
+/* Continuous flowing marquee row of skill chips */
+function FlowRow({ items, reverse = false }: { items: Skill[]; reverse?: boolean }) {
+  const doubled = [...items, ...items];
+  return (
+    <div className="relative overflow-hidden py-2 [mask-image:linear-gradient(90deg,transparent,black_10%,black_90%,transparent)]">
+      <div
+        className={`flex gap-3 w-max ${reverse ? "animate-marquee-reverse" : "animate-marquee"}`}
+        style={{ animationDuration: reverse ? "50s" : "45s" }}
+      >
+        {doubled.map((s, i) => (
+          <div
+            key={i}
+            className="flex items-center gap-2 px-4 py-2 rounded-full glass text-sm whitespace-nowrap"
+          >
+            <s.icon className="w-4 h-4 shrink-0" style={{ color: s.color }} />
+            <span>{s.name}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function Skills() {
   const [active, setActive] = useState("all");
   const visible = active === "all" ? categories : categories.filter((c) => c.key === active);
+  const allSkills = categories.flatMap((c) => c.skills);
+  const rowA = allSkills.slice(0, Math.ceil(allSkills.length / 2));
+  const rowB = allSkills.slice(Math.ceil(allSkills.length / 2));
 
   return (
-    <section id="skills" className="relative py-24">
-      <div className="max-w-6xl mx-auto px-4">
+    <section id="skills" className="relative py-24 overflow-hidden">
+      <div
+        className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[80%] h-full pointer-events-none opacity-30"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, color-mix(in oklab, var(--brand-from) 25%, transparent), transparent 60%)",
+        }}
+      />
+
+      <div className="relative max-w-6xl mx-auto px-4">
         <SectionHeader
           eyebrow="Skills"
           title="The |stack| I build with."
           subtitle="Real production tools, not a resume word cloud."
         />
 
+        {/* Live flowing rows */}
+        <Reveal>
+          <div className="mb-10 space-y-1">
+            <FlowRow items={rowA} />
+            <FlowRow items={rowB} reverse />
+          </div>
+        </Reveal>
+
         <Reveal>
           <div className="flex flex-wrap justify-center gap-2 mb-10">
             {tabs.map((t) => (
-              <button
+              <motion.button
                 key={t.key}
                 onClick={() => setActive(t.key)}
-                className={`px-4 py-1.5 rounded-full text-sm transition ${
+                whileHover={{ y: -2, scale: 1.04 }}
+                whileTap={{ scale: 0.97 }}
+                transition={{ type: "spring", stiffness: 400, damping: 22 }}
+                className={`px-4 py-1.5 rounded-full text-sm ${
                   active === t.key
                     ? "gradient-bg text-white shadow-lg shadow-primary/30"
                     : "glass text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {t.label}
-              </button>
+              </motion.button>
             ))}
           </div>
         </Reveal>
@@ -152,6 +197,16 @@ export function Skills() {
                   <div className="flex items-center gap-2 mb-4 text-sm font-medium text-muted-foreground uppercase tracking-widest">
                     <cat.icon className="w-4 h-4 text-primary" />
                     {cat.label}
+                    {/* Live flowing progress bar */}
+                    <div className="ml-3 h-[2px] flex-1 max-w-[160px] rounded-full bg-border/40 overflow-hidden relative">
+                      <span
+                        className="absolute inset-y-0 w-1/3 rounded-full animate-flow-bar"
+                        style={{
+                          background:
+                            "linear-gradient(90deg, transparent, var(--brand-from), var(--brand-to), transparent)",
+                        }}
+                      />
+                    </div>
                   </div>
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
                     {cat.skills.map((s, i) => (
@@ -159,14 +214,34 @@ export function Skills() {
                         key={s.name}
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: i * 0.03 }}
-                        whileHover={{ y: -4 }}
-                        className="glass rounded-xl p-3 flex items-center gap-2 group hover:border-primary/40 transition relative overflow-hidden"
+                        transition={{ delay: i * 0.03, type: "spring", stiffness: 260, damping: 22 }}
+                        whileHover={{ y: -6, scale: 1.05 }}
+                        style={{
+                          // dynamic hover glow via CSS var
+                          ["--chip-glow" as string]: `${s.color}55`,
+                        }}
+                        className="skill-chip glass rounded-xl p-3 flex items-center gap-2 group relative overflow-hidden hover:border-primary/60 hover:shadow-[0_10px_30px_-10px_var(--chip-glow)]"
                       >
-                        <s.icon className="w-5 h-5 shrink-0" style={{ color: s.color }} />
+                        <motion.span
+                          whileHover={{ rotate: [0, -8, 8, 0] }}
+                          transition={{ duration: 0.5 }}
+                          className="shrink-0"
+                        >
+                          <s.icon className="w-5 h-5" style={{ color: s.color }} />
+                        </motion.span>
                         <span className="text-sm truncate">{s.name}</span>
-                        <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition pointer-events-none"
-                          style={{ boxShadow: `inset 0 0 30px ${s.color}22` }} />
+                        <span
+                          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                          style={{ boxShadow: `inset 0 0 40px ${s.color}33` }}
+                        />
+                        {/* shine sweep */}
+                        <span
+                          className="absolute -inset-x-full inset-y-0 group-hover:translate-x-full transition-transform duration-700 ease-out pointer-events-none"
+                          style={{
+                            background:
+                              "linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.12) 50%, transparent 70%)",
+                          }}
+                        />
                       </motion.div>
                     ))}
                   </div>
