@@ -142,7 +142,7 @@ export function Hero() {
         />
       </div>
 
-      <div className="relative max-w-6xl mx-auto px-4 w-full">
+      <div className="relative z-10 max-w-6xl mx-auto px-4 w-full">
         <div className="grid md:grid-cols-[1.3fr_1fr] gap-10 md:gap-16 items-center">
           <div>
             <motion.div
@@ -270,7 +270,7 @@ export function Hero() {
           <div className="relative h-[600px] md:h-[720px] -mt-24 md:-mt-32 md:-mr-8">
             <ClientOnly fallback={<div className="w-full h-full" />}>
               <Suspense fallback={<div className="w-full h-full" />}>
-                <Lanyard position={[0, 0, 18]} gravity={[0, -40, 0]} transparent />
+                <Lanyard position={[0, 0, 18]} gravity={[0, -40, 0]} transparent frontImage={cardFront} backImage={cardFront} imageFit="cover" />
               </Suspense>
             </ClientOnly>
           </div>
