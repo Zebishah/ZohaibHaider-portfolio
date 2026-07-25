@@ -58,7 +58,7 @@ export function Hero() {
 
   const hyperOpts = useMemo(
     () => ({
-      distortion: "turbulentDistortion",
+      distortion: "turbulentDistortion" as const,
       length: 400,
       roadWidth: 10,
       islandWidth: 2,
@@ -69,12 +69,24 @@ export function Hero() {
       carLightsFade: 0.4,
       totalSideLightSticks: 20,
       lightPairsPerRoadWay: 40,
+      shoulderLinesWidthPercentage: 0.05,
+      brokenLinesWidthPercentage: 0.1,
+      brokenLinesLengthPercentage: 0.5,
+      lightStickWidth: [0.12, 0.5] as [number, number],
+      lightStickHeight: [1.3, 1.7] as [number, number],
+      movingAwaySpeed: [60, 80] as [number, number],
+      movingCloserSpeed: [-120, -160] as [number, number],
+      carLightsLength: [12, 80] as [number, number],
+      carLightsRadius: [0.05, 0.14] as [number, number],
+      carWidthPercentage: [0.3, 0.5] as [number, number],
+      carShiftX: [-0.8, 0.8] as [number, number],
+      carFloorSeparation: [0, 5] as [number, number],
       colors: {
         roadColor: 0x080808,
         islandColor: 0x0a0a0a,
         background: 0x000000,
-        shoulderLines: 0x131318,
-        brokenLines: 0x131318,
+        shoulderLines: 0xffffff,
+        brokenLines: 0xffffff,
         leftCars: [0x14b8a6, 0x22d3ee, 0x0ea5b3],
         rightCars: [0xf97316, 0xfb923c, 0xea580c],
         sticks: 0x14b8a6,
@@ -85,59 +97,21 @@ export function Hero() {
 
   return (
     <section id="home" className="relative min-h-screen flex items-center overflow-hidden pt-24 pb-16">
-      {/* Hyperspeed background */}
-      <div className="absolute inset-0 z-0">
-        <ClientOnly fallback={<div className="w-full h-full bg-background" />}>
-          <Suspense fallback={<div className="w-full h-full bg-background" />}>
+      {/* Hyperspeed background — fills the hero */}
+      <div className="absolute inset-0 z-0 pointer-events-none [&_canvas]:pointer-events-auto">
+        <ClientOnly fallback={<div className="absolute inset-0 bg-background" />}>
+          <Suspense fallback={<div className="absolute inset-0 bg-background" />}>
             <Hyperspeed effectOptions={hyperOpts} />
           </Suspense>
         </ClientOnly>
-        {/* Fade to background at bottom */}
+        {/* Soft edge fade so content stays readable + blends into next section */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            background:
-              "linear-gradient(180deg, transparent 40%, color-mix(in oklab, var(--background) 85%, transparent) 100%)",
-          }}
-        />
-      </div>
-
-      {/* Silky animated mesh background */}
-      <div className="absolute inset-0 pointer-events-none z-[1] mix-blend-screen opacity-40">
-
-        <div
-          className="absolute inset-0 animate-mesh-shift opacity-80"
-          style={{
-            backgroundImage: [
-              "radial-gradient(at 20% 30%, color-mix(in oklab, #14b8a6 55%, transparent), transparent 55%)",
-              "radial-gradient(at 80% 20%, color-mix(in oklab, #f97316 45%, transparent), transparent 55%)",
-              "radial-gradient(at 60% 85%, color-mix(in oklab, #22d3ee 40%, transparent), transparent 55%)",
+            background: [
+              "radial-gradient(ellipse at 50% 45%, transparent 50%, color-mix(in oklab, var(--background) 35%, transparent) 100%)",
+              "linear-gradient(180deg, transparent 65%, var(--background) 100%)",
             ].join(","),
-            filter: "blur(60px)",
-          }}
-        />
-        {/* Soft top spotlight */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse at 50% 0%, color-mix(in oklab, var(--brand-from) 18%, transparent), transparent 55%)",
-          }}
-        />
-        {/* Vignette */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse at 50% 45%, transparent 45%, color-mix(in oklab, var(--background) 92%, transparent) 100%)",
-          }}
-        />
-        {/* Subtle noise */}
-        <div
-          className="absolute inset-0 opacity-[0.04] mix-blend-overlay"
-          style={{
-            backgroundImage:
-              "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.6'/></svg>\")",
           }}
         />
       </div>
