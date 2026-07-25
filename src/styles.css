@@ -199,6 +199,20 @@
   0%,100% { opacity: 1; }
   50% { opacity: 0; }
 }
+@keyframes swing {
+  0%,100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+@keyframes ribbon-drop {
+  0% { transform: translateY(-120%) rotate(0deg); opacity: 0; }
+  60% { transform: translateY(0) rotate(-4deg); opacity: 1; }
+  75% { transform: translateY(0) rotate(3deg); }
+  100% { transform: translateY(0) rotate(0deg); opacity: 1; }
+}
+@keyframes mesh-shift {
+  0%,100% { background-position: 0% 50%, 100% 50%, 50% 0%; }
+  50% { background-position: 100% 50%, 0% 50%, 50% 100%; }
+}
 
 .animate-blob { animation: blob 18s ease-in-out infinite; }
 .animate-float-slow { animation: float-slow 6s ease-in-out infinite; }
