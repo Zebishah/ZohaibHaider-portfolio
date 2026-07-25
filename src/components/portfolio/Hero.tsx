@@ -56,16 +56,6 @@ export function Hero() {
 
   return (
     <section id="home" className="relative min-h-screen flex items-center overflow-hidden pt-24 pb-16">
-      {/* 3D Lanyard hanging from the top of the screen */}
-      <div className="absolute inset-x-0 top-0 h-screen z-20 pointer-events-none">
-        <div className="w-full h-full pointer-events-auto">
-          <ClientOnly fallback={<div />}>
-            <Suspense fallback={<div />}>
-              <Lanyard position={[0, 0, 18]} gravity={[0, -40, 0]} transparent />
-            </Suspense>
-          </ClientOnly>
-        </div>
-      </div>
 
       {/* Silky animated mesh background */}
       <div className="absolute inset-0 pointer-events-none">
