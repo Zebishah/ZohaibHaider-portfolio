@@ -1,7 +1,10 @@
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { ArrowDown, Download, Github, Linkedin, Mail, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ClientOnly } from "@tanstack/react-router";
+
+const Lanyard = lazy(() => import("./lanyard/Lanyard"));
 
 const roles = [
   "Full Stack MERN Developer",
