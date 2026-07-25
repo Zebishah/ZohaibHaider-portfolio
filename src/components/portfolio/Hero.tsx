@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useEffect, useMemo, useState } from "react";
 import { ArrowDown, Download, Github, Linkedin, Mail, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -10,6 +10,71 @@ const roles = [
   "AI/LLM Integration Developer",
 ];
 
+const NAME = "Zohaib Haider";
+
+/* Typewriter that types + deletes on a loop for the name */
+function useTypewriter(text: string) {
+  const [display, setDisplay] = useState("");
+  const [phase, setPhase] = useState<"typing" | "hold" | "deleting" | "restart">("typing");
+
+  useEffect(() => {
+    let t: ReturnType<typeof setTimeout>;
+    if (phase === "typing") {
+      if (display.length < text.length) {
+        t = setTimeout(() => setDisplay(text.slice(0, display.length + 1)), 95);
+      } else {
+        t = setTimeout(() => setPhase("hold"), 2200);
+      }
+    } else if (phase === "hold") {
+      t = setTimeout(() => setPhase("deleting"), 400);
+    } else if (phase === "deleting") {
+      if (display.length > 0) {
+        t = setTimeout(() => setDisplay(text.slice(0, display.length - 1)), 55);
+      } else {
+        t = setTimeout(() => setPhase("restart"), 400);
+      }
+    } else {
+      t = setTimeout(() => setPhase("typing"), 200);
+    }
+    return () => clearTimeout(t);
+  }, [display, phase, text]);
+
+  return display;
+}
+
+function Stars() {
+  const stars = useMemo(
+    () =>
+      Array.from({ length: 34 }).map(() => ({
+        top: Math.random() * 100,
+        left: Math.random() * 100,
+        size: Math.random() * 2 + 1,
+        delay: Math.random() * 3,
+        dur: 2 + Math.random() * 3,
+      })),
+    [],
+  );
+  return (
+    <div className="absolute inset-0 pointer-events-none">
+      {stars.map((s, i) => (
+        <span
+          key={i}
+          className="absolute rounded-full bg-white animate-twinkle"
+          style={{
+            top: `${s.top}%`,
+            left: `${s.left}%`,
+            width: s.size,
+            height: s.size,
+            animationDelay: `${s.delay}s`,
+            animationDuration: `${s.dur}s`,
+            boxShadow: "0 0 6px rgba(255,255,255,0.8)",
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
 export function Hero() {
   const [i, setI] = useState(0);
   useEffect(() => {
@@ -17,16 +82,51 @@ export function Hero() {
     return () => clearInterval(t);
   }, []);
 
+  const name = useTypewriter(NAME);
+
+  // Parallax on the portrait
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const sx = useSpring(mx, { stiffness: 90, damping: 14 });
+  const sy = useSpring(my, { stiffness: 90, damping: 14 });
+  const tx = useTransform(sx, [-1, 1], [-14, 14]);
+  const ty = useTransform(sy, [-1, 1], [-14, 14]);
+
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      mx.set((e.clientX / window.innerWidth) * 2 - 1);
+      my.set((e.clientY / window.innerHeight) * 2 - 1);
+    };
+    window.addEventListener("mousemove", onMove);
+    return () => window.removeEventListener("mousemove", onMove);
+  }, [mx, my]);
+
   return (
     <section id="home" className="relative min-h-screen flex items-center overflow-hidden pt-24 pb-16">
-      {/* Background layers */}
-      <div className="absolute inset-0 grid-bg opacity-70 pointer-events-none" />
-      <div className="absolute -top-32 -left-32 w-[520px] h-[520px] rounded-full blur-3xl opacity-40 animate-blob"
-        style={{ background: "radial-gradient(circle at center, #6366f1, transparent 60%)" }} />
-      <div className="absolute -bottom-40 -right-24 w-[520px] h-[520px] rounded-full blur-3xl opacity-40 animate-blob"
-        style={{ background: "radial-gradient(circle at center, #06b6d4, transparent 60%)", animationDelay: "3s" }} />
-      <div className="absolute top-1/3 left-1/2 w-[380px] h-[380px] rounded-full blur-3xl opacity-30 animate-blob"
-        style={{ background: "radial-gradient(circle at center, #a855f7, transparent 60%)", animationDelay: "6s" }} />
+      {/* Aurora / orbs background (grid removed) */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div
+          className="absolute -top-40 -left-32 w-[620px] h-[620px] rounded-full blur-3xl opacity-50 animate-aurora"
+          style={{ background: "radial-gradient(circle at center, #6366f1, transparent 60%)" }}
+        />
+        <div
+          className="absolute -bottom-52 -right-32 w-[620px] h-[620px] rounded-full blur-3xl opacity-50 animate-aurora"
+          style={{ background: "radial-gradient(circle at center, #06b6d4, transparent 60%)", animationDelay: "4s" }}
+        />
+        <div
+          className="absolute top-1/3 left-1/2 w-[420px] h-[420px] rounded-full blur-3xl opacity-30 animate-aurora"
+          style={{ background: "radial-gradient(circle at center, #a855f7, transparent 60%)", animationDelay: "8s" }}
+        />
+        {/* soft radial vignette */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse at 50% 40%, transparent 40%, color-mix(in oklab, var(--background) 85%, transparent) 100%)",
+          }}
+        />
+        <Stars />
+      </div>
 
       <div className="relative max-w-6xl mx-auto px-4 w-full">
         <div className="grid md:grid-cols-[1.3fr_1fr] gap-10 md:gap-16 items-center">
@@ -50,15 +150,20 @@ export function Hero() {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight"
             >
-              Hi, I'm{" "}
+              <span className="block text-muted-foreground text-lg md:text-xl font-medium mb-2">
+                Hi there, I'm
+              </span>
               <span className="relative inline-block">
-                <span className="gradient-text">Zohaib Haider</span>
-                <motion.span
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: 1 }}
-                  transition={{ duration: 0.8, delay: 0.8 }}
-                  className="absolute -bottom-1 left-0 right-0 h-1 gradient-bg origin-left rounded-full"
-                />
+                <span
+                  className="gradient-text animate-gradient-x"
+                  style={{
+                    backgroundImage:
+                      "linear-gradient(90deg, #6366f1, #a855f7, #06b6d4, #6366f1)",
+                  }}
+                >
+                  {name || "\u00A0"}
+                </span>
+                <span className="inline-block w-[3px] md:w-[4px] h-[0.9em] align-middle ml-1 bg-primary animate-caret rounded-sm" />
               </span>
             </motion.h1>
 
@@ -97,10 +202,19 @@ export function Hero() {
               transition={{ delay: 0.75 }}
               className="mt-8 flex flex-wrap gap-3"
             >
-              <Button asChild size="lg" className="gradient-bg text-white border-0 hover:opacity-90 shadow-lg shadow-primary/20">
+              <Button
+                asChild
+                size="lg"
+                className="gradient-bg text-white border-0 shadow-lg shadow-primary/30 transition-all duration-500 hover:shadow-primary/50 hover:-translate-y-0.5 hover:scale-[1.03]"
+              >
                 <a href="#projects">View My Work</a>
               </Button>
-              <Button asChild size="lg" variant="outline" className="glow-border">
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="glow-border transition-all duration-500 hover:-translate-y-0.5 hover:scale-[1.03]"
+              >
                 <a href="/resume.pdf" download>
                   <Download className="w-4 h-4 mr-2" /> Download Resume
                 </a>
@@ -118,18 +232,22 @@ export function Hero() {
                 { icon: Linkedin, href: "#", label: "LinkedIn" },
                 { icon: Mail, href: "mailto:zebihaider123@gmail.com", label: "Email" },
               ].map(({ icon: Icon, href, label }) => (
-                <a
+                <motion.a
                   key={label}
                   href={href}
                   target="_blank"
                   rel="noreferrer"
                   aria-label={label}
-                  className="relative w-10 h-10 rounded-full glass grid place-items-center text-muted-foreground hover:text-foreground transition group"
+                  whileHover={{ y: -4, scale: 1.08 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 18 }}
+                  className="relative w-10 h-10 rounded-full glass grid place-items-center text-muted-foreground hover:text-foreground group"
                 >
-                  <Icon className="w-4 h-4 group-hover:scale-110 transition" />
-                  <span className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition"
-                    style={{ boxShadow: "0 0 24px color-mix(in oklab, var(--brand-from) 45%, transparent)" }} />
-                </a>
+                  <Icon className="w-4 h-4" />
+                  <span
+                    className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition duration-500"
+                    style={{ boxShadow: "0 0 24px color-mix(in oklab, var(--brand-from) 55%, transparent)" }}
+                  />
+                </motion.a>
               ))}
             </motion.div>
           </div>
@@ -139,19 +257,34 @@ export function Hero() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.3 }}
+            style={{ x: tx, y: ty }}
             className="relative mx-auto md:mx-0 md:justify-self-end"
           >
             <div className="relative animate-float-slow">
-              <div className="absolute -inset-4 rounded-full gradient-bg opacity-30 blur-2xl" />
-              <div className="absolute -inset-1 rounded-full gradient-bg opacity-70 blur-sm" />
+              {/* Rotating gradient ring */}
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ repeat: Infinity, duration: 14, ease: "linear" }}
+                className="absolute -inset-2 rounded-full"
+                style={{
+                  background:
+                    "conic-gradient(from 0deg, #6366f1, #a855f7, #06b6d4, #6366f1)",
+                  filter: "blur(2px)",
+                }}
+              />
+              <div className="absolute -inset-6 rounded-full gradient-bg opacity-30 blur-3xl" />
               <div className="relative w-56 h-56 md:w-72 md:h-72 rounded-full overflow-hidden bg-card grid place-items-center border border-border">
                 <div className="absolute inset-0 gradient-bg opacity-20" />
                 <span className="relative font-display text-7xl md:text-8xl font-bold gradient-text">ZH</span>
               </div>
-              <div className="absolute -bottom-3 -right-3 glass rounded-full px-3 py-1.5 text-xs font-medium flex items-center gap-1.5">
+              <motion.div
+                animate={{ y: [0, -6, 0] }}
+                transition={{ repeat: Infinity, duration: 2.4, ease: "easeInOut" }}
+                className="absolute -bottom-3 -right-3 glass rounded-full px-3 py-1.5 text-xs font-medium flex items-center gap-1.5"
+              >
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                 Open to work
-              </div>
+              </motion.div>
             </div>
           </motion.div>
         </div>
