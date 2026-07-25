@@ -132,7 +132,7 @@ function ProjectDetail() {
           <div>
             <h2 className="text-xs uppercase tracking-widest text-muted-foreground mb-4">Tech Stack</h2>
             <div className="flex flex-wrap gap-2">
-              {project.stack.map((t) => (
+              {project.stack.map((t: string) => (
                 <span key={t} className="text-sm px-3 py-1 rounded-full glass hover:border-primary/50 transition">
                   {t}
                 </span>
@@ -145,7 +145,7 @@ function ProjectDetail() {
           <div>
             <h2 className="text-xs uppercase tracking-widest text-muted-foreground mb-4">Key Features</h2>
             <ul className="grid md:grid-cols-2 gap-3">
-              {project.features.map((f, i) => (
+              {project.features.map((f: string, i: number) => (
                 <li key={i} className="glass rounded-xl p-4 flex gap-3 hover:border-primary/40 transition">
                   <CheckCircle2 className="w-5 h-5 shrink-0 text-primary mt-0.5" />
                   <span className="text-sm leading-relaxed">{f}</span>
