@@ -1,5 +1,3 @@
-export {};
-
 declare module "*.glb";
 declare module "*.png";
 
@@ -8,11 +6,9 @@ declare module "meshline" {
   export const MeshLineMaterial: any;
 }
 
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      meshLineGeometry: any;
-      meshLineMaterial: any;
-    }
+declare namespace JSX {
+  interface IntrinsicElements {
+    meshLineGeometry: any;
+    meshLineMaterial: any;
   }
 }
