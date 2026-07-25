@@ -5,7 +5,7 @@ import {
   SiJavascript, SiTypescript, SiHtml5, SiReact, SiNextdotjs, SiRedux, SiReactquery, SiReactrouter,
   SiTailwindcss, SiMui, SiFramer, SiNodedotjs, SiExpress, SiNestjs, SiGraphql, SiJsonwebtokens,
   SiMongodb, SiPostgresql, SiRedis, SiFirebase, SiSupabase, SiDrizzle,
-  SiAmazonwebservices, SiDocker, SiGithubactions, SiNginx, SiJest, SiCypress, SiStripe, SiSwagger,
+  SiDocker, SiGithubactions, SiNginx, SiJest, SiCypress, SiStripe, SiSwagger,
   SiCss,
 } from "react-icons/si";
 import { Database, Cloud, Wrench, Server, Layers, Beaker } from "lucide-react";
@@ -31,7 +31,7 @@ const categories: Category[] = [
       { name: "Material UI", icon: SiMui, color: "#007fff" },
       { name: "Framer Motion", icon: SiFramer, color: "#ec4899" },
       { name: "HTML5", icon: SiHtml5, color: "#e34f26" },
-      { name: "CSS3", icon: SiCss3, color: "#1572b6" },
+      { name: "CSS3", icon: SiCss, color: "#1572b6" },
     ],
   },
   {
@@ -67,7 +67,7 @@ const categories: Category[] = [
     label: "Cloud & DevOps",
     icon: Cloud,
     skills: [
-      { name: "AWS (EC2/S3/Lambda)", icon: SiAmazon, color: "#ff9900" },
+      { name: "AWS (EC2/S3/Lambda)", icon: Cloud, color: "#ff9900" },
       { name: "Docker", icon: SiDocker, color: "#2496ed" },
       { name: "GitHub Actions", icon: SiGithubactions, color: "#ffffff" },
       { name: "NGINX", icon: SiNginx, color: "#009639" },
