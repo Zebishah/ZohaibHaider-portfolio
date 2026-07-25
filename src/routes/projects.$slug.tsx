@@ -8,7 +8,7 @@ import { getProject, projects } from "@/lib/projects";
 import { Toaster } from "@/components/ui/sonner";
 
 export const Route = createFileRoute("/projects/$slug")({
-  loader: ({ params }) => {
+  loader: ({ params }): { project: NonNullable<ReturnType<typeof getProject>> } => {
     const project = getProject(params.slug);
     if (!project) throw notFound();
     return { project };
