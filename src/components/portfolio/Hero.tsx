@@ -54,25 +54,19 @@ export function Hero() {
 
   const name = useTypewriter(NAME);
 
-  // Parallax on the id card
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const sx = useSpring(mx, { stiffness: 80, damping: 16 });
-  const sy = useSpring(my, { stiffness: 80, damping: 16 });
-  const tx = useTransform(sx, [-1, 1], [-10, 10]);
-  const ty = useTransform(sy, [-1, 1], [-8, 8]);
-
-  useEffect(() => {
-    const onMove = (e: MouseEvent) => {
-      mx.set((e.clientX / window.innerWidth) * 2 - 1);
-      my.set((e.clientY / window.innerHeight) * 2 - 1);
-    };
-    window.addEventListener("mousemove", onMove);
-    return () => window.removeEventListener("mousemove", onMove);
-  }, [mx, my]);
-
   return (
     <section id="home" className="relative min-h-screen flex items-center overflow-hidden pt-24 pb-16">
+      {/* 3D Lanyard hanging from the top of the screen */}
+      <div className="absolute inset-x-0 top-0 h-screen z-20 pointer-events-none">
+        <div className="w-full h-full pointer-events-auto">
+          <ClientOnly fallback={<div />}>
+            <Suspense fallback={<div />}>
+              <Lanyard position={[0, 0, 18]} gravity={[0, -40, 0]} transparent />
+            </Suspense>
+          </ClientOnly>
+        </div>
+      </div>
+
       {/* Silky animated mesh background */}
       <div className="absolute inset-0 pointer-events-none">
         <div
