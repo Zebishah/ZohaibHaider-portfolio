@@ -1,5 +1,5 @@
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowDown, Download, Github, Linkedin, Mail, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -12,7 +12,7 @@ const roles = [
 
 const NAME = "Zohaib Haider";
 
-/* Typewriter that types + deletes on a loop for the name */
+/* Smoother typewriter — steady rhythm, longer hold */
 function useTypewriter(text: string) {
   const [display, setDisplay] = useState("");
   const [phase, setPhase] = useState<"typing" | "hold" | "deleting" | "restart">("typing");
@@ -21,20 +21,20 @@ function useTypewriter(text: string) {
     let t: ReturnType<typeof setTimeout>;
     if (phase === "typing") {
       if (display.length < text.length) {
-        t = setTimeout(() => setDisplay(text.slice(0, display.length + 1)), 95);
+        t = setTimeout(() => setDisplay(text.slice(0, display.length + 1)), 110);
       } else {
-        t = setTimeout(() => setPhase("hold"), 2200);
+        t = setTimeout(() => setPhase("hold"), 2600);
       }
     } else if (phase === "hold") {
-      t = setTimeout(() => setPhase("deleting"), 400);
+      t = setTimeout(() => setPhase("deleting"), 600);
     } else if (phase === "deleting") {
       if (display.length > 0) {
-        t = setTimeout(() => setDisplay(text.slice(0, display.length - 1)), 55);
+        t = setTimeout(() => setDisplay(text.slice(0, display.length - 1)), 70);
       } else {
-        t = setTimeout(() => setPhase("restart"), 400);
+        t = setTimeout(() => setPhase("restart"), 500);
       }
     } else {
-      t = setTimeout(() => setPhase("typing"), 200);
+      t = setTimeout(() => setPhase("typing"), 300);
     }
     return () => clearTimeout(t);
   }, [display, phase, text]);
@@ -42,55 +42,22 @@ function useTypewriter(text: string) {
   return display;
 }
 
-function Stars() {
-  const stars = useMemo(
-    () =>
-      Array.from({ length: 34 }).map(() => ({
-        top: Math.random() * 100,
-        left: Math.random() * 100,
-        size: Math.random() * 2 + 1,
-        delay: Math.random() * 3,
-        dur: 2 + Math.random() * 3,
-      })),
-    [],
-  );
-  return (
-    <div className="absolute inset-0 pointer-events-none">
-      {stars.map((s, i) => (
-        <span
-          key={i}
-          className="absolute rounded-full bg-white animate-twinkle"
-          style={{
-            top: `${s.top}%`,
-            left: `${s.left}%`,
-            width: s.size,
-            height: s.size,
-            animationDelay: `${s.delay}s`,
-            animationDuration: `${s.dur}s`,
-            boxShadow: "0 0 6px rgba(255,255,255,0.8)",
-          }}
-        />
-      ))}
-    </div>
-  );
-}
-
 export function Hero() {
   const [i, setI] = useState(0);
   useEffect(() => {
-    const t = setInterval(() => setI((n) => (n + 1) % roles.length), 2600);
+    const t = setInterval(() => setI((n) => (n + 1) % roles.length), 2800);
     return () => clearInterval(t);
   }, []);
 
   const name = useTypewriter(NAME);
 
-  // Parallax on the portrait
+  // Parallax on the id card
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
-  const sx = useSpring(mx, { stiffness: 90, damping: 14 });
-  const sy = useSpring(my, { stiffness: 90, damping: 14 });
-  const tx = useTransform(sx, [-1, 1], [-14, 14]);
-  const ty = useTransform(sy, [-1, 1], [-14, 14]);
+  const sx = useSpring(mx, { stiffness: 80, damping: 16 });
+  const sy = useSpring(my, { stiffness: 80, damping: 16 });
+  const tx = useTransform(sx, [-1, 1], [-10, 10]);
+  const ty = useTransform(sy, [-1, 1], [-8, 8]);
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
@@ -103,29 +70,43 @@ export function Hero() {
 
   return (
     <section id="home" className="relative min-h-screen flex items-center overflow-hidden pt-24 pb-16">
-      {/* Aurora / orbs background (grid removed) */}
+      {/* Silky animated mesh background */}
       <div className="absolute inset-0 pointer-events-none">
         <div
-          className="absolute -top-40 -left-32 w-[620px] h-[620px] rounded-full blur-3xl opacity-50 animate-aurora"
-          style={{ background: "radial-gradient(circle at center, #6366f1, transparent 60%)" }}
+          className="absolute inset-0 animate-mesh-shift opacity-80"
+          style={{
+            backgroundImage: [
+              "radial-gradient(at 20% 30%, color-mix(in oklab, #14b8a6 55%, transparent), transparent 55%)",
+              "radial-gradient(at 80% 20%, color-mix(in oklab, #f97316 45%, transparent), transparent 55%)",
+              "radial-gradient(at 60% 85%, color-mix(in oklab, #22d3ee 40%, transparent), transparent 55%)",
+            ].join(","),
+            filter: "blur(60px)",
+          }}
         />
-        <div
-          className="absolute -bottom-52 -right-32 w-[620px] h-[620px] rounded-full blur-3xl opacity-50 animate-aurora"
-          style={{ background: "radial-gradient(circle at center, #06b6d4, transparent 60%)", animationDelay: "4s" }}
-        />
-        <div
-          className="absolute top-1/3 left-1/2 w-[420px] h-[420px] rounded-full blur-3xl opacity-30 animate-aurora"
-          style={{ background: "radial-gradient(circle at center, #a855f7, transparent 60%)", animationDelay: "8s" }}
-        />
-        {/* soft radial vignette */}
+        {/* Soft top spotlight */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse at 50% 40%, transparent 40%, color-mix(in oklab, var(--background) 85%, transparent) 100%)",
+              "radial-gradient(ellipse at 50% 0%, color-mix(in oklab, var(--brand-from) 18%, transparent), transparent 55%)",
           }}
         />
-        <Stars />
+        {/* Vignette */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse at 50% 45%, transparent 45%, color-mix(in oklab, var(--background) 92%, transparent) 100%)",
+          }}
+        />
+        {/* Subtle noise */}
+        <div
+          className="absolute inset-0 opacity-[0.04] mix-blend-overlay"
+          style={{
+            backgroundImage:
+              "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.6'/></svg>\")",
+          }}
+        />
       </div>
 
       <div className="relative max-w-6xl mx-auto px-4 w-full">
@@ -158,7 +139,7 @@ export function Hero() {
                   className="gradient-text animate-gradient-x"
                   style={{
                     backgroundImage:
-                      "linear-gradient(90deg, #6366f1, #a855f7, #06b6d4, #6366f1)",
+                      "linear-gradient(90deg, #14b8a6, #22d3ee, #f97316, #14b8a6)",
                   }}
                 >
                   {name || "\u00A0"}
@@ -252,38 +233,94 @@ export function Hero() {
             </motion.div>
           </div>
 
-          {/* Photo */}
+          {/* Hanging ID Card with ribbon lanyard */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.3 }}
             style={{ x: tx, y: ty }}
-            className="relative mx-auto md:mx-0 md:justify-self-end"
+            className="relative mx-auto md:mx-0 md:justify-self-end pt-6"
           >
-            <div className="relative animate-float-slow">
-              {/* Rotating gradient ring */}
+            {/* Peg / clip at the top */}
+            <div className="relative mx-auto w-fit">
+              <div className="w-14 h-3 rounded-full bg-gradient-to-b from-white/60 to-white/20 border border-white/30 shadow-lg mx-auto" />
+              <div className="w-3 h-3 rounded-full bg-foreground/70 mx-auto -mt-1.5 shadow-inner" />
+            </div>
+
+            {/* Swinging group: ribbon + card */}
+            <div className="animate-swing origin-top">
+              {/* Ribbon */}
               <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ repeat: Infinity, duration: 14, ease: "linear" }}
-                className="absolute -inset-2 rounded-full"
+                initial={{ scaleY: 0, opacity: 0 }}
+                animate={{ scaleY: 1, opacity: 1 }}
+                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                style={{ transformOrigin: "top center" }}
+                className="relative mx-auto w-8 h-32"
+              >
+                <div
+                  className="absolute inset-0 rounded-b-sm"
+                  style={{
+                    background:
+                      "linear-gradient(180deg, #14b8a6, #0e9488 55%, #f97316)",
+                    boxShadow: "inset -6px 0 10px rgba(0,0,0,0.25), inset 6px 0 10px rgba(255,255,255,0.15)",
+                  }}
+                />
+                {/* stitching */}
+                <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-px bg-white/20" />
+              </motion.div>
+
+              {/* Metal clasp */}
+              <div className="relative mx-auto -mt-1 w-16 h-4 rounded-md bg-gradient-to-b from-neutral-300 to-neutral-500 border border-black/30 shadow-md">
+                <div className="absolute inset-x-3 top-1/2 -translate-y-1/2 h-1 rounded-sm bg-black/30" />
+              </div>
+
+              {/* Card */}
+              <motion.div
+                initial={{ y: -40, opacity: 0, rotate: -8 }}
+                animate={{ y: 0, opacity: 1, rotate: 0 }}
+                transition={{ duration: 0.9, ease: [0.34, 1.56, 0.64, 1], delay: 0.2 }}
+                className="relative mx-auto mt-1 w-60 md:w-64 rounded-2xl p-5 glass border shadow-2xl"
                 style={{
                   background:
-                    "conic-gradient(from 0deg, #6366f1, #a855f7, #06b6d4, #6366f1)",
-                  filter: "blur(2px)",
+                    "linear-gradient(160deg, color-mix(in oklab, var(--card) 85%, transparent), color-mix(in oklab, var(--card) 55%, transparent))",
+                  boxShadow:
+                    "0 30px 60px -20px color-mix(in oklab, var(--brand-from) 45%, transparent), 0 10px 30px -10px rgba(0,0,0,0.5)",
                 }}
-              />
-              <div className="absolute -inset-6 rounded-full gradient-bg opacity-30 blur-3xl" />
-              <div className="relative w-56 h-56 md:w-72 md:h-72 rounded-full overflow-hidden bg-card grid place-items-center border border-border">
-                <div className="absolute inset-0 gradient-bg opacity-20" />
-                <span className="relative font-display text-7xl md:text-8xl font-bold gradient-text">ZH</span>
-              </div>
-              <motion.div
-                animate={{ y: [0, -6, 0] }}
-                transition={{ repeat: Infinity, duration: 2.4, ease: "easeInOut" }}
-                className="absolute -bottom-3 -right-3 glass rounded-full px-3 py-1.5 text-xs font-medium flex items-center gap-1.5"
               >
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                Open to work
+                {/* punch hole */}
+                <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-3 rounded-full bg-background border border-border" />
+
+                <div className="flex items-center justify-between text-[10px] uppercase tracking-widest text-muted-foreground">
+                  <span>ID · 2026</span>
+                  <span className="gradient-text font-semibold">Developer</span>
+                </div>
+
+                <div className="mt-4 mx-auto w-24 h-24 rounded-2xl overflow-hidden grid place-items-center relative">
+                  <div className="absolute inset-0 gradient-bg opacity-90" />
+                  <div className="absolute inset-0 opacity-40" style={{ background: "radial-gradient(circle at 30% 20%, rgba(255,255,255,0.5), transparent 55%)" }} />
+                  <span className="relative font-display text-4xl font-bold text-white drop-shadow">ZH</span>
+                </div>
+
+                <div className="mt-4 text-center">
+                  <div className="font-display font-bold text-lg leading-tight">Zohaib Haider</div>
+                  <div className="text-[11px] text-muted-foreground mt-0.5">Full Stack · MERN · Cloud</div>
+                </div>
+
+                <div className="mt-4 flex items-center justify-between text-[10px]">
+                  <span className="px-2 py-0.5 rounded-full bg-accent/60 border border-border/60">Karachi, PK</span>
+                  <span className="flex items-center gap-1 text-emerald-400">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    Open to work
+                  </span>
+                </div>
+
+                {/* barcode */}
+                <div className="mt-3 flex gap-[2px] h-6 items-end">
+                  {Array.from({ length: 34 }).map((_, k) => (
+                    <span
+                      key={k}
+                      className="bg-foreground/80"
+                      style={{ width: 2, height: `${40 + ((k * 37) % 60)}%` }}
+                    />
+                  ))}
+                </div>
               </motion.div>
             </div>
           </motion.div>

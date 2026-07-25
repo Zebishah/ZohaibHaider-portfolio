@@ -61,26 +61,28 @@ function TiltCard({ project, index }: { project: Project; index: number }) {
           />
 
           {/* Thumbnail */}
-          <div
-            className="relative aspect-[16/10] overflow-hidden"
-            style={{
-              background: `linear-gradient(135deg, ${project.accent[0]}, ${project.accent[1]})`,
-            }}
-          >
-            <motion.div
-              className="absolute inset-0"
+          <div className="relative aspect-[16/10] overflow-hidden">
+            <div
+              className="absolute inset-0 transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110 group-hover:rotate-[0.5deg]"
               style={{
-                background:
-                  "radial-gradient(circle at 30% 20%, rgba(255,255,255,0.35), transparent 45%)",
+                background: `linear-gradient(135deg, ${project.accent[0]}, ${project.accent[1]})`,
               }}
-            />
-            <div className="absolute inset-0 flex items-center justify-center p-6 text-center">
-              <motion.div
-                className="font-display font-bold text-2xl md:text-3xl text-white drop-shadow-lg"
-                style={{ translateZ: 30 }}
-              >
-                {project.title.split(" — ")[0]}
-              </motion.div>
+            >
+              <div
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "radial-gradient(circle at 30% 20%, rgba(255,255,255,0.35), transparent 45%)",
+                }}
+              />
+              <div className="absolute inset-0 flex items-center justify-center p-6 text-center">
+                <motion.div
+                  className="font-display font-bold text-2xl md:text-3xl text-white drop-shadow-lg"
+                  style={{ translateZ: 30 }}
+                >
+                  {project.title.split(" — ")[0]}
+                </motion.div>
+              </div>
             </div>
             {/* Shine sweep */}
             <span
@@ -99,6 +101,7 @@ function TiltCard({ project, index }: { project: Project; index: number }) {
               </div>
             </motion.div>
           </div>
+
 
           <div className="p-5 relative">
             <h3 className="font-display font-semibold text-lg leading-snug transition-colors duration-300 group-hover:gradient-text">
