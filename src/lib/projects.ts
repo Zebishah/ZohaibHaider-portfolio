@@ -1,15 +1,26 @@
+import dspCover from "@/assets/projects/dsp-cover.png";
+import pdeCover from "@/assets/projects/pde-cover.png";
+import vakantigoCover from "@/assets/projects/vakantigo-cover.png";
+import lmsCover from "@/assets/projects/lms-cover.png";
+import cardlockCover from "@/assets/projects/cardlock-cover.png";
+import taskflowCover from "@/assets/projects/taskflow-cover.png";
+
 export type Project = {
   slug: string;
   title: string;
   tagline: string;
   overview: string;
   role: string;
+  /** 8 high-impact tags shown on portfolio cards */
+  tags: string[];
+  /** Full stack shown on the case-study page */
   stack: string[];
   features: string[];
   impact: string;
   github?: string;
   demo?: string;
   accent: [string, string];
+  cover: string;
 };
 
 export const projects: Project[] = [
@@ -20,7 +31,39 @@ export const projects: Project[] = [
     overview:
       "DSP connects students, driving instructors, and admins in one place. Students find instructors, book lessons, pay online, track progress, and leave reviews. Instructors manage availability, bookings, students, payouts, and ratings. Admins oversee users, documents, payments, refunds, and platform analytics. A booking + payments marketplace with Stripe-powered checkout, delayed (T-48) charges, refunds, instructor payouts, reminders, and timezone-aware scheduling.",
     role: "Full-stack developer — built frontend dashboards, GraphQL/API work, the entire Stripe payment lifecycle (checkout, T-48 delayed charge, refunds, payouts, webhooks), booking status logic, analytics, and UX consistency across Admin/Instructor/Student panels. Built solo, end to end.",
-    stack: ["React 18", "TypeScript", "Vite", "Apollo Client", "Redux Toolkit", "Tailwind CSS", "MUI", "Ant Design", "ApexCharts", "React Hook Form", "Zod", "Node.js", "Express", "Apollo Server", "MongoDB", "Mongoose", "JWT", "Passport OAuth", "Socket.io", "Nodemailer", "Stripe", "AWS SDK"],
+    tags: ["Stripe", "GraphQL", "Socket.io", "MongoDB", "Apollo", "Passport OAuth", "React 18", "AWS SDK"],
+    stack: [
+      "Stripe",
+      "GraphQL",
+      "Apollo Client",
+      "Apollo Server",
+      "Socket.io",
+      "MongoDB",
+      "Mongoose",
+      "Passport OAuth (Google/Facebook)",
+      "AWS SDK",
+      "Nodemailer",
+      "Google Maps",
+      "Leaflet",
+      "React 18",
+      "TypeScript",
+      "Vite",
+      "Redux Toolkit",
+      "Tailwind CSS",
+      "MUI",
+      "Ant Design",
+      "ApexCharts",
+      "React Hook Form",
+      "Zod",
+      "Framer Motion",
+      "React Router",
+      "Node.js",
+      "Express",
+      "JWT",
+      "moment-timezone",
+      "React Quill",
+      "PDF.js",
+    ],
     features: [
       "Multi-role dashboards for Student, Instructor, and Admin with distinct workflows",
       "Full Stripe lifecycle: checkout, T-48 delayed charging, reminders, auto-cancel, manual refunds synced to Stripe, instructor payout timing",
@@ -32,9 +75,10 @@ export const projects: Project[] = [
     ],
     impact:
       "Unified booking/payment status language across all three dashboards eliminated confusion. The T-48 + reminder + auto-cancel system reduced unpaid slots sitting as false 'upcoming' lessons. Independent analytics filters let admins get insights without full reloads. Dual timezone display removed confusion for international users.",
-    github: "https://github.com/jidatit/dsp-demo",
+    github: "https://github.com/Zebishah/driving-school-platform",
     demo: "https://dsp-demo.onrender.com",
     accent: ["#6366f1", "#06b6d4"],
+    cover: dspCover,
   },
   {
     slug: "pde",
@@ -43,7 +87,28 @@ export const projects: Project[] = [
     overview:
       "PDE helps practices organize facilities, rooms, and equipment, schedule and track maintenance tasks for compliance, manage subscriptions and billing, and upload documents for admin review. Clinics map their office hierarchy (building → room → machine), get maintenance checklists on each machine, stay on top of overdue work, pay for a plan (Basic/Pro), and keep licenses and paperwork in one place.",
     role: "Full-stack developer — designed and built the entire product end to end, solo: frontend UI, Express API, database schema, auth flows, Stripe billing, admin and clinic dashboards, and full technical + client-facing documentation.",
-    stack: ["React 19", "TypeScript", "Vite", "TanStack Query", "Tailwind CSS", "Framer Motion", "shadcn/ui", "Node.js", "Express 5", "Zod", "Winston", "Supabase", "PostgreSQL", "Stripe", "AWS S3", "VitePress"],
+    tags: ["Supabase", "PostgreSQL", "Stripe", "React 19", "TanStack Query", "Express", "GSAP", "VitePress"],
+    stack: [
+      "Supabase",
+      "PostgreSQL",
+      "Stripe",
+      "React 19",
+      "TypeScript",
+      "Vite",
+      "TanStack Query",
+      "Tailwind CSS",
+      "shadcn/ui",
+      "NextUI",
+      "Framer Motion",
+      "GSAP",
+      "Node.js",
+      "Express",
+      "Zod",
+      "Winston",
+      "JWT",
+      "React Router",
+      "VitePress",
+    ],
     features: [
       "Public pricing page and 4-step clinic signup (Account → Plan → Payment → Magic link)",
       "Facility/room/equipment hierarchy management with plan-based limits",
@@ -57,32 +122,57 @@ export const projects: Project[] = [
     ],
     impact:
       "Delivered a complete multi-tenant SaaS product solo — from database schema through Stripe billing to deployed UI and documentation. Automated compliance scoring and overdue task tracking removed manual overhead for clinic staff.",
-    github: "https://github.com/jidatit/PDE-demo",
+    github: "https://github.com/Zebishah/pde-dental",
     demo: "https://pde-demo.onrender.com",
     accent: ["#8b5cf6", "#ec4899"],
+    cover: pdeCover,
   },
   {
-    slug: "daizer",
-    title: "Daizer — B2B Wallet-Based Top-Up Platform",
-    tagline: "Wallet-funded B2B commerce with PayPal top-ups, tiered pricing, and live Zoho Books sync.",
+    slug: "vakantigo",
+    title: "VakantiGo Adventures — Affiliate Travel Marketplace",
+    tagline:
+      "A Dutch family-focused travel marketplace with quiz-based recommendations and live affiliate feed integration.",
     overview:
-      "Daizer is a dual-dashboard commerce app where invited B2B customers fund a prepaid USD wallet via PayPal, browse a catalog of digital game/service top-ups, and place orders. Admins manage users, tiered pricing, catalog, wallets, refunds, external fulfillment providers, and platform configuration. Money and catalog events sync automatically into Zoho Books.",
-    role: "Full-stack developer on a small team, building across the entire flow: authentication, catalog, wallet/checkout, and Zoho Books integration.",
-    stack: ["React 19", "TypeScript", "Vite", "TanStack Query", "Redux Toolkit", "Tailwind CSS", "shadcn/ui", "Express 5", "Drizzle ORM", "PostgreSQL", "JWT", "Redis", "AWS S3", "Docker", "PayPal API", "Zoho Books API", "Swagger"],
+      "VakantiGo is a Dutch family-focused affiliate travel and activities marketplace. Users browse curated vacation deals and family activities, optionally take a short quiz for personalized recommendations, and click through to partner offers via the TradeTracker affiliate network. Admins manage listings, quiz content, categories, tags, and analytics from a full CMS.",
+    role: "Full-stack developer — built the frontend UI/UX, backend API, admin CMS, affiliate feed sync, and led performance/image optimization work.",
+    tags: ["TradeTracker SOAP", "MongoDB", "AWS S3", "React 18", "TanStack Query", "Express", "Recharts", "Zod"],
+    stack: [
+      "TradeTracker SOAP API",
+      "MongoDB (Atlas)",
+      "Mongoose",
+      "AWS S3",
+      "React 18",
+      "TypeScript",
+      "Vite",
+      "TanStack Query",
+      "Tailwind CSS",
+      "shadcn/ui (Radix)",
+      "Recharts",
+      "Embla Carousel",
+      "React Hook Form",
+      "Zod",
+      "React Router",
+      "Axios",
+      "Node.js",
+      "Express",
+      "JWT",
+      "Multer",
+      "Vitest",
+    ],
     features: [
-      "Invite-only B2B onboarding via admin-generated signup links tied to pricing groups",
-      "PayPal wallet top-up flow (create → approve → capture) with webhook handling",
-      "Nested catalog with per-pricing-group pricing and provider bindings",
-      "Dual order fulfillment: automatic via external API, or manual queue when providers are offline",
-      "Deep Zoho Books integration — OAuth, contacts, items, price books, orders, invoices, credit notes, wallet journals",
-      "Admin wallet ops: credit/debit adjustments, refund approval",
-      "Redis caching, S3 image uploads, SMTP-templated emails",
-      "Fully Dockerized deployment (nginx client + API)",
+      "Marketplace-style listing feed with search, multi-select filters, and sorting",
+      "Activity detail pages with photo galleries and affiliate click tracking",
+      "Multi-step personalization quiz with a tag-overlap matching engine for recommendations",
+      "Full admin CMS: listings CRUD, quiz management, tags/categories/FAQs, analytics dashboard",
+      "Live TradeTracker SOAP integration with scheduled affiliate feed sync (~6 hour intervals)",
+      "Major performance pass: WebP image conversion with LQIP, responsive srcSets, lazy loading, skeleton loaders, and React Query caching",
     ],
     impact:
-      "Built a production-style platform spanning auth, catalog, wallet, checkout, and live accounting sync. The dual fulfillment path keeps the business selling even when external providers go offline.",
-    github: "https://github.com/JidatItDev/Daizer",
-    accent: ["#f59e0b", "#ef4444"],
+      "Shifted the product direction from quiz-dominant to browse-first marketplace to align with client conversion goals. Image optimization work eliminated blank/blurry loading states and fixed upscaled hero images on activity pages. Delivered a full admin CMS enabling non-technical content updates without code deploys.",
+    github: "https://github.com/Zebishah/vakantigo-dutch",
+    demo: "https://vakantigo-demo.onrender.com",
+    accent: ["#14b8a6", "#f97316"],
+    cover: vakantigoCover,
   },
   {
     slug: "karim-lms",
@@ -91,7 +181,37 @@ export const projects: Project[] = [
     overview:
       "KARIM LMS is a B2B security-awareness learning management system for MSPs and partners. Organizations onboard companies, assign seat-based training licenses, deliver interactive courses, run simulated phishing campaigns, handle billing/invoices, and track learner engagement — all through role-specific dashboards.",
     role: "Full-stack developer — shipped features across the React SPA and Node API, including RBAC dashboards, phishing campaign management, licensing/billing, and analytics.",
-    stack: ["React 18", "Vite", "MUI", "TanStack Query", "Formik", "ApexCharts", "H5P", "Node.js", "Express 5", "Sequelize", "MySQL", "JWT", "Redis", "Microsoft Entra ID", "GoPhish", "AWS S3"],
+    tags: ["GoPhish", "Microsoft Entra ID", "H5P", "Stripe", "MySQL", "Redis", "React 18", "AWS S3"],
+    stack: [
+      "GoPhish",
+      "Microsoft Entra ID / SSO",
+      "Microsoft Graph",
+      "H5P",
+      "Stripe",
+      "MySQL",
+      "Sequelize",
+      "Redis",
+      "AWS S3",
+      "React 18",
+      "Vite",
+      "MUI",
+      "TanStack Query",
+      "TanStack Table",
+      "Formik",
+      "Yup",
+      "ApexCharts",
+      "Node.js",
+      "Express",
+      "JWT",
+      "Swagger",
+      "Winston",
+      "Handlebars",
+      "node-cron",
+      "Sharp",
+      "PapaParse",
+      "React PDF",
+      "Framer Motion",
+    ],
     features: [
       "Five role dashboards (Admin, Contributor, Group Leader, Learner, Support) with 40+ granular permissions",
       "Multiple auth methods: password, passwordless OTP, and Microsoft SSO",
@@ -107,9 +227,10 @@ export const projects: Project[] = [
     ],
     impact:
       "Delivered an enterprise-grade B2B SaaS with real seat economics (purchased vs. allocated), automated phishing campaign scheduling, and Microsoft identity integration.",
-    github: "https://github.com/jidatit/lms-demo",
+    github: "https://github.com/Zebishah/learning-management-system",
     demo: "https://lms-demo-ss02.onrender.com",
     accent: ["#10b981", "#3b82f6"],
+    cover: lmsCover,
   },
   {
     slug: "cardlock",
@@ -118,7 +239,32 @@ export const projects: Project[] = [
     overview:
       "CardLock is an enterprise WEX fuel-card operations platform. Admins and end users manage fuel cards in real time, run transaction/tax/status reports, set custom pricing and margins, schedule automated report delivery, and sync billing with QuickBooks — all through a web app backed by live WEX SOAP APIs. Built as part of a multi-developer team.",
     role: "Full-stack engineer on a multi-developer team, contributing to the admin/user portals, WEX card operations features, reporting suite, and QuickBooks integration work.",
-    stack: ["React 19", "TypeScript", "Vite 7", "Tailwind CSS", "TanStack Query", "Redux Toolkit", "Express 5", "PostgreSQL", "Drizzle ORM", "JWT", "WEX SOAP API", "QuickBooks API", "AWS S3", "ExcelJS", "PDFKit", "Swagger"],
+    tags: ["WEX SOAP", "QuickBooks", "PostgreSQL", "Drizzle ORM", "React 19", "AWS S3", "ExcelJS", "Swagger"],
+    stack: [
+      "WEX SOAP API",
+      "QuickBooks (node-quickbooks / intuit-oauth)",
+      "PostgreSQL",
+      "Drizzle ORM",
+      "AWS S3 (presigned URLs)",
+      "ExcelJS",
+      "PDFKit",
+      "jsPDF",
+      "Nodemailer",
+      "Swagger",
+      "React 19",
+      "TypeScript",
+      "Vite",
+      "Tailwind CSS",
+      "TanStack Query",
+      "Redux Toolkit",
+      "React Hook Form",
+      "Zod",
+      "Express",
+      "JWT",
+      "node-cron",
+      "Winston",
+      "xml2js",
+    ],
     features: [
       "Live WEX SOAP integration for real-time fuel card lookup, status, PIN reset, limits, and authorization",
       "Card-to-user assignment with full audit trail",
@@ -130,9 +276,10 @@ export const projects: Project[] = [
     ],
     impact:
       "Replaced long-lived stored S3 URLs with short-TTL pre-signed downloads. Automated scheduled report generation reduced manual reporting work. Persistent WEX session monitoring kept APIs available without manual re-authentication.",
-    github: "https://github.com/jidatit/Cardlock-Demo",
+    github: "https://github.com/Zebishah/card-lock-app",
     demo: "https://cardlock-demo.onrender.com",
     accent: ["#0ea5e9", "#22d3ee"],
+    cover: cardlockCover,
   },
   {
     slug: "taskflow",
@@ -141,7 +288,30 @@ export const projects: Project[] = [
     overview:
       "TaskFlow is a multi-tenant workspace collaboration and Kanban task management app — a lighter Trello/Linear-style product. Teams create workspaces, invite members, organize projects with custom columns, and manage tasks on a drag-and-drop board with due dates, assignees, priorities, and automated email reminders.",
     role: "Full-stack engineer, solo — owned the architecture, API, UI, auth, background job queues, database schema, and full test suite end to end.",
-    stack: ["NestJS 11", "TypeScript", "React 19", "Vite", "Tailwind CSS 4", "TanStack Query", "PostgreSQL 17", "Drizzle ORM", "Redis 7", "BullMQ", "Resend", "JWT", "@dnd-kit", "Docker", "Jest", "Vitest", "Cypress"],
+    tags: ["NestJS", "PostgreSQL", "Drizzle ORM", "Redis", "BullMQ", "React 19", "@dnd-kit", "Docker"],
+    stack: [
+      "NestJS 11",
+      "PostgreSQL 17",
+      "Drizzle ORM",
+      "Redis 7",
+      "BullMQ",
+      "Resend",
+      "JWT + refresh tokens",
+      "@dnd-kit",
+      "Docker",
+      "React 19",
+      "TypeScript",
+      "Vite",
+      "Tailwind CSS 4",
+      "TanStack Query",
+      "React Router",
+      "Axios",
+      "Helmet",
+      "Jest",
+      "Vitest",
+      "Cypress",
+      "Bull Board",
+    ],
     features: [
       "Full auth: register/login/logout, bcrypt, JWT + rotating refresh tokens (hashed), httpOnly cookies, auto refresh with request deduping",
       "Multi-tenant workspaces with RBAC (owner/admin/member) enforced via guards",
@@ -159,6 +329,7 @@ export const projects: Project[] = [
       "Built a production-grade collaboration tool solo — including rotating refresh-token sessions, RBAC-guarded routes, non-blocking async email via job queues, and a real automated test suite spanning unit, integration, component, and E2E layers.",
     github: "https://github.com/Zebishah/taskflow-og",
     accent: ["#a855f7", "#f472b6"],
+    cover: taskflowCover,
   },
 ];
 

@@ -1,35 +1,20 @@
 import { Link } from "@tanstack/react-router";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue, useTransform } from "framer-motion";
 import { ArrowUpRight, Github, ExternalLink } from "lucide-react";
 import { projects, type Project } from "@/lib/projects";
 import { Reveal, SectionHeader } from "./Reveal";
 import type { MouseEvent } from "react";
 
 function TiltCard({ project, index }: { project: Project; index: number }) {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
   const gx = useMotionValue(50);
   const gy = useMotionValue(50);
 
-  // Springified motion for buttery-smooth tilt (no jitter)
-  const sx = useSpring(x, { stiffness: 150, damping: 18, mass: 0.4 });
-  const sy = useSpring(y, { stiffness: 150, damping: 18, mass: 0.4 });
-  const rotateX = useTransform(sy, [-50, 50], [8, -8]);
-  const rotateY = useTransform(sx, [-50, 50], [-8, 8]);
-  const translateZ = useTransform(sx, [-50, 50], [0, 0]);
-
   const onMove = (e: MouseEvent<HTMLDivElement>) => {
     const r = e.currentTarget.getBoundingClientRect();
-    const px = e.clientX - r.left;
-    const py = e.clientY - r.top;
-    x.set(px - r.width / 2);
-    y.set(py - r.height / 2);
-    gx.set((px / r.width) * 100);
-    gy.set((py / r.height) * 100);
+    gx.set(((e.clientX - r.left) / r.width) * 100);
+    gy.set(((e.clientY - r.top) / r.height) * 100);
   };
   const reset = () => {
-    x.set(0);
-    y.set(0);
     gx.set(50);
     gy.set(50);
   };
@@ -42,75 +27,49 @@ function TiltCard({ project, index }: { project: Project; index: number }) {
 
   return (
     <Reveal delay={index * 0.06}>
-      <motion.div
+      <div
         onMouseMove={onMove}
         onMouseLeave={reset}
-        style={{ rotateX, rotateY, translateZ, transformStyle: "preserve-3d" }}
         className="group relative h-full"
       >
         <Link
           to="/projects/$slug"
           params={{ slug: project.slug }}
-          className="block h-full glass rounded-2xl overflow-hidden relative transition-[border-color,box-shadow] duration-500 hover:border-primary/60 hover:shadow-[0_30px_80px_-30px_color-mix(in_oklab,var(--brand-from)_60%,transparent)]"
+          className="flex h-full flex-col rounded-2xl overflow-hidden relative border border-border/70 bg-card transition-[border-color,box-shadow] duration-500 hover:border-primary/60 hover:shadow-[0_30px_80px_-30px_color-mix(in_oklab,var(--brand-from)_60%,transparent)]"
         >
           {/* Cursor-following glow */}
           <motion.span
             aria-hidden
             style={{ background: glow }}
-            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10"
           />
 
-          {/* Thumbnail */}
-          <div className="relative aspect-[16/10] overflow-hidden">
-            <div
-              className="absolute inset-0 transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110 group-hover:rotate-[0.5deg]"
-              style={{
-                background: `linear-gradient(135deg, ${project.accent[0]}, ${project.accent[1]})`,
-              }}
-            >
-              <div
-                className="absolute inset-0"
-                style={{
-                  background:
-                    "radial-gradient(circle at 30% 20%, rgba(255,255,255,0.35), transparent 45%)",
-                }}
-              />
-              <div className="absolute inset-0 flex items-center justify-center p-6 text-center">
-                <motion.div
-                  className="font-display font-bold text-2xl md:text-3xl text-white drop-shadow-lg"
-                  style={{ translateZ: 30 }}
-                >
-                  {project.title.split(" — ")[0]}
-                </motion.div>
-              </div>
-            </div>
-            {/* Shine sweep */}
-            <span
-              className="absolute -inset-x-full inset-y-0 group-hover:translate-x-full transition-transform duration-1000 ease-out pointer-events-none"
-              style={{
-                background:
-                  "linear-gradient(120deg, transparent 35%, rgba(255,255,255,0.25) 50%, transparent 65%)",
-              }}
+          {/* Thumbnail — solid bg, no backdrop-blur so screenshots stay crisp */}
+          <div className="relative aspect-[16/10] shrink-0 overflow-hidden bg-muted">
+            <img
+              src={project.cover}
+              alt={`${project.title} screenshot`}
+              width={2880}
+              height={1800}
+              decoding="async"
+              className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02]"
+              loading="lazy"
             />
-            <motion.div
-              className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition duration-500"
-              whileHover={{ rotate: 45 }}
-            >
-              <div className="glass rounded-full p-2">
+            <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition duration-500 z-10">
+              <div className="rounded-full p-2 bg-background/80 border border-border/60 backdrop-blur-sm">
                 <ArrowUpRight className="w-4 h-4" />
               </div>
-            </motion.div>
+            </div>
           </div>
 
-
-          <div className="p-5 relative">
+          <div className="relative flex flex-1 flex-col p-5">
             <h3 className="font-display font-semibold text-lg leading-snug transition-colors duration-300 group-hover:gradient-text">
               {project.title}
             </h3>
             <p className="mt-2 text-sm text-muted-foreground line-clamp-2">{project.tagline}</p>
 
             <div className="mt-4 flex flex-wrap gap-1.5">
-              {project.stack.slice(0, 5).map((t) => (
+              {project.tags.map((t) => (
                 <span
                   key={t}
                   className="text-[11px] px-2 py-0.5 rounded-full bg-accent/60 text-accent-foreground border border-border/50 transition-colors duration-300 group-hover:border-primary/40"
@@ -120,42 +79,47 @@ function TiltCard({ project, index }: { project: Project; index: number }) {
               ))}
             </div>
 
-            <div className="mt-5 flex items-center justify-between">
-              <span className="text-xs font-medium gradient-text opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500">
+            {/* Pinned footer: icons always in the same bottom-right slot */}
+            <div className="mt-auto pt-5 flex items-center gap-3">
+              <span className="min-w-0 flex-1 text-xs font-medium gradient-text opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500">
                 View Case Study →
               </span>
-              <div className="flex items-center gap-1">
-                {project.github && (
+              <div className="flex w-[4.25rem] shrink-0 items-center gap-0.5">
+                {project.github ? (
                   <a
                     href={project.github}
                     target="_blank"
                     rel="noreferrer"
                     onClick={(e) => e.stopPropagation()}
                     aria-label="GitHub"
-                    className="p-1.5 rounded-md hover:bg-accent text-muted-foreground hover:text-foreground transition-colors duration-300"
+                    className="inline-flex size-8 items-center justify-center rounded-md hover:bg-accent text-muted-foreground hover:text-foreground transition-colors duration-300"
                   >
                     <Github className="w-4 h-4" />
                   </a>
+                ) : (
+                  <span className="size-8" aria-hidden />
                 )}
-                {project.demo && (
+                {project.demo ? (
                   <a
                     href={project.demo}
                     target="_blank"
                     rel="noreferrer"
                     onClick={(e) => e.stopPropagation()}
                     aria-label="Live demo"
-                    className="p-1.5 rounded-md hover:bg-accent text-muted-foreground hover:text-foreground transition-colors duration-300"
+                    className="inline-flex size-8 items-center justify-center rounded-md hover:bg-accent text-muted-foreground hover:text-foreground transition-colors duration-300"
                   >
                     <ExternalLink className="w-4 h-4" />
                   </a>
+                ) : (
+                  <span className="size-8" aria-hidden />
                 )}
               </div>
             </div>
 
-            {/* Bottom flowing bar */}
-            <div className="mt-5 h-[2px] w-full rounded-full bg-border/40 overflow-hidden relative">
+            {/* Full-width linear sweep */}
+            <div className="mt-4 h-[2px] w-full rounded-full bg-border/40 overflow-hidden relative">
               <span
-                className="absolute inset-y-0 w-1/3 rounded-full animate-flow-bar"
+                className="absolute inset-y-0 left-0 w-1/3 rounded-full animate-flow-bar-linear"
                 style={{
                   background:
                     "linear-gradient(90deg, transparent, var(--brand-from), var(--brand-to), transparent)",
@@ -164,7 +128,7 @@ function TiltCard({ project, index }: { project: Project; index: number }) {
             </div>
           </div>
         </Link>
-      </motion.div>
+      </div>
     </Reveal>
   );
 }
@@ -179,7 +143,7 @@ export function ProjectsGrid() {
           subtitle="Six real production platforms — each with a full breakdown, tech stack, and impact."
         />
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5" style={{ perspective: 1200 }}>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {projects.map((p, i) => (
             <TiltCard key={p.slug} project={p} index={i} />
           ))}

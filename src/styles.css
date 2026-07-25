@@ -225,6 +225,7 @@
 }
 .animate-aurora { animation: aurora 22s ease-in-out infinite; }
 .animate-flow-bar { animation: flow-bar 2.4s cubic-bezier(0.4,0,0.2,1) infinite; }
+.animate-flow-bar-linear { animation: flow-bar 2.8s linear infinite; }
 .animate-twinkle { animation: twinkle 3s ease-in-out infinite; }
 .animate-caret { animation: caret 1s steps(2) infinite; }
 .animate-swing { transform-origin: top center; animation: swing 5s ease-in-out infinite; }

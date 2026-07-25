@@ -93,19 +93,15 @@ function ProjectDetail() {
         </div>
       </section>
 
-      {/* Cover / gallery placeholder */}
+      {/* Cover */}
       <section className="relative max-w-4xl mx-auto px-4">
         <Reveal>
-          <div
-            className="relative aspect-[16/9] rounded-2xl overflow-hidden glass"
-            style={{ background: `linear-gradient(135deg, ${project.accent[0]}, ${project.accent[1]})` }}
-          >
-            <div className="absolute inset-0 grid-bg opacity-30" />
-            <div className="absolute inset-0 grid place-items-center">
-              <div className="font-display font-bold text-4xl md:text-6xl text-white drop-shadow-2xl text-center px-6">
-                {project.title.split(" — ")[0]}
-              </div>
-            </div>
+          <div className="relative aspect-[16/9] rounded-2xl overflow-hidden glass border border-border/60">
+            <img
+              src={project.cover}
+              alt={`${project.title} screenshot`}
+              className="absolute inset-0 h-full w-full object-cover object-top"
+            />
           </div>
         </Reveal>
       </section>

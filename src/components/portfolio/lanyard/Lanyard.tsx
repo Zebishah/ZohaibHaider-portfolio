@@ -309,10 +309,10 @@ function Band({
           {...segmentProps}
           type={dragged ? "kinematicPosition" : "dynamic"}
         >
-          <CuboidCollider args={[0.8, 1.125, 0.01]} />
+          <CuboidCollider args={[0.95, 1.28, 0.01]} />
           <group
-            scale={2.25}
-            position={[0, -1.2, -0.05]}
+            scale={[2.65, 2.55, 2.25]}
+            position={[0, -1.35, -0.05]}
             onPointerOver={() => hover(true)}
             onPointerOut={() => hover(false)}
             onPointerUp={(e: ThreeEvent<PointerEvent>) => {
