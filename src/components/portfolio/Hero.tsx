@@ -1,7 +1,10 @@
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { ArrowDown, Download, Github, Linkedin, Mail, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ClientOnly } from "@tanstack/react-router";
+
+const Lanyard = lazy(() => import("./lanyard/Lanyard"));
 
 const roles = [
   "Full Stack MERN Developer",
@@ -51,25 +54,9 @@ export function Hero() {
 
   const name = useTypewriter(NAME);
 
-  // Parallax on the id card
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const sx = useSpring(mx, { stiffness: 80, damping: 16 });
-  const sy = useSpring(my, { stiffness: 80, damping: 16 });
-  const tx = useTransform(sx, [-1, 1], [-10, 10]);
-  const ty = useTransform(sy, [-1, 1], [-8, 8]);
-
-  useEffect(() => {
-    const onMove = (e: MouseEvent) => {
-      mx.set((e.clientX / window.innerWidth) * 2 - 1);
-      my.set((e.clientY / window.innerHeight) * 2 - 1);
-    };
-    window.addEventListener("mousemove", onMove);
-    return () => window.removeEventListener("mousemove", onMove);
-  }, [mx, my]);
-
   return (
     <section id="home" className="relative min-h-screen flex items-center overflow-hidden pt-24 pb-16">
+
       {/* Silky animated mesh background */}
       <div className="absolute inset-0 pointer-events-none">
         <div
@@ -233,97 +220,15 @@ export function Hero() {
             </motion.div>
           </div>
 
-          {/* Hanging ID Card with ribbon lanyard */}
-          <motion.div
-            style={{ x: tx, y: ty }}
-            className="relative mx-auto md:mx-0 md:justify-self-end pt-6"
-          >
-            {/* Peg / clip at the top */}
-            <div className="relative mx-auto w-fit">
-              <div className="w-14 h-3 rounded-full bg-gradient-to-b from-white/60 to-white/20 border border-white/30 shadow-lg mx-auto" />
-              <div className="w-3 h-3 rounded-full bg-foreground/70 mx-auto -mt-1.5 shadow-inner" />
-            </div>
+          {/* 3D Lanyard with hanging ID card — drops from top of screen */}
+          <div className="relative h-[600px] md:h-[720px] -mt-24 md:-mt-32 md:-mr-8">
+            <ClientOnly fallback={<div className="w-full h-full" />}>
+              <Suspense fallback={<div className="w-full h-full" />}>
+                <Lanyard position={[0, 0, 18]} gravity={[0, -40, 0]} transparent />
+              </Suspense>
+            </ClientOnly>
+          </div>
 
-            {/* Swinging group: ribbon + card */}
-            <div className="animate-swing origin-top">
-              {/* Ribbon */}
-              <motion.div
-                initial={{ scaleY: 0, opacity: 0 }}
-                animate={{ scaleY: 1, opacity: 1 }}
-                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                style={{ transformOrigin: "top center" }}
-                className="relative mx-auto w-8 h-32"
-              >
-                <div
-                  className="absolute inset-0 rounded-b-sm"
-                  style={{
-                    background:
-                      "linear-gradient(180deg, #14b8a6, #0e9488 55%, #f97316)",
-                    boxShadow: "inset -6px 0 10px rgba(0,0,0,0.25), inset 6px 0 10px rgba(255,255,255,0.15)",
-                  }}
-                />
-                {/* stitching */}
-                <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-px bg-white/20" />
-              </motion.div>
-
-              {/* Metal clasp */}
-              <div className="relative mx-auto -mt-1 w-16 h-4 rounded-md bg-gradient-to-b from-neutral-300 to-neutral-500 border border-black/30 shadow-md">
-                <div className="absolute inset-x-3 top-1/2 -translate-y-1/2 h-1 rounded-sm bg-black/30" />
-              </div>
-
-              {/* Card */}
-              <motion.div
-                initial={{ y: -40, opacity: 0, rotate: -8 }}
-                animate={{ y: 0, opacity: 1, rotate: 0 }}
-                transition={{ duration: 0.9, ease: [0.34, 1.56, 0.64, 1], delay: 0.2 }}
-                className="relative mx-auto mt-1 w-60 md:w-64 rounded-2xl p-5 glass border shadow-2xl"
-                style={{
-                  background:
-                    "linear-gradient(160deg, color-mix(in oklab, var(--card) 85%, transparent), color-mix(in oklab, var(--card) 55%, transparent))",
-                  boxShadow:
-                    "0 30px 60px -20px color-mix(in oklab, var(--brand-from) 45%, transparent), 0 10px 30px -10px rgba(0,0,0,0.5)",
-                }}
-              >
-                {/* punch hole */}
-                <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-3 rounded-full bg-background border border-border" />
-
-                <div className="flex items-center justify-between text-[10px] uppercase tracking-widest text-muted-foreground">
-                  <span>ID · 2026</span>
-                  <span className="gradient-text font-semibold">Developer</span>
-                </div>
-
-                <div className="mt-4 mx-auto w-24 h-24 rounded-2xl overflow-hidden grid place-items-center relative">
-                  <div className="absolute inset-0 gradient-bg opacity-90" />
-                  <div className="absolute inset-0 opacity-40" style={{ background: "radial-gradient(circle at 30% 20%, rgba(255,255,255,0.5), transparent 55%)" }} />
-                  <span className="relative font-display text-4xl font-bold text-white drop-shadow">ZH</span>
-                </div>
-
-                <div className="mt-4 text-center">
-                  <div className="font-display font-bold text-lg leading-tight">Zohaib Haider</div>
-                  <div className="text-[11px] text-muted-foreground mt-0.5">Full Stack · MERN · Cloud</div>
-                </div>
-
-                <div className="mt-4 flex items-center justify-between text-[10px]">
-                  <span className="px-2 py-0.5 rounded-full bg-accent/60 border border-border/60">Karachi, PK</span>
-                  <span className="flex items-center gap-1 text-emerald-400">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    Open to work
-                  </span>
-                </div>
-
-                {/* barcode */}
-                <div className="mt-3 flex gap-[2px] h-6 items-end">
-                  {Array.from({ length: 34 }).map((_, k) => (
-                    <span
-                      key={k}
-                      className="bg-foreground/80"
-                      style={{ width: 2, height: `${40 + ((k * 37) % 60)}%` }}
-                    />
-                  ))}
-                </div>
-              </motion.div>
-            </div>
-          </motion.div>
         </div>
 
         <motion.a
