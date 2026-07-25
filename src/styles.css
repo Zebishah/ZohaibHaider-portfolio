@@ -227,6 +227,9 @@
 .animate-flow-bar { animation: flow-bar 2.4s cubic-bezier(0.4,0,0.2,1) infinite; }
 .animate-twinkle { animation: twinkle 3s ease-in-out infinite; }
 .animate-caret { animation: caret 1s steps(2) infinite; }
+.animate-swing { transform-origin: top center; animation: swing 5s ease-in-out infinite; }
+.animate-ribbon-drop { animation: ribbon-drop 1.2s cubic-bezier(0.34,1.56,0.64,1) both; }
+.animate-mesh-shift { background-size: 200% 200%, 200% 200%, 200% 200%; animation: mesh-shift 18s ease-in-out infinite; }
 
 /* Smooth hover primitives */
 @utility card-lift {
