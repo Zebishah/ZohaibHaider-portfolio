@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { ThemeProvider } from "../lib/theme";
+import { CursorGlow } from "../components/portfolio/CursorGlow";
 
 const themeInitScript = `(function(){try{var t=localStorage.getItem('theme');var d=document.documentElement;if(t==='light'){d.classList.add('light');}else{d.classList.add('dark');}}catch(e){document.documentElement.classList.add('dark');}})();`;
 
