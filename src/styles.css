@@ -171,7 +171,65 @@
   70% { box-shadow: 0 0 0 18px color-mix(in oklab, var(--brand-from) 0%, transparent); }
   100% { box-shadow: 0 0 0 0 transparent; }
 }
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes marquee-reverse {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+@keyframes gradient-x {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@keyframes aurora {
+  0%, 100% { transform: translate(0,0) rotate(0deg) scale(1); }
+  50% { transform: translate(40px,-30px) rotate(180deg) scale(1.15); }
+}
+@keyframes flow-bar {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(400%); }
+}
+@keyframes twinkle {
+  0%,100% { opacity: 0.2; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.4); }
+}
+@keyframes caret {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0; }
+}
 
 .animate-blob { animation: blob 18s ease-in-out infinite; }
 .animate-float-slow { animation: float-slow 6s ease-in-out infinite; }
 .animate-pulse-ring { animation: pulse-ring 2.4s ease-out infinite; }
+.animate-marquee { animation: marquee 40s linear infinite; }
+.animate-marquee-reverse { animation: marquee-reverse 45s linear infinite; }
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 6s ease infinite;
+}
+.animate-aurora { animation: aurora 22s ease-in-out infinite; }
+.animate-flow-bar { animation: flow-bar 2.4s cubic-bezier(0.4,0,0.2,1) infinite; }
+.animate-twinkle { animation: twinkle 3s ease-in-out infinite; }
+.animate-caret { animation: caret 1s steps(2) infinite; }
+
+/* Smooth hover primitives */
+@utility card-lift {
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.4s ease;
+  will-change: transform;
+}
+.card-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 60px -20px color-mix(in oklab, var(--brand-from) 45%, transparent);
+}
+
+@utility skill-chip {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              background-color 0.35s ease,
+              border-color 0.35s ease,
+              box-shadow 0.35s ease;
+  will-change: transform;
+}
