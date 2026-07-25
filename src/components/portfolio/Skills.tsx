@@ -2,15 +2,17 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Reveal, SectionHeader } from "./Reveal";
 import {
-  SiJavascript, SiTypescript, SiHtml5, SiCss3, SiReact, SiNextdotjs, SiRedux, SiReactquery, SiReactrouter,
+  SiJavascript, SiTypescript, SiHtml5, SiReact, SiNextdotjs, SiRedux, SiReactquery, SiReactrouter,
   SiTailwindcss, SiMui, SiFramer, SiNodedotjs, SiExpress, SiNestjs, SiGraphql, SiJsonwebtokens,
   SiMongodb, SiPostgresql, SiRedis, SiFirebase, SiSupabase, SiDrizzle,
-  SiAmazon, SiDocker, SiGithubactions, SiNginx, SiJest, SiCypress, SiStripe, SiSwagger,
+  SiAmazonwebservices, SiDocker, SiGithubactions, SiNginx, SiJest, SiCypress, SiStripe, SiSwagger,
+  SiCss,
 } from "react-icons/si";
 import { Database, Cloud, Wrench, Server, Layers, Beaker } from "lucide-react";
 
-type Skill = { name: string; icon: React.ComponentType<{ className?: string }>; color: string };
-type Category = { key: string; label: string; icon: React.ComponentType<{ className?: string }>; skills: Skill[] };
+type IconCmp = React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
+type Skill = { name: string; icon: IconCmp; color: string };
+type Category = { key: string; label: string; icon: IconCmp; skills: Skill[] };
 
 const categories: Category[] = [
   {
