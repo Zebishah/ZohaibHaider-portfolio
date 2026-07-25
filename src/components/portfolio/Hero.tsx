@@ -56,11 +56,55 @@ export function Hero() {
 
   const name = useTypewriter(NAME);
 
+  const hyperOpts = useMemo(
+    () => ({
+      distortion: "turbulentDistortion",
+      length: 400,
+      roadWidth: 10,
+      islandWidth: 2,
+      lanesPerRoad: 3,
+      fov: 90,
+      fovSpeedUp: 150,
+      speedUp: 2,
+      carLightsFade: 0.4,
+      totalSideLightSticks: 20,
+      lightPairsPerRoadWay: 40,
+      colors: {
+        roadColor: 0x080808,
+        islandColor: 0x0a0a0a,
+        background: 0x000000,
+        shoulderLines: 0x131318,
+        brokenLines: 0x131318,
+        leftCars: [0x14b8a6, 0x22d3ee, 0x0ea5b3],
+        rightCars: [0xf97316, 0xfb923c, 0xea580c],
+        sticks: 0x14b8a6,
+      },
+    }),
+    [],
+  );
+
   return (
     <section id="home" className="relative min-h-screen flex items-center overflow-hidden pt-24 pb-16">
+      {/* Hyperspeed background */}
+      <div className="absolute inset-0 z-0">
+        <ClientOnly fallback={<div className="w-full h-full bg-background" />}>
+          <Suspense fallback={<div className="w-full h-full bg-background" />}>
+            <Hyperspeed effectOptions={hyperOpts} />
+          </Suspense>
+        </ClientOnly>
+        {/* Fade to background at bottom */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              "linear-gradient(180deg, transparent 40%, color-mix(in oklab, var(--background) 85%, transparent) 100%)",
+          }}
+        />
+      </div>
 
       {/* Silky animated mesh background */}
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute inset-0 pointer-events-none z-[1] mix-blend-screen opacity-40">
+
         <div
           className="absolute inset-0 animate-mesh-shift opacity-80"
           style={{
