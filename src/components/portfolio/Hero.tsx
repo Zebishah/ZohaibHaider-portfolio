@@ -229,20 +229,6 @@ export function Hero() {
             </ClientOnly>
           </div>
 
-
-                {/* barcode */}
-                <div className="mt-3 flex gap-[2px] h-6 items-end">
-                  {Array.from({ length: 34 }).map((_, k) => (
-                    <span
-                      key={k}
-                      className="bg-foreground/80"
-                      style={{ width: 2, height: `${40 + ((k * 37) % 60)}%` }}
-                    />
-                  ))}
-                </div>
-              </motion.div>
-            </div>
-          </motion.div>
         </div>
 
         <motion.a
