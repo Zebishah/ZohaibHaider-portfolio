@@ -4,10 +4,11 @@ import { motion } from "framer-motion";
 import { Github, Linkedin, Mail, MapPin, Phone, Send, Loader2, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 import { Reveal } from "./Reveal";
+import { socials } from "@/lib/socials";
 
-const SERVICE_ID = "service_lw06l94";
-const TEMPLATE_ID = "template_qninfd6";
-const PUBLIC_KEY = "GHuUOannSCtgb1a8n";
+const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID ?? "service_sadasdasd";
+const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID ?? "template_sadasdasdasd";
+const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY ?? "asdasdasd";
 
 export function Contact() {
   const [form, setForm] = useState({ from_name: "", from_email: "", message: "" });
@@ -125,11 +126,11 @@ export function Contact() {
           <Reveal delay={0.1}>
             <div className="space-y-3 h-full">
               {[
-                { icon: Mail, label: "Email", value: "zebihaider123@gmail.com", href: "mailto:zebihaider123@gmail.com" },
-                { icon: Phone, label: "Phone", value: "+92 310 5904269", href: "tel:+923105904269" },
+                { icon: Mail, label: "Email", value: socials.email, href: socials.emailHref },
+                { icon: Phone, label: "Phone", value: socials.phone, href: socials.phoneHref },
                 { icon: MapPin, label: "Location", value: "Wah Cantt, Pakistan" },
-                { icon: Github, label: "GitHub", value: "github.com/Zebishah", href: "https://github.com/Zebishah" },
-                { icon: Linkedin, label: "LinkedIn", value: "Connect on LinkedIn", href: "#" },
+                { icon: Github, label: "GitHub", value: "github.com/Zebishah", href: socials.github },
+                { icon: Linkedin, label: "LinkedIn", value: "Connect on LinkedIn", href: socials.linkedin },
               ].map((c) => {
                 const Row = (
                   <div className="glass rounded-xl p-4 flex items-center gap-3 hover:border-primary/50 transition group">

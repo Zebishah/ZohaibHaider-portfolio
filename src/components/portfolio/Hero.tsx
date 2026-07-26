@@ -1,63 +1,24 @@
 import { motion } from "framer-motion";
-import { lazy, Suspense, useEffect, useState } from "react";
-import { ArrowDown, Download, Github, Linkedin, Mail, Sparkles } from "lucide-react";
+import { lazy, Suspense } from "react";
+import { ArrowDown, Download, Github, Linkedin, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ClientOnly } from "@tanstack/react-router";
-import portrait from "@/assets/zohaib-haider-brand.png";
+import portrait from "@/assets/zohaib-haider-clean.png";
+import { socials } from "@/lib/socials";
 
 const CodeTerminalBg = lazy(() => import("./CodeTerminalBg"));
 
-const roles = [
-  "Full Stack MERN Developer",
-  "Backend & API Engineer",
-  "Cloud & DevOps Enthusiast",
-  "AI/LLM Integration Developer",
+const proofChips = [
+  "Stripe payments",
+  "AI / LLM APIs",
+  "NestJS · React · AWS",
+  "6 SaaS shipped",
 ];
 
-const NAME = "Zohaib Haider";
-
-/* Smoother typewriter — steady rhythm, longer hold */
-function useTypewriter(text: string) {
-  const [display, setDisplay] = useState("");
-  const [phase, setPhase] = useState<"typing" | "hold" | "deleting" | "restart">("typing");
-
-  useEffect(() => {
-    let t: ReturnType<typeof setTimeout>;
-    if (phase === "typing") {
-      if (display.length < text.length) {
-        t = setTimeout(() => setDisplay(text.slice(0, display.length + 1)), 110);
-      } else {
-        t = setTimeout(() => setPhase("hold"), 2600);
-      }
-    } else if (phase === "hold") {
-      t = setTimeout(() => setPhase("deleting"), 600);
-    } else if (phase === "deleting") {
-      if (display.length > 0) {
-        t = setTimeout(() => setDisplay(text.slice(0, display.length - 1)), 70);
-      } else {
-        t = setTimeout(() => setPhase("restart"), 500);
-      }
-    } else {
-      t = setTimeout(() => setPhase("typing"), 300);
-    }
-    return () => clearTimeout(t);
-  }, [display, phase, text]);
-
-  return display;
-}
-
 export function Hero() {
-  const [i, setI] = useState(0);
-  useEffect(() => {
-    const t = setInterval(() => setI((n) => (n + 1) % roles.length), 2800);
-    return () => clearInterval(t);
-  }, []);
-
-  const name = useTypewriter(NAME);
-
   return (
     <section id="home" className="relative min-h-screen flex items-center overflow-hidden pt-24 pb-16">
-      {/* Code Terminal background — animated developer aesthetic */}
+      {/* Code Terminal background — kept as-is */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <ClientOnly fallback={<div className="absolute inset-0 bg-background" />}>
           <Suspense fallback={<div className="absolute inset-0 bg-background" />}>
@@ -101,53 +62,56 @@ export function Hero() {
               <span className="block text-muted-foreground text-lg md:text-xl font-medium mb-2">
                 Hi there, I'm
               </span>
-              <span className="relative inline-block">
-                <span
-                  className="gradient-text animate-gradient-x"
-                  style={{
-                    backgroundImage:
-                      "linear-gradient(90deg, #14b8a6, #22d3ee, #f97316, #14b8a6)",
-                  }}
-                >
-                  {name || "\u00A0"}
-                </span>
-                <span className="inline-block w-[3px] md:w-[4px] h-[0.9em] align-middle ml-1 bg-primary animate-caret rounded-sm" />
+              <span
+                className="gradient-text"
+                style={{
+                  backgroundImage: "linear-gradient(90deg, #14b8a6, #22d3ee, #f97316)",
+                }}
+              >
+                Zohaib Haider
               </span>
             </motion.h1>
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              className="mt-5 h-9 md:h-10 text-lg md:text-2xl font-medium text-muted-foreground flex items-center gap-2"
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.35 }}
+              className="mt-4 text-lg md:text-xl font-semibold text-foreground/90"
             >
-              <Sparkles className="w-5 h-5 text-primary" />
-              <motion.span
-                key={i}
-                initial={{ y: 14, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -14, opacity: 0 }}
-                transition={{ duration: 0.4 }}
-                className="gradient-text font-semibold"
-              >
-                {roles[i]}
-              </motion.span>
-            </motion.div>
+              Full-Stack Developer · MERN & NestJS
+            </motion.p>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="mt-6 text-base md:text-lg text-muted-foreground max-w-xl leading-relaxed"
+              transition={{ delay: 0.45 }}
+              className="mt-4 text-base md:text-lg text-muted-foreground max-w-xl leading-relaxed"
             >
-              I build fast, scalable, production-grade SaaS platforms — from database schema
-              to deployed infrastructure.
+              I build and ship production SaaS end to end — Stripe payment systems, NestJS APIs,
+              multi-tenant dashboards, third-party integrations, and AI/LLM features wired into real
+              product workflows on React, Node, and AWS.
             </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.55 }}
+              className="mt-5 flex flex-wrap gap-2"
+            >
+              {proofChips.map((chip) => (
+                <span
+                  key={chip}
+                  className="text-[11px] md:text-xs px-2.5 py-1 rounded-full border border-border/70 bg-card/60 text-muted-foreground"
+                >
+                  {chip}
+                </span>
+              ))}
+            </motion.div>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.75 }}
+              transition={{ delay: 0.65 }}
               className="mt-8 flex flex-wrap gap-3"
             >
               <Button
@@ -163,7 +127,7 @@ export function Hero() {
                 variant="outline"
                 className="glow-border transition-all duration-500 hover:-translate-y-0.5 hover:scale-[1.03]"
               >
-                <a href="/resume.pdf" download>
+                <a href={socials.resume} download>
                   <Download className="w-4 h-4 mr-2" /> Download Resume
                 </a>
               </Button>
@@ -172,13 +136,13 @@ export function Hero() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 1 }}
+              transition={{ delay: 0.85 }}
               className="mt-8 flex items-center gap-3"
             >
               {[
-                { icon: Github, href: "https://github.com/Zebishah", label: "GitHub" },
-                { icon: Linkedin, href: "#", label: "LinkedIn" },
-                { icon: Mail, href: "mailto:zebihaider123@gmail.com", label: "Email" },
+                { icon: Github, href: socials.github, label: "GitHub" },
+                { icon: Linkedin, href: socials.linkedin, label: "LinkedIn" },
+                { icon: Mail, href: socials.emailHref, label: "Email" },
               ].map(({ icon: Icon, href, label }) => (
                 <motion.a
                   key={label}
@@ -200,19 +164,19 @@ export function Hero() {
             </motion.div>
           </div>
 
-          {/* Circular portrait — compact, brand-matched */}
+          {/* Circular portrait */}
           <motion.div
             initial={{ opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.25 }}
-            className="relative mx-auto flex w-full max-w-[260px] sm:max-w-[300px] md:max-w-[340px] aspect-square items-center justify-center"
+            className="relative mx-auto flex w-full max-w-[280px] sm:max-w-[320px] md:max-w-[360px] aspect-square items-center justify-center"
           >
             <div
               aria-hidden
-              className="absolute inset-[-8%] rounded-full blur-2xl opacity-55"
+              className="absolute inset-[-8%] rounded-full blur-2xl opacity-45"
               style={{
                 background:
-                  "radial-gradient(circle at 35% 40%, color-mix(in oklab, var(--brand-from) 40%, transparent), transparent 60%), radial-gradient(circle at 70% 60%, color-mix(in oklab, var(--brand-to) 35%, transparent), transparent 60%)",
+                  "radial-gradient(circle at 35% 40%, color-mix(in oklab, var(--brand-from) 35%, transparent), transparent 60%), radial-gradient(circle at 70% 60%, color-mix(in oklab, var(--brand-to) 28%, transparent), transparent 60%)",
               }}
             />
             <div
@@ -220,25 +184,21 @@ export function Hero() {
               className="absolute inset-0 rounded-full p-[2px]"
               style={{
                 background:
-                  "linear-gradient(135deg, var(--brand-from), color-mix(in oklab, var(--brand-from) 20%, transparent) 45%, var(--brand-to))",
+                  "linear-gradient(135deg, var(--brand-from), color-mix(in oklab, var(--brand-from) 15%, transparent) 45%, var(--brand-to))",
               }}
             >
               <div className="h-full w-full rounded-full bg-background" />
             </div>
-            <motion.div
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
-              className="relative z-10 h-[93%] w-[93%] overflow-hidden rounded-full border border-white/10 bg-background shadow-[0_20px_50px_-24px_rgba(0,0,0,0.85)]"
-            >
+            <div className="relative z-10 h-[93%] w-[93%] overflow-hidden rounded-full border border-white/10 bg-background shadow-[0_20px_50px_-24px_rgba(0,0,0,0.85)]">
               <img
                 src={portrait}
                 alt="Zohaib Haider"
                 width={1024}
                 height={1024}
-                className="h-full w-full object-cover object-[center_20%]"
+                className="h-full w-full object-cover object-[center_15%]"
                 decoding="async"
               />
-            </motion.div>
+            </div>
           </motion.div>
         </div>
 
@@ -246,7 +206,7 @@ export function Hero() {
           href="#about"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.4 }}
+          transition={{ delay: 1.2 }}
           className="hidden md:flex absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center gap-1 text-xs text-muted-foreground"
         >
           <span>Scroll</span>

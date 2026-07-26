@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Moon, Sun, Github, Linkedin, Download, Menu, X } from "lucide-react";
 import { useTheme } from "@/lib/theme";
 import { Button } from "@/components/ui/button";
+import { socials } from "@/lib/socials";
 
 const links = [
   { label: "Home", href: "#home" },
@@ -60,10 +61,10 @@ export function Navbar() {
           </nav>
 
           <div className="flex items-center gap-1 md:gap-2">
-            <a href="https://github.com/Zebishah" target="_blank" rel="noreferrer" className="p-2 rounded-md hover:bg-accent text-muted-foreground hover:text-foreground transition hidden sm:inline-flex" aria-label="GitHub">
+            <a href={socials.github} target="_blank" rel="noreferrer" className="p-2 rounded-md hover:bg-accent text-muted-foreground hover:text-foreground transition hidden sm:inline-flex" aria-label="GitHub">
               <Github className="w-4 h-4" />
             </a>
-            <a href="#" target="_blank" rel="noreferrer" className="p-2 rounded-md hover:bg-accent text-muted-foreground hover:text-foreground transition hidden sm:inline-flex" aria-label="LinkedIn">
+            <a href={socials.linkedin} target="_blank" rel="noreferrer" className="p-2 rounded-md hover:bg-accent text-muted-foreground hover:text-foreground transition hidden sm:inline-flex" aria-label="LinkedIn">
               <Linkedin className="w-4 h-4" />
             </a>
             <button
@@ -82,7 +83,7 @@ export function Navbar() {
               </motion.span>
             </button>
             <Button asChild size="sm" className="gradient-bg text-white border-0 hidden md:inline-flex hover:opacity-90">
-              <a href="/resume.pdf" download>
+              <a href={socials.resume} download>
                 <Download className="w-4 h-4 mr-1" /> Resume
               </a>
             </Button>
@@ -113,7 +114,7 @@ export function Navbar() {
                   {l.label}
                 </a>
               ))}
-              <a href="/resume.pdf" download className="mt-2 px-3 py-2 text-sm gradient-bg text-white rounded-md text-center font-medium">
+              <a href={socials.resume} download className="mt-2 px-3 py-2 text-sm gradient-bg text-white rounded-md text-center font-medium">
                 Download Resume
               </a>
             </nav>

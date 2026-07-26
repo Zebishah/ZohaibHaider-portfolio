@@ -4,9 +4,9 @@ import { Reveal, SectionHeader } from "./Reveal";
 import {
   SiJavascript, SiTypescript, SiHtml5, SiReact, SiNextdotjs, SiRedux, SiReactquery, SiReactrouter,
   SiTailwindcss, SiMui, SiFramer, SiNodedotjs, SiExpress, SiNestjs, SiGraphql, SiJsonwebtokens,
-  SiMongodb, SiPostgresql, SiRedis, SiFirebase, SiSupabase, SiDrizzle,
-  SiDocker, SiGithubactions, SiNginx, SiJest, SiCypress, SiStripe, SiSwagger,
-  SiCss,
+  SiMongodb, SiPostgresql, SiRedis, SiFirebase, SiSupabase, SiDrizzle, SiMysql, SiMongoose,
+  SiDocker, SiGithubactions, SiNginx, SiJest, SiCypress, SiStripe, SiSwagger, SiVite, SiZod,
+  SiSocketdotio, SiApollographql, SiReacthookform, SiShadcnui, SiVitest, SiCss,
 } from "react-icons/si";
 import { Database, Cloud, Wrench, Server, Layers, Beaker } from "lucide-react";
 
@@ -24,10 +24,14 @@ const categories: Category[] = [
       { name: "TypeScript", icon: SiTypescript, color: "#3178c6" },
       { name: "React", icon: SiReact, color: "#61dafb" },
       { name: "Next.js", icon: SiNextdotjs, color: "#ffffff" },
+      { name: "Vite", icon: SiVite, color: "#646cff" },
       { name: "Redux Toolkit", icon: SiRedux, color: "#764abc" },
       { name: "TanStack Query", icon: SiReactquery, color: "#ff4154" },
+      { name: "Apollo Client", icon: SiApollographql, color: "#311c87" },
       { name: "React Router", icon: SiReactrouter, color: "#ca4245" },
+      { name: "React Hook Form", icon: SiReacthookform, color: "#ec5990" },
       { name: "Tailwind CSS", icon: SiTailwindcss, color: "#06b6d4" },
+      { name: "shadcn/ui", icon: SiShadcnui, color: "#ffffff" },
       { name: "Material UI", icon: SiMui, color: "#007fff" },
       { name: "Framer Motion", icon: SiFramer, color: "#ec4899" },
       { name: "HTML5", icon: SiHtml5, color: "#e34f26" },
@@ -43,10 +47,12 @@ const categories: Category[] = [
       { name: "Express.js", icon: SiExpress, color: "#ffffff" },
       { name: "NestJS", icon: SiNestjs, color: "#e0234e" },
       { name: "GraphQL", icon: SiGraphql, color: "#e10098" },
+      { name: "Apollo Server", icon: SiApollographql, color: "#311c87" },
       { name: "REST APIs", icon: Server, color: "#6366f1" },
-      { name: "WebSockets", icon: Server, color: "#22d3ee" },
+      { name: "Socket.io", icon: SiSocketdotio, color: "#ffffff" },
       { name: "JWT Auth", icon: SiJsonwebtokens, color: "#d946ef" },
       { name: "OAuth / RBAC", icon: SiJsonwebtokens, color: "#a855f7" },
+      { name: "Zod", icon: SiZod, color: "#3e67b1" },
     ],
   },
   {
@@ -55,11 +61,13 @@ const categories: Category[] = [
     icon: Database,
     skills: [
       { name: "MongoDB", icon: SiMongodb, color: "#47a248" },
+      { name: "Mongoose", icon: SiMongoose, color: "#880000" },
       { name: "PostgreSQL", icon: SiPostgresql, color: "#4169e1" },
+      { name: "MySQL", icon: SiMysql, color: "#4479a1" },
       { name: "Redis", icon: SiRedis, color: "#dc382d" },
-      { name: "Firebase", icon: SiFirebase, color: "#ffca28" },
       { name: "Supabase", icon: SiSupabase, color: "#3ecf8e" },
       { name: "Drizzle ORM", icon: SiDrizzle, color: "#c5f74f" },
+      { name: "Sequelize", icon: Database, color: "#52b0e7" },
     ],
   },
   {
@@ -72,7 +80,6 @@ const categories: Category[] = [
       { name: "GitHub Actions", icon: SiGithubactions, color: "#ffffff" },
       { name: "NGINX", icon: SiNginx, color: "#009639" },
       { name: "CI/CD Pipelines", icon: Cloud, color: "#06b6d4" },
-      { name: "Rate Limiting", icon: Cloud, color: "#8b5cf6" },
     ],
   },
   {
@@ -81,6 +88,7 @@ const categories: Category[] = [
     icon: Beaker,
     skills: [
       { name: "Jest", icon: SiJest, color: "#c21325" },
+      { name: "Vitest", icon: SiVitest, color: "#729b1b" },
       { name: "Cypress", icon: SiCypress, color: "#17202c" },
       { name: "Unit Testing", icon: Beaker, color: "#10b981" },
       { name: "E2E Testing", icon: Beaker, color: "#f59e0b" },
@@ -92,11 +100,13 @@ const categories: Category[] = [
     icon: Wrench,
     skills: [
       { name: "Stripe", icon: SiStripe, color: "#635bff" },
-      { name: "Zoho Books", icon: Wrench, color: "#e42527" },
-      { name: "Swagger/OpenAPI", icon: SiSwagger, color: "#85ea2d" },
+      { name: "AI / LLM APIs", icon: Wrench, color: "#a855f7" },
+      { name: "OpenAI / Gemini / Bedrock", icon: Wrench, color: "#10a37f" },
+      { name: "TradeTracker SOAP", icon: Wrench, color: "#f97316" },
       { name: "BullMQ", icon: Wrench, color: "#dc382d" },
-      { name: "AI/LLM Integrations", icon: Wrench, color: "#a855f7" },
+      { name: "Swagger/OpenAPI", icon: SiSwagger, color: "#85ea2d" },
       { name: "SMTP / Emails", icon: Wrench, color: "#0ea5e9" },
+      { name: "Microsoft Entra ID", icon: Wrench, color: "#00a4ef" },
     ],
   },
 ];
