@@ -7,8 +7,9 @@ import {
   SiMongodb, SiPostgresql, SiRedis, SiFirebase, SiSupabase, SiDrizzle, SiMysql, SiMongoose,
   SiDocker, SiGithubactions, SiNginx, SiJest, SiCypress, SiStripe, SiSwagger, SiVite, SiZod,
   SiSocketdotio, SiApollographql, SiReacthookform, SiShadcnui, SiVitest, SiCss,
+  SiPaypal, SiQuickbooks, SiGooglemaps, SiLeaflet, SiAntdesign, SiGsap, SiPassport,
 } from "react-icons/si";
-import { Database, Cloud, Wrench, Server, Layers, Beaker } from "lucide-react";
+import { Database, Cloud, Wrench, Server, Layers, Beaker, FileSpreadsheet } from "lucide-react";
 
 type IconCmp = React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
 type Skill = { name: string; icon: IconCmp; color: string };
@@ -33,7 +34,10 @@ const categories: Category[] = [
       { name: "Tailwind CSS", icon: SiTailwindcss, color: "#06b6d4" },
       { name: "shadcn/ui", icon: SiShadcnui, color: "#ffffff" },
       { name: "Material UI", icon: SiMui, color: "#007fff" },
+      { name: "Ant Design", icon: SiAntdesign, color: "#1677ff" },
       { name: "Framer Motion", icon: SiFramer, color: "#ec4899" },
+      { name: "GSAP", icon: SiGsap, color: "#88ce02" },
+      { name: "Leaflet / Maps", icon: SiLeaflet, color: "#199900" },
       { name: "HTML5", icon: SiHtml5, color: "#e34f26" },
       { name: "CSS3", icon: SiCss, color: "#1572b6" },
     ],
@@ -51,6 +55,7 @@ const categories: Category[] = [
       { name: "REST APIs", icon: Server, color: "#6366f1" },
       { name: "Socket.io", icon: SiSocketdotio, color: "#ffffff" },
       { name: "JWT Auth", icon: SiJsonwebtokens, color: "#d946ef" },
+      { name: "Passport OAuth", icon: SiPassport, color: "#34e27a" },
       { name: "OAuth / RBAC", icon: SiJsonwebtokens, color: "#a855f7" },
       { name: "Zod", icon: SiZod, color: "#3e67b1" },
     ],
@@ -65,6 +70,7 @@ const categories: Category[] = [
       { name: "PostgreSQL", icon: SiPostgresql, color: "#4169e1" },
       { name: "MySQL", icon: SiMysql, color: "#4479a1" },
       { name: "Redis", icon: SiRedis, color: "#dc382d" },
+      { name: "Firebase", icon: SiFirebase, color: "#ffca28" },
       { name: "Supabase", icon: SiSupabase, color: "#3ecf8e" },
       { name: "Drizzle ORM", icon: SiDrizzle, color: "#c5f74f" },
       { name: "Sequelize", icon: Database, color: "#52b0e7" },
@@ -100,13 +106,22 @@ const categories: Category[] = [
     icon: Wrench,
     skills: [
       { name: "Stripe", icon: SiStripe, color: "#635bff" },
+      { name: "PayPal", icon: SiPaypal, color: "#003087" },
+      { name: "Cryptomus", icon: Wrench, color: "#7c3aed" },
+      { name: "Zoho Books", icon: Wrench, color: "#e42527" },
+      { name: "QuickBooks", icon: SiQuickbooks, color: "#2ca01c" },
+      { name: "WEX SOAP", icon: Wrench, color: "#c8102e" },
+      { name: "GoPhish", icon: Wrench, color: "#f97316" },
+      { name: "H5P", icon: Wrench, color: "#1a73e8" },
+      { name: "Google Maps", icon: SiGooglemaps, color: "#4285f4" },
+      { name: "Microsoft Entra ID", icon: Wrench, color: "#00a4ef" },
+      { name: "Microsoft Graph", icon: Wrench, color: "#8b5cf6" },
       { name: "AI / LLM APIs", icon: Wrench, color: "#a855f7" },
       { name: "OpenAI / Gemini / Bedrock", icon: Wrench, color: "#10a37f" },
-      { name: "TradeTracker SOAP", icon: Wrench, color: "#f97316" },
       { name: "BullMQ", icon: Wrench, color: "#dc382d" },
       { name: "Swagger/OpenAPI", icon: SiSwagger, color: "#85ea2d" },
-      { name: "SMTP / Emails", icon: Wrench, color: "#0ea5e9" },
-      { name: "Microsoft Entra ID", icon: Wrench, color: "#00a4ef" },
+      { name: "PDF & Excel export", icon: FileSpreadsheet, color: "#217346" },
+      { name: "SMTP / Resend", icon: Wrench, color: "#0ea5e9" },
     ],
   },
 ];

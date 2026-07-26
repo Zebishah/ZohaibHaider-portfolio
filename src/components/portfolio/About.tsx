@@ -33,15 +33,16 @@ export function About() {
           <Reveal>
             <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
               I'm a full-stack developer with <span className="text-foreground font-medium">1.5+ years</span> of
-              hands-on experience building end-to-end web applications using the <span className="text-foreground font-medium">MERN stack</span>
-              {" "}(MongoDB, Express, React, Node.js) alongside PostgreSQL for relational data needs. I specialize in
-              writing clean, scalable, maintainable code and have real production experience deploying and managing
-              infrastructure on <span className="text-foreground font-medium">AWS (EC2, S3, Lambda)</span>.
+              hands-on experience shipping end-to-end SaaS on the{" "}
+              <span className="text-foreground font-medium">MERN stack</span> and{" "}
+              <span className="text-foreground font-medium">NestJS</span> — with MongoDB or PostgreSQL depending on
+              the product. I focus on clean, scalable code and have real production experience deploying on{" "}
+              <span className="text-foreground font-medium">AWS (EC2, S3, Lambda)</span>.
             </p>
             <p className="mt-4 text-base md:text-lg text-muted-foreground leading-relaxed">
-              I've shipped multi-tenant SaaS platforms, payment systems with complex billing lifecycles, real-time
-              features, and AI-integrated tools — collaborating closely with product, design, and QA teams to take
-              features from database design through to deployed UI.
+              I've shipped multi-tenant platforms, payment systems (Stripe, PayPal, Cryptomus), accounting syncs
+              (Zoho Books, QuickBooks), real-time features, and AI/LLM tools — working with product, design, and QA
+              from database design through to deployed UI.
             </p>
           </Reveal>
 

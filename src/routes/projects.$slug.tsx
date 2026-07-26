@@ -90,6 +90,24 @@ function ProjectDetail() {
               </a>
             )}
           </motion.div>
+          {project.demoLogins && project.demoLogins.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, delay: 0.25 }}
+              className="mt-5 rounded-xl border border-border/60 bg-muted/30 px-4 py-3 text-sm"
+            >
+              <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">Demo logins</p>
+              <ul className="space-y-1.5 font-mono text-[13px] text-foreground/90">
+                {project.demoLogins.map((l) => (
+                  <li key={l.email}>
+                    <span className="text-muted-foreground">{l.role}:</span> {l.email}{" "}
+                    <span className="text-muted-foreground">/</span> {l.password}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          )}
         </div>
       </section>
 

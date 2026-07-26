@@ -9,7 +9,7 @@ import { socials } from "@/lib/socials";
 const CodeTerminalBg = lazy(() => import("./CodeTerminalBg"));
 
 const proofChips = [
-  "Stripe payments",
+  "Stripe · PayPal · Zoho",
   "AI / LLM APIs",
   "NestJS · React · AWS",
   "6 SaaS shipped",
@@ -87,9 +87,10 @@ export function Hero() {
               transition={{ delay: 0.45 }}
               className="mt-4 text-base md:text-lg text-muted-foreground max-w-xl leading-relaxed"
             >
-              I build and ship production SaaS end to end — Stripe payment systems, NestJS APIs,
-              multi-tenant dashboards, third-party integrations, and AI/LLM features wired into real
-              product workflows on React, Node, and AWS.
+              I build and ship production SaaS end to end — payment systems (Stripe, PayPal,
+              Cryptomus), NestJS APIs, multi-tenant dashboards, accounting integrations (Zoho Books,
+              QuickBooks), and AI/LLM features wired into real product workflows on React, Node, and
+              AWS.
             </motion.p>
 
             <motion.div

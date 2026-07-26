@@ -28,11 +28,11 @@ export function Experience() {
                 </div>
                 <ul className="mt-5 space-y-3 text-sm md:text-[15px] text-muted-foreground">
                   {[
-                    "Delivered end-to-end features across 10+ modules using React, Next.js, Node.js, and Express, writing clean, scalable, maintainable code for 3+ user roles.",
-                    "Built REST and GraphQL APIs backed by MongoDB and PostgreSQL, supporting real-time chat, notifications, and alerts for 1K+ monthly users while cutting latency by 25%.",
-                    "Deployed and managed infrastructure on AWS (EC2, S3, Lambda), improving reliability and cutting deployment time via Docker and CI/CD pipelines.",
-                    "Collaborated with product, design, and QA to plan, build, and ship full-stack features from database design through UI implementation.",
-                    "Implemented secure auth via JWT, OAuth, and RBAC middleware, improving API response times by up to 30% through Redis caching and query optimization.",
+                    "Delivered end-to-end features across 10+ modules using React, Next.js, NestJS, Node.js, and Express — clean, scalable code for 3+ user roles across multi-tenant SaaS.",
+                    "Built REST and GraphQL APIs on MongoDB and PostgreSQL with real-time chat, notifications, and alerts for 1K+ monthly users, cutting latency by ~25%.",
+                    "Shipped payment and accounting integrations (Stripe, PayPal, Cryptomus, Zoho Books, QuickBooks) and third-party APIs (WEX, GoPhish) into production product workflows.",
+                    "Deployed and managed infrastructure on AWS (EC2, S3, Lambda), improving reliability and cutting deploy time with Docker and CI/CD.",
+                    "Implemented JWT, OAuth, and RBAC auth, and improved API response times by up to ~30% with Redis caching and query optimization.",
                   ].map((line, i) => (
                     <li key={i} className="flex gap-3">
                       <span className="mt-2 shrink-0 w-1.5 h-1.5 rounded-full gradient-bg" />

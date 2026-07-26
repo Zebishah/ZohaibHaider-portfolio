@@ -1,6 +1,6 @@
 import dspCover from "@/assets/projects/dsp-cover.png";
 import pdeCover from "@/assets/projects/pde-cover.png";
-import vakantigoCover from "@/assets/projects/vakantigo-cover.png";
+import daizerCover from "@/assets/projects/daizer-cover.png";
 import lmsCover from "@/assets/projects/lms-cover.png";
 import cardlockCover from "@/assets/projects/cardlock-cover.png";
 import taskflowCover from "@/assets/projects/taskflow-cover.png";
@@ -19,6 +19,8 @@ export type Project = {
   impact: string;
   github?: string;
   demo?: string;
+  /** Optional demo login hints shown on the case-study page */
+  demoLogins?: { role: string; email: string; password: string }[];
   accent: [string, string];
   cover: string;
 };
@@ -128,27 +130,27 @@ export const projects: Project[] = [
     cover: pdeCover,
   },
   {
-    slug: "vakantigo",
-    title: "VakantiGo Adventures — Affiliate Travel Marketplace",
+    slug: "daizer",
+    title: "Daizer — Wallet & Catalog Commerce Platform",
     tagline:
-      "A Dutch family-focused travel marketplace with quiz-based recommendations and live affiliate feed integration.",
+      "B2B wallet top-ups, product catalog, and Zoho Books sync — with PayPal-powered funding and reseller workflows.",
     overview:
-      "VakantiGo is a Dutch family-focused affiliate travel and activities marketplace. Users browse curated vacation deals and family activities, optionally take a short quiz for personalized recommendations, and click through to partner offers via the TradeTracker affiliate network. Admins manage listings, quiz content, categories, tags, and analytics from a full CMS.",
-    role: "Full-stack developer — built the frontend UI/UX, backend API, admin CMS, affiliate feed sync, and led performance/image optimization work.",
-    tags: ["TradeTracker SOAP", "MongoDB", "AWS S3", "React 18", "TanStack Query", "Express", "Recharts", "Zod"],
+      "Daizer is a wallet-and-catalog commerce platform for resellers: users fund a USD wallet (PayPal), browse categories (mobile top-up, gaming credits, utilities), place orders, and track purchases. Admins manage users, pricing groups, products/orders, wallet operations, external API providers, and platform settings. The production system syncs contacts, wallets, invoices, and catalog items with Zoho Books; the public portfolio demo runs the same UI with simulated PayPal and Zoho so visitors can explore without real credentials.",
+    role: "Full-stack developer — built and shipped wallet funding flows, catalog/checkout, admin product & user management, PayPal integration paths, and Zoho Books sync work across the React client and Express/Drizzle API.",
+    tags: ["Zoho Books", "PayPal", "PostgreSQL", "Redis", "React 19", "Express", "Drizzle ORM", "AWS S3"],
     stack: [
-      "TradeTracker SOAP API",
-      "MongoDB (Atlas)",
-      "Mongoose",
+      "Zoho Books API",
+      "PayPal Checkout",
+      "PostgreSQL",
+      "Drizzle ORM",
+      "Redis",
       "AWS S3",
-      "React 18",
+      "React 19",
       "TypeScript",
       "Vite",
       "TanStack Query",
+      "Redux Toolkit",
       "Tailwind CSS",
-      "shadcn/ui (Radix)",
-      "Recharts",
-      "Embla Carousel",
       "React Hook Form",
       "Zod",
       "React Router",
@@ -156,23 +158,26 @@ export const projects: Project[] = [
       "Node.js",
       "Express",
       "JWT",
-      "Multer",
-      "Vitest",
+      "Swagger",
+      "Nodemailer",
     ],
     features: [
-      "Marketplace-style listing feed with search, multi-select filters, and sorting",
-      "Activity detail pages with photo galleries and affiliate click tracking",
-      "Multi-step personalization quiz with a tag-overlap matching engine for recommendations",
-      "Full admin CMS: listings CRUD, quiz management, tags/categories/FAQs, analytics dashboard",
-      "Live TradeTracker SOAP integration with scheduled affiliate feed sync (~6 hour intervals)",
-      "Major performance pass: WebP image conversion with LQIP, responsive srcSets, lazy loading, skeleton loaders, and React Query caching",
+      "User wallet with balance, top-up via PayPal, partial refunds, and filtered transaction history",
+      "Product catalog by category (carriers, gaming, utilities) with checkout against wallet balance",
+      "Admin: user management, pricing groups, orders & products CRUD, wallet ops, API provider config",
+      "Zoho Books integration for contacts, wallet ledger, invoices, and catalog items (simulated in public demo)",
+      "Role-based auth for reseller users and platform admins",
     ],
     impact:
-      "Shifted the product direction from quiz-dominant to browse-first marketplace to align with client conversion goals. Image optimization work eliminated blank/blurry loading states and fixed upscaled hero images on activity pages. Delivered a full admin CMS enabling non-technical content updates without code deploys.",
-    github: "https://github.com/Zebishah/vakantigo-dutch",
-    demo: "https://vakantigo-demo.onrender.com",
-    accent: ["#14b8a6", "#f97316"],
-    cover: vakantigoCover,
+      "Delivered a production-ready commerce stack where funding, catalog, and accounting stay in sync — wallet top-ups and catalog changes flow toward Zoho Books so finance ops are not manual. The public demo mirrors that UX so recruiters can click through wallets, PayPal top-up, and admin catalog without live payment credentials.",
+    github: "https://github.com/Zebishah/dazier-app",
+    demo: "https://daizer-web.onrender.com/login",
+    demoLogins: [
+      { role: "User", email: "user@demo.daizer.app", password: "DemoUser123!" },
+      { role: "Admin", email: "admin@demo.daizer.app", password: "DemoAdmin123!" },
+    ],
+    accent: ["#0f766e", "#14b8a6"],
+    cover: daizerCover,
   },
   {
     slug: "karim-lms",

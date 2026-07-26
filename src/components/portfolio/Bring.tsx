@@ -1,26 +1,26 @@
-import { Code2, Brain, Cloud, Zap } from "lucide-react";
+import { Code2, Brain, Cloud, CreditCard } from "lucide-react";
 import { Reveal, SectionHeader } from "./Reveal";
 
 const items = [
   {
     icon: Code2,
-    title: "Full-Stack MERN Delivery",
-    desc: "End-to-end web app delivery — React/Next.js, Node.js, TypeScript, PostgreSQL & MongoDB.",
+    title: "Full-Stack Delivery",
+    desc: "End-to-end SaaS on MERN and NestJS — React/Next.js, Node.js, TypeScript, PostgreSQL & MongoDB.",
+  },
+  {
+    icon: CreditCard,
+    title: "Payments & Integrations",
+    desc: "Production payment rails (Stripe, PayPal, Cryptomus) and accounting syncs (Zoho Books, QuickBooks), plus third-party APIs wired into real workflows.",
   },
   {
     icon: Brain,
     title: "AI & LLM Integration",
-    desc: "Production LLM workflows with OpenAI, Gemini, and AWS Bedrock (Claude) — RAG, agents, evaluation.",
+    desc: "Production LLM workflows with OpenAI, Gemini, and AWS Bedrock (Claude) — RAG, agents, and evaluation loops.",
   },
   {
     icon: Cloud,
-    title: "Cloud & Automation",
-    desc: "AWS Lambda, S3, Textract, and CDK to automate document pipelines and cut manual operations.",
-  },
-  {
-    icon: Zap,
-    title: "APIs & Performance",
-    desc: "Scalable REST/GraphQL APIs, WebSockets, Redis caching, batch processing, and query optimization.",
+    title: "Cloud, APIs & Performance",
+    desc: "AWS (EC2, S3, Lambda), REST/GraphQL, WebSockets, Redis caching, Docker/CI/CD, and query optimization for production traffic.",
   },
 ];
 
