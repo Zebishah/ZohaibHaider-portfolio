@@ -128,7 +128,7 @@ export function Hero() {
                 variant="outline"
                 className="glow-border transition-all duration-500 hover:-translate-y-0.5 hover:scale-[1.03]"
               >
-                <a href={socials.resume} download>
+                <a href={socials.resume} download={socials.resumeDownloadName}>
                   <Download className="w-4 h-4 mr-2" /> Download Resume
                 </a>
               </Button>

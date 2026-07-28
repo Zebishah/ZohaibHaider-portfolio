@@ -7,5 +7,7 @@ export const socials = {
   emailHref: "mailto:zebihaider123@gmail.com",
   phone: "+92 310 5904269",
   phoneHref: "tel:+923105904269",
+  /** Served from /public/resume.pdf */
   resume: "/resume.pdf",
+  resumeDownloadName: "Zohaib_Haider_Resume.pdf",
 } as const;

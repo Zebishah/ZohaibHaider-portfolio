@@ -83,7 +83,7 @@ export function Navbar() {
               </motion.span>
             </button>
             <Button asChild size="sm" className="gradient-bg text-white border-0 hidden md:inline-flex hover:opacity-90">
-              <a href={socials.resume} download>
+              <a href={socials.resume} download={socials.resumeDownloadName}>
                 <Download className="w-4 h-4 mr-1" /> Resume
               </a>
             </Button>
@@ -114,7 +114,7 @@ export function Navbar() {
                   {l.label}
                 </a>
               ))}
-              <a href={socials.resume} download className="mt-2 px-3 py-2 text-sm gradient-bg text-white rounded-md text-center font-medium">
+              <a href={socials.resume} download={socials.resumeDownloadName} className="mt-2 px-3 py-2 text-sm gradient-bg text-white rounded-md text-center font-medium">
                 Download Resume
               </a>
             </nav>
