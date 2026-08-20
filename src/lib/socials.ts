@@ -9,5 +9,5 @@ export const socials = {
   phoneHref: "tel:+923105904269",
   /** Served from /public/resume.pdf */
   resume: "/resume.pdf",
-  resumeDownloadName: "Zohaib_Haider_Resume.pdf",
+  resumeDownloadName: "Zohaib-Haider-Resume.pdf",
 } as const;

@@ -29,11 +29,21 @@ export const projects: Project[] = [
   {
     slug: "dsp",
     title: "DSP — Driving School Platform",
-    tagline: "Full-stack booking & payments marketplace connecting students, instructors, and admins.",
+    tagline:
+      "Full-stack booking & payments marketplace connecting students, instructors, and admins.",
     overview:
       "DSP connects students, driving instructors, and admins in one place. Students find instructors, book lessons, pay online, track progress, and leave reviews. Instructors manage availability, bookings, students, payouts, and ratings. Admins oversee users, documents, payments, refunds, and platform analytics. A booking + payments marketplace with Stripe-powered checkout, delayed (T-48) charges, refunds, instructor payouts, reminders, and timezone-aware scheduling.",
     role: "Full-stack developer — built frontend dashboards, GraphQL/API work, the entire Stripe payment lifecycle (checkout, T-48 delayed charge, refunds, payouts, webhooks), booking status logic, analytics, and UX consistency across Admin/Instructor/Student panels. Built solo, end to end.",
-    tags: ["Stripe", "GraphQL", "Socket.io", "MongoDB", "Apollo", "Passport OAuth", "React 18", "AWS SDK"],
+    tags: [
+      "Stripe",
+      "GraphQL",
+      "Socket.io",
+      "MongoDB",
+      "Apollo",
+      "Passport OAuth",
+      "React 18",
+      "AWS SDK",
+    ],
     stack: [
       "Stripe",
       "GraphQL",
@@ -85,11 +95,21 @@ export const projects: Project[] = [
   {
     slug: "pde",
     title: "PDE — Practice/Dental Equipment Management",
-    tagline: "Multi-tenant SaaS helping dental & medical clinics manage equipment, compliance, and billing.",
+    tagline:
+      "Multi-tenant SaaS helping dental & medical clinics manage equipment, compliance, and billing.",
     overview:
       "PDE helps practices organize facilities, rooms, and equipment, schedule and track maintenance tasks for compliance, manage subscriptions and billing, and upload documents for admin review. Clinics map their office hierarchy (building → room → machine), get maintenance checklists on each machine, stay on top of overdue work, pay for a plan (Basic/Pro), and keep licenses and paperwork in one place.",
     role: "Full-stack developer — designed and built the entire product end to end, solo: frontend UI, Express API, database schema, auth flows, Stripe billing, admin and clinic dashboards, and full technical + client-facing documentation.",
-    tags: ["Supabase", "PostgreSQL", "Stripe", "React 19", "TanStack Query", "Express", "GSAP", "VitePress"],
+    tags: [
+      "Supabase",
+      "PostgreSQL",
+      "Stripe",
+      "React 19",
+      "TanStack Query",
+      "Express",
+      "GSAP",
+      "VitePress",
+    ],
     stack: [
       "Supabase",
       "PostgreSQL",
@@ -137,7 +157,16 @@ export const projects: Project[] = [
     overview:
       "Daizer is a wallet-and-catalog commerce platform for resellers: users fund a USD wallet (PayPal), browse categories (mobile top-up, gaming credits, utilities), place orders, and track purchases. Admins manage users, pricing groups, products/orders, wallet operations, external API providers, and platform settings. The production system syncs contacts, wallets, invoices, and catalog items with Zoho Books; the public portfolio demo runs the same UI with simulated PayPal and Zoho so visitors can explore without real credentials.",
     role: "Full-stack developer — built and shipped wallet funding flows, catalog/checkout, admin product & user management, PayPal integration paths, and Zoho Books sync work across the React client and Express/Drizzle API.",
-    tags: ["Zoho Books", "PayPal", "PostgreSQL", "Redis", "React 19", "Express", "Drizzle ORM", "AWS S3"],
+    tags: [
+      "Zoho Books",
+      "PayPal",
+      "PostgreSQL",
+      "Redis",
+      "React 19",
+      "Express",
+      "Drizzle ORM",
+      "AWS S3",
+    ],
     stack: [
       "Zoho Books API",
       "PayPal Checkout",
@@ -182,11 +211,21 @@ export const projects: Project[] = [
   {
     slug: "karim-lms",
     title: "KARIM LMS — Security Awareness LMS",
-    tagline: "B2B security-awareness training with seat-based licensing and simulated phishing campaigns.",
+    tagline:
+      "B2B security-awareness training with seat-based licensing and simulated phishing campaigns.",
     overview:
       "KARIM LMS is a B2B security-awareness learning management system for MSPs and partners. Organizations onboard companies, assign seat-based training licenses, deliver interactive courses, run simulated phishing campaigns, handle billing/invoices, and track learner engagement — all through role-specific dashboards.",
     role: "Full-stack developer — shipped features across the React SPA and Node API, including RBAC dashboards, phishing campaign management, licensing/billing, and analytics.",
-    tags: ["GoPhish", "Microsoft Entra ID", "H5P", "Stripe", "MySQL", "Redis", "React 18", "AWS S3"],
+    tags: [
+      "GoPhish",
+      "Microsoft Entra ID",
+      "H5P",
+      "Stripe",
+      "MySQL",
+      "Redis",
+      "React 18",
+      "AWS S3",
+    ],
     stack: [
       "GoPhish",
       "Microsoft Entra ID / SSO",
@@ -240,11 +279,21 @@ export const projects: Project[] = [
   {
     slug: "cardlock",
     title: "CardLock — Fuel Card Management Platform",
-    tagline: "Enterprise fuel-card operations with live SOAP integrations & QuickBooks billing sync.",
+    tagline:
+      "Enterprise fuel-card operations with live SOAP integrations & QuickBooks billing sync.",
     overview:
       "CardLock is an enterprise WEX fuel-card operations platform. Admins and end users manage fuel cards in real time, run transaction/tax/status reports, set custom pricing and margins, schedule automated report delivery, and sync billing with QuickBooks — all through a web app backed by live WEX SOAP APIs. Built as part of a multi-developer team.",
     role: "Full-stack engineer on a multi-developer team, contributing to the admin/user portals, WEX card operations features, reporting suite, and QuickBooks integration work.",
-    tags: ["WEX SOAP", "QuickBooks", "PostgreSQL", "Drizzle ORM", "React 19", "AWS S3", "ExcelJS", "Swagger"],
+    tags: [
+      "WEX SOAP",
+      "QuickBooks",
+      "PostgreSQL",
+      "Drizzle ORM",
+      "React 19",
+      "AWS S3",
+      "ExcelJS",
+      "Swagger",
+    ],
     stack: [
       "WEX SOAP API",
       "QuickBooks (node-quickbooks / intuit-oauth)",
@@ -289,11 +338,21 @@ export const projects: Project[] = [
   {
     slug: "taskflow",
     title: "TaskFlow — Multi-Tenant Kanban Workspace",
-    tagline: "Trello/Linear-style team collaboration with workspaces, drag-and-drop boards, and job queues.",
+    tagline:
+      "Trello/Linear-style team collaboration with workspaces, drag-and-drop boards, and job queues.",
     overview:
       "TaskFlow is a multi-tenant workspace collaboration and Kanban task management app — a lighter Trello/Linear-style product. Teams create workspaces, invite members, organize projects with custom columns, and manage tasks on a drag-and-drop board with due dates, assignees, priorities, and automated email reminders.",
     role: "Full-stack engineer, solo — owned the architecture, API, UI, auth, background job queues, database schema, and full test suite end to end.",
-    tags: ["NestJS", "PostgreSQL", "Drizzle ORM", "Redis", "BullMQ", "React 19", "@dnd-kit", "Docker"],
+    tags: [
+      "NestJS",
+      "PostgreSQL",
+      "Drizzle ORM",
+      "Redis",
+      "BullMQ",
+      "React 19",
+      "@dnd-kit",
+      "Docker",
+    ],
     stack: [
       "NestJS 11",
       "PostgreSQL 17",
@@ -333,6 +392,7 @@ export const projects: Project[] = [
     impact:
       "Built a production-grade collaboration tool solo — including rotating refresh-token sessions, RBAC-guarded routes, non-blocking async email via job queues, and a real automated test suite spanning unit, integration, component, and E2E layers.",
     github: "https://github.com/Zebishah/taskflow-og",
+    demo: "https://taskflow-web-9ocr.onrender.com",
     accent: ["#a855f7", "#f472b6"],
     cover: taskflowCover,
   },
