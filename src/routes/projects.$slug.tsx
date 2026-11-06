@@ -1,208 +1,158 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, Github, ExternalLink, Sparkles, CheckCircle2, TrendingUp } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, Github } from "lucide-react";
 import { Navbar } from "@/components/portfolio/Navbar";
 import { Footer } from "@/components/portfolio/Footer";
+import { Contact } from "@/components/portfolio/Contact";
 import { Reveal } from "@/components/portfolio/Reveal";
 import { getProject, projects } from "@/lib/projects";
-import { Toaster } from "@/components/ui/sonner";
 
 export const Route = createFileRoute("/projects/$slug")({
-  loader: ({ params }): { project: NonNullable<ReturnType<typeof getProject>> } => {
+  loader: ({ params }) => {
     const project = getProject(params.slug);
     if (!project) throw notFound();
     return { project };
   },
-  head: ({ loaderData }) => {
-    if (!loaderData) {
-      return { meta: [{ title: "Project not found" }, { name: "robots", content: "noindex" }] };
-    }
-    const p = loaderData.project;
-    return {
-      meta: [
-        { title: `${p.title} — Zohaib Haider` },
-        { name: "description", content: p.tagline },
-        { property: "og:title", content: p.title },
-        { property: "og:description", content: p.tagline },
-        { property: "og:type", content: "article" },
-        { name: "twitter:card", content: "summary_large_image" },
-      ],
-      links: [{ rel: "canonical", href: `/projects/${p.slug}` }],
-    };
-  },
+  head: ({ loaderData }) => ({
+    meta: loaderData
+      ? [
+          { title: `${loaderData.project.title} — Engineering case study · Zohaib Haider` },
+          { name: "description", content: loaderData.project.overview },
+          { property: "og:title", content: `${loaderData.project.title} — Zohaib Haider` },
+          { property: "og:description", content: loaderData.project.tagline },
+          { property: "og:type", content: "article" },
+        ]
+      : [{ title: "Project not found" }, { name: "robots", content: "noindex" }],
+  }),
   component: ProjectDetail,
 });
 
 function ProjectDetail() {
   const { project } = Route.useLoaderData();
-  const idx = projects.findIndex((p) => p.slug === project.slug);
-  const next = projects[(idx + 1) % projects.length];
-
+  const next = projects[(projects.findIndex((p) => p.slug === project.slug) + 1) % projects.length];
   return (
-    <div className="relative min-h-screen">
+    <div id="top">
+      <a className="skip-link" href="#main-content">
+        Skip to content
+      </a>
       <Navbar />
-
-      {/* Hero */}
-      <section className="relative pt-32 pb-16 overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute inset-0 grid-bg opacity-40" />
-          <div className="absolute -top-32 -left-16 w-[480px] h-[480px] rounded-full blur-3xl opacity-40 animate-blob"
-            style={{ background: `radial-gradient(circle, ${project.accent[0]}, transparent 60%)` }} />
-          <div className="absolute -bottom-32 -right-16 w-[480px] h-[480px] rounded-full blur-3xl opacity-40 animate-blob"
-            style={{ background: `radial-gradient(circle, ${project.accent[1]}, transparent 60%)`, animationDelay: "3s" }} />
-        </div>
-        <div className="relative max-w-4xl mx-auto px-4">
-          <Link to="/" hash="projects" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition mb-8">
-            <ArrowLeft className="w-4 h-4" /> Back to portfolio
+      <main id="main-content">
+        <section className="case-hero section-wrap">
+          <Link to="/" hash="work" className="case-back">
+            <ArrowLeft size={15} /> Back to selected work
           </Link>
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-4xl md:text-6xl font-bold tracking-tight"
-          >
-            {project.title}
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="mt-4 text-lg md:text-xl text-muted-foreground max-w-3xl"
-          >
-            {project.tagline}
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="mt-6 flex flex-wrap gap-2"
-          >
-            {project.github && (
-              <a href={project.github} target="_blank" rel="noreferrer"
-                className="inline-flex items-center gap-2 glass rounded-lg px-4 py-2 text-sm hover:border-primary/50 transition">
-                <Github className="w-4 h-4" /> GitHub
+          <div className="case-title-row">
+            <div>
+              <p className="eyebrow">ENGINEERING CASE STUDY / {project.category}</p>
+              <h1>{project.title}</h1>
+              <p>{project.tagline}</p>
+            </div>
+            <div className="case-actions">
+              <a
+                href={project.demo}
+                className="button button-green"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Explore live demo <ArrowUpRight size={18} />
               </a>
-            )}
-            {project.demo && (
-              <a href={project.demo} target="_blank" rel="noreferrer"
-                className="inline-flex items-center gap-2 gradient-bg text-white rounded-lg px-4 py-2 text-sm shadow-lg shadow-primary/20">
-                <ExternalLink className="w-4 h-4" /> Live Demo
+              <a className="text-link" href={project.github} target="_blank" rel="noreferrer">
+                <Github size={15} /> Code · private
               </a>
-            )}
-          </motion.div>
-          {project.demoLogins && project.demoLogins.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, delay: 0.25 }}
-              className="mt-5 rounded-xl border border-border/60 bg-muted/30 px-4 py-3 text-sm"
-            >
-              <p className="text-xs uppercase tracking-widest text-muted-foreground mb-2">Demo logins</p>
-              <ul className="space-y-1.5 font-mono text-[13px] text-foreground/90">
-                {project.demoLogins.map((l) => (
-                  <li key={l.email}>
-                    <span className="text-muted-foreground">{l.role}:</span> {l.email}{" "}
-                    <span className="text-muted-foreground">/</span> {l.password}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          )}
-        </div>
-      </section>
-
-      {/* Cover */}
-      <section className="relative max-w-4xl mx-auto px-4">
-        <Reveal>
-          <div className="relative aspect-[16/9] rounded-2xl overflow-hidden glass border border-border/60">
+            </div>
+          </div>
+          <div className="case-preview" style={{ backgroundColor: project.accent[0] }}>
             <img
               src={project.cover}
-              alt={`${project.title} screenshot`}
-              className="absolute inset-0 h-full w-full object-cover object-top"
+              alt={`${project.title} public product walkthrough`}
+              width="1440"
+              height="1000"
+              fetchPriority="high"
             />
           </div>
-        </Reveal>
-      </section>
-
-      {/* Body */}
-      <section className="relative max-w-4xl mx-auto px-4 py-16 space-y-14">
-        <Reveal>
-          <div>
-            <h2 className="text-xs uppercase tracking-widest text-muted-foreground mb-3 flex items-center gap-2">
-              <Sparkles className="w-3.5 h-3.5" /> Overview
-            </h2>
-            <p className="text-base md:text-lg leading-relaxed text-foreground/90">{project.overview}</p>
-          </div>
-        </Reveal>
-
-        <Reveal>
-          <div>
-            <h2 className="text-xs uppercase tracking-widest text-muted-foreground mb-3">My Role</h2>
-            <p className="text-base md:text-lg leading-relaxed text-foreground/90">{project.role}</p>
-          </div>
-        </Reveal>
-
-        <Reveal>
-          <div>
-            <h2 className="text-xs uppercase tracking-widest text-muted-foreground mb-4">Tech Stack</h2>
-            <div className="flex flex-wrap gap-2">
-              {project.stack.map((t: string) => (
-                <span key={t} className="text-sm px-3 py-1 rounded-full glass hover:border-primary/50 transition">
-                  {t}
-                </span>
+        </section>
+        <section className="section-wrap case-overview" aria-label="Project overview">
+          <Reveal>
+            <p className="eyebrow">THE PRODUCT</p>
+            <h2 style={{ marginTop: 20 }}>What it does.</h2>
+            <p>{project.overview}</p>
+          </Reveal>
+          <Reveal className="case-role">
+            <h3>My work</h3>
+            <p>{project.role}</p>
+          </Reveal>
+        </section>
+        <section className="case-challenges">
+          <div className="section-wrap">
+            <div className="section-label">
+              <span>THE PROBLEM / THE DESIGN / THE ENGINEERING</span>
+              <span>BEHIND THE EXPERIENCE.</span>
+            </div>
+            <div className="case-three-columns">
+              {[
+                ["01", "The challenge", project.problem],
+                ["02", "The approach", project.solution],
+                ["03", "The important decision", project.engineering],
+              ].map(([number, title, text]) => (
+                <Reveal key={number}>
+                  <span className="eyebrow">{number} /</span>
+                  <h3>{title}</h3>
+                  <p>{text}</p>
+                </Reveal>
               ))}
             </div>
           </div>
-        </Reveal>
-
-        <Reveal>
-          <div>
-            <h2 className="text-xs uppercase tracking-widest text-muted-foreground mb-4">Key Features</h2>
-            <ul className="grid md:grid-cols-2 gap-3">
-              {project.features.map((f: string, i: number) => (
-                <li key={i} className="glass rounded-xl p-4 flex gap-3 hover:border-primary/40 transition">
-                  <CheckCircle2 className="w-5 h-5 shrink-0 text-primary mt-0.5" />
-                  <span className="text-sm leading-relaxed">{f}</span>
+        </section>
+        <section className="section-wrap">
+          <div className="case-features">
+            <Reveal>
+              <p className="eyebrow">IMPLEMENTED CAPABILITIES</p>
+              <h2 style={{ marginTop: 20 }}>
+                Built into
+                <br />
+                <span className="serif-word">the system.</span>
+              </h2>
+            </Reveal>
+            <ul>
+              {project.features.map((feature, i) => (
+                <li key={feature}>
+                  <span>0{i + 1}</span>
+                  {feature}
                 </li>
               ))}
             </ul>
           </div>
-        </Reveal>
-
-        <Reveal>
-          <div className="glass rounded-2xl p-6 md:p-8 relative overflow-hidden">
-            <div className="absolute -right-16 -top-16 w-64 h-64 rounded-full blur-3xl opacity-30"
-              style={{ background: `radial-gradient(circle, ${project.accent[0]}, transparent 60%)` }} />
-            <h2 className="relative text-xs uppercase tracking-widest text-muted-foreground mb-3 flex items-center gap-2">
-              <TrendingUp className="w-3.5 h-3.5" /> Impact
-            </h2>
-            <p className="relative text-base md:text-lg leading-relaxed text-foreground/90">{project.impact}</p>
+          <div className="case-stack">
+            <p className="eyebrow">THE STACK</p>
+            <h2 style={{ marginTop: 16 }}>Tools behind the build.</h2>
+            <div className="skill-chips">
+              {project.stack.map((tool) => (
+                <span key={tool}>{tool}</span>
+              ))}
+            </div>
           </div>
-        </Reveal>
-
-        {/* Next project */}
-        <Reveal>
-          <div className="pt-6 border-t border-border/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <Link to="/" hash="projects" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition">
-              <ArrowLeft className="w-4 h-4" /> All projects
-            </Link>
-            <Link
-              to="/projects/$slug"
-              params={{ slug: next.slug }}
-              className="group inline-flex items-center gap-3 glass rounded-xl px-4 py-3 hover:border-primary/50 transition"
-            >
-              <div className="text-right">
-                <div className="text-xs text-muted-foreground uppercase tracking-widest">Next Project</div>
-                <div className="text-sm font-medium group-hover:gradient-text transition">{next.title.split(" — ")[0]}</div>
-              </div>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition" />
+          <div className="case-note">
+            <strong>Project context. </strong>
+            {project.note}
+            <br />
+            <strong>Repository access. </strong>The GitHub repository is currently private. The
+            public product walkthrough is available through the live demo link.
+          </div>
+        </section>
+        <section className="case-next section-wrap">
+          <div>
+            <p>KEEP EXPLORING / NEXT BUILD</p>
+            <Link to="/projects/$slug" params={{ slug: next.slug }}>
+              <h2>{next.title}</h2>
+              <ArrowRight size={32} />
             </Link>
           </div>
-        </Reveal>
-      </section>
-
+          <Link to="/" hash="work" className="text-link">
+            All selected work <ArrowUpRight size={18} />
+          </Link>
+        </section>
+        <Contact />
+      </main>
       <Footer />
-      <Toaster position="bottom-right" theme="dark" />
     </div>
   );
 }

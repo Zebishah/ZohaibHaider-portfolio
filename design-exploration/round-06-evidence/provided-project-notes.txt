@@ -1,0 +1,158 @@
+Yes, nagumo. Based on our previous work and the OpsPilot repository inspection, here are the four projects and their stacks. **OpsPilot was checked against code; the other three reflect the implementation details you previously shared.**
+
+**1. DSP — Driving School Platform**
+
+A platform connecting driving students, instructors, and driving schools. It supports driving-school operations, booking/payment flows, authentication, and real-time communication.
+
+| Area | Technologies |
+|---|---|
+| Frontend | **React, TypeScript** |
+| API communication | **Apollo Client, GraphQL** |
+| Frontend state | **Redux Toolkit** |
+| Backend | **Node.js, Express, Apollo Server** |
+| Database | **MongoDB, Mongoose** |
+| Authentication | **JWT, OAuth** |
+| Real-time communication | **Socket.IO** |
+| Payments | **Stripe Connect** |
+
+Implemented work we discussed:
+
+- GraphQL APIs and frontend integration.
+- Student, instructor, and school-related workflows.
+- Booking and payment functionality.
+- Authentication and role-based access.
+- Real-time communication.
+- Stripe Connect integration for platform payments.
+
+**Skills demonstrated:** full-stack development, GraphQL schema/resolver development, MongoDB modeling, real-time applications, authentication, and marketplace payment integration.
+
+---
+
+**2. OpsPilot — AI Incident Investigation and Resolution Platform**
+
+A multi-tenant platform that investigates operational incidents using company documents, live business records, AI reasoning, and historical incident memory. Sensitive actions pass through human approval and deterministic execution checks.
+
+| Area | Technologies |
+|---|---|
+| Languages | **Python, TypeScript, JavaScript, SQL** |
+| Frontend | **React 19, Next.js, Tailwind CSS, shadcn/ui, Radix UI, Lucide** |
+| Forms and validation | **React Hook Form, Zod** |
+| Backend | **FastAPI, Uvicorn, Pydantic, HTTPX** |
+| Database | **PostgreSQL, Neon, SQLAlchemy, Psycopg, Alembic** |
+| Cache and rate limiting | **Redis** |
+| Document storage | **S3-compatible storage, Boto3** |
+| Document processing | **pypdf, LangChain Text Splitters** |
+| AI application framework | **LangChain, LangChain Groq** |
+| Investigation orchestration | **LangGraph, PostgreSQL checkpointing** |
+| LLM inference | **Groq, Qwen** |
+| Embeddings | **Mistral Embed** |
+| Vector search | **Qdrant** |
+| Reranking | **Voyage AI** |
+| Background processing | **Inngest** |
+| Automation | **n8n, Gmail, Discord** |
+| External AI integration | **MCP Python SDK, remote HTTP MCP** |
+| Authentication | **JWT, OAuth, PKCE, Argon2, RBAC** |
+| Transactional email | **Resend** |
+| Voice | **Groq Audio API, Whisper, Orpheus, browser MediaRecorder** |
+| Fine-tuning | **PyTorch, Transformers, PEFT, LoRA, QLoRA, bitsandbytes, Accelerate, Safetensors** |
+| Model release security | **Cryptography, Ed25519 signatures** |
+| Training and model hosting | **Kaggle workflow, Modal GPU deployment** |
+| Frontend build/hosting paths | **Vite, Vinext, Cloudflare Workers, Wrangler, Vercel/Render configuration** |
+| Testing and quality | **pytest, pytest-asyncio, Ruff, mypy, ESLint, TypeScript, Node test runner** |
+| Tooling and CI | **uv, pnpm, Docker, GitHub Actions** |
+
+Implemented work includes:
+
+- Document ingestion, semantic retrieval, reranking, and cited answers.
+- Incident classification, analysis, recommendations, and operational tool calling.
+- Duplicate-payment detection.
+- Human approval, rejection, workflow pause/resume, and execution verification.
+- Internal refund-ledger simulation.
+- Incident memory.
+- Background jobs, retries, recovery, transactional outbox, leases, and stale-worker protection.
+- MCP tools with tenant and permission checks.
+- Voice transcription and spoken briefs.
+- Fine-tuning, classifier serving, evaluation, and signed-release controls.
+
+**Skills demonstrated:** agentic AI applications, RAG, workflow orchestration, multi-tenancy, distributed-system reliability, voice AI, fine-tuning, model serving, security, and full-stack development.
+
+---
+
+**3. RTA Marketing — Automotive CRM and Vehicle Intelligence**
+
+An automotive CRM with a separate vehicle-data collection application. It gathers vehicle listings from dealership and marketplace websites and makes the results available through the backend and frontend.
+
+| Area | Technologies |
+|---|---|
+| CRM frontend | **React** |
+| Vehicle-data frontend | **Separate React application — `rta-scrapper`** |
+| Backend | **Node.js, Express** |
+| Database | **PostgreSQL, Neon** |
+| ORM | **Drizzle ORM** |
+| Cache | **Redis** |
+| Browser automation | **Puppeteer, Chromium** |
+| Job queue | **AWS SQS** |
+| Scraping workers | **AWS Lambda, Node.js 22** |
+| Infrastructure tooling | **AWS SAM** |
+| Backend hosting discussed | **Render** |
+| AWS deployment region | **ap-south-1** |
+
+Implemented sources we discussed:
+
+- **AutoTrader**
+- **AutoPlanet**
+- **Humberview Volkswagen**
+- **Yorkdale Volkswagen**
+
+CarGurus was discussed as incomplete.
+
+Implemented engineering work:
+
+- Vehicle-listing extraction and normalization.
+- Background scraping through **SQS → Lambda**.
+- Retry handling.
+- Idempotency and duplicate prevention.
+- Worker concurrency limits.
+- Redis integration.
+- Public scraping-results APIs.
+- Fixture mode for local development.
+- SAM build and deployment.
+
+**Skills demonstrated:** browser automation, web scraping, serverless workers, asynchronous processing, data pipelines, deduplication, API development, and deployment.
+
+---
+
+**4. HR Intelligence — Intercom AI Support Assistant**
+
+An AI assistant embedded in the **Intercom Inbox sidebar**. It helps support operators find relevant HR information and related cases while handling a conversation.
+
+| Area | Technologies |
+|---|---|
+| Backend | **Node.js, Express** |
+| AI provider | **Google Gemini** |
+| Support-platform integration | **Intercom APIs, webhooks, Inbox Canvas** |
+| Sidebar lifecycle | **Configure, initialize, submit handlers** |
+| Document source | **Box** |
+| Source data format | **Excel spreadsheets** |
+| Synchronization | **Scheduled/nightly Box-to-application sync** |
+| UI integration | **Intercom Canvas UI** |
+| Additional interfaces | **Landing/demo page, admin sign-in, Canvas Hub** |
+
+Implemented work we discussed:
+
+- Intercom conversation and webhook handling.
+- AI-assisted HR information retrieval and responses.
+- Customer/employee identity matching.
+- Related-case lookup.
+- CC-recipient handling.
+- Optional tags.
+- Nightly Excel-data synchronization from Box.
+- Webhook idempotency.
+- Revision-aware queue keys.
+- Preserving operator-confirmed fields.
+- Authentication for overview and evaluation interfaces.
+- Admin and demonstration interfaces.
+
+**Skills demonstrated:** LLM integration, embedded support tools, webhook processing, external-data synchronization, identity matching, operator-assisted workflows, and integration reliability.
+
+**For DSP, RTA, and HR Intelligence, these are the stacks I can substantiate from our shared history. Their exact UI libraries, test frameworks, hosting services, and additional dependencies need a repository check before calling the inventory complete.**

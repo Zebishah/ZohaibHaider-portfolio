@@ -1,13 +1,12 @@
-/** Central links — update LinkedIn if your profile slug differs */
 export const socials = {
   github: "https://github.com/Zebishah",
-  linkedin:
-    import.meta.env.VITE_LINKEDIN_URL ?? "https://www.linkedin.com/in/zohaib-haider",
+  linkedin: "https://www.linkedin.com/in/zohaib-haider-390530228",
   email: "zebihaider123@gmail.com",
   emailHref: "mailto:zebihaider123@gmail.com",
   phone: "+92 310 5904269",
   phoneHref: "tel:+923105904269",
-  /** Served from /public/resume.pdf */
+  whatsapp: "https://wa.me/923105904269",
   resume: "/resume.pdf",
-  resumeDownloadName: "Zohaib-Haider-Resume.pdf",
+  resumeDownloadName: "Zohaib_Haider_Resume.pdf",
+  portrait: "/images/zohaib-haider.png",
 } as const;

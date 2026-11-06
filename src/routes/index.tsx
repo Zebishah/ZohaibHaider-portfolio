@@ -8,21 +8,21 @@ import { Bring } from "@/components/portfolio/Bring";
 import { Experience } from "@/components/portfolio/Experience";
 import { Contact } from "@/components/portfolio/Contact";
 import { Footer } from "@/components/portfolio/Footer";
-import { Toaster } from "@/components/ui/sonner";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Zohaib Haider — Full-Stack Developer (MERN, NestJS, AI)" },
+      { title: "Zohaib Haider — Full-stack AI & Software Engineer" },
       {
         name: "description",
         content:
-          "Portfolio of Zohaib Haider — full-stack developer shipping production SaaS, Stripe payments, NestJS APIs, and AI/LLM integrations across React, Node.js, PostgreSQL, and AWS.",
+          "Zohaib Haider is a full-stack software and AI engineer building agentic AI, RAG systems, production platforms, payment integrations, and reliable automation with React, Node.js, Python, and FastAPI.",
       },
-      { property: "og:title", content: "Zohaib Haider — Full-Stack Developer" },
+      { property: "og:title", content: "Zohaib Haider — Full-stack AI & Software Engineer" },
       {
         property: "og:description",
-        content: "Production SaaS, Stripe payments, NestJS backends, and AI/LLM integrations. React · Node.js · PostgreSQL · AWS.",
+        content:
+          "Production SaaS, Stripe payments, NestJS backends, and AI/LLM integrations. React · Node.js · PostgreSQL · AWS.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -33,9 +33,12 @@ export const Route = createFileRoute("/")({
 
 function HomePage() {
   return (
-    <div className="relative min-h-screen">
+    <div id="top">
+      <a className="skip-link" href="#main-content">
+        Skip to content
+      </a>
       <Navbar />
-      <main>
+      <main id="main-content">
         <Hero />
         <About />
         <Skills />
@@ -45,7 +48,6 @@ function HomePage() {
         <Contact />
       </main>
       <Footer />
-      <Toaster position="bottom-right" theme="dark" />
     </div>
   );
 }

@@ -1,0 +1,13 @@
+{
+  "tool": "Built-in image_gen",
+  "source": "/home/nagumomiyabi/.codex/generated_images/01a1b063-c48d-7433-ad51-d48377478c66/exec-638cf624-bb45-43a7-8c49-32026723b64c.png",
+  "file": "10-original-eyes-charcoal.png",
+  "reference": "/home/nagumomiyabi/Downloads/WhatsApp Image 2026-11-06 at 8.30.36 PM.jpeg",
+  "prompt": "Use case: identity-preserve, clothing replacement.\nEDIT THIS ORIGINAL PHOTOGRAPH, not a new interpretation of the person.\nHighest priority: the user's real face and especially his EYES must remain the same as in this exact source. Keep the original head tilt, camera angle, gaze direction, natural eyelid opening, eye shapes, spacing, asymmetry, iris color, eye corners, under-eye contours and eyebrows UNCHANGED. Do not widen eyes, make them more symmetrical, change the gaze, sharpen the eye shape or impose a business-headshot expression. Keep nose, lips, relaxed mouth, cheeks, jaw, facial hair, cheek mark, skin texture and age unchanged. No facial beautification or face regeneration. Identity preservation is more important than any styling.\nMake only the following edits: replace the black kurta BELOW THE NECK with a luxurious well-fitted charcoal three-piece suit, open jacket over a matching buttoned waistcoat, white shirt, textured dark tie and a restrained ivory pocket square. Preserve the source's torso angle and head/neck proportions; keep a similar waist-up framing rather than inventing a new standing pose. Retain his natural voluminous swept black hairstyle from this photo, with only minimal cleanup of flyaways away from the eyes. Do not move the forelock or alter forehead/eyes to restyle hair.\nRemove the outdoor background and all Eid Mubarak text. Output a genuinely transparent-background portrait with clean natural edges, full hair in frame and visible waistcoat. Lighting should stay compatible with the real source face; match the suit to that lighting instead of relighting and remodeling the face. One photographic portrait, vertical aspect ratio, no text or logos. The result should look like the original photo of this exact man wearing a three-piece suit, not a generated lookalike.",
+  "note": "Edited directly from the original photograph, retaining its head angle and expression; generated editing does not guarantee pixel-identical facial preservation.",
+  "dimensions": [
+    1088,
+    1445
+  ],
+  "transparent_pixels": 600744
+}

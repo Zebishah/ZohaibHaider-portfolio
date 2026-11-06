@@ -1,0 +1,58 @@
+[
+  {
+    "name": "Forest / Sculpted Identity",
+    "file": "01-forest.png",
+    "source": "/home/nagumomiyabi/.codex/generated_images/01a1b063-c48d-7433-ad51-d48377478c66/exec-0b55c2fe-2759-48d6-9faa-d1040c0aa4b6.png",
+    "motion": {
+      "entrance": "Stepped portrait planes reveal in sequence while the name and role stay legible.",
+      "idle": "A very slow drift of the single matte backing form and a travelling accent along the header rule.",
+      "pointer": "Small differential depth between portrait, backing plane and headline.",
+      "scroll": "The portrait mask opens and the display type moves aside to reveal selected work."
+    }
+  },
+  {
+    "name": "Cobalt / Kinetic Architecture",
+    "file": "02-cobalt.png",
+    "source": "/home/nagumomiyabi/.codex/generated_images/01a1b063-c48d-7433-ad51-d48377478c66/exec-fc0547f2-a7a5-4b9f-b97e-46fc9c6feb72.png",
+    "motion": {
+      "entrance": "Large type reveals along a diagonal; the portrait and cobalt plane settle into place.",
+      "idle": "A slow, shallow rotation of the folded plane changes its shadow.",
+      "pointer": "The plane and portrait respond with restrained parallax.",
+      "scroll": "The diagonal plane becomes a transition into the work section."
+    }
+  },
+  {
+    "name": "Ember / Signature in Motion",
+    "file": "03-ember.png",
+    "source": "/home/nagumomiyabi/.codex/generated_images/01a1b063-c48d-7433-ad51-d48377478c66/exec-30915082-fd04-425e-a032-a8965e54999c.png",
+    "motion": {
+      "entrance": "Name lettering reveals across the photographic depth layers.",
+      "idle": "A subtle orange light field evolves while the single proof teaser drifts slightly.",
+      "pointer": "The portrait and proof teaser have different shallow depth responses.",
+      "scroll": "The proof teaser expands into the OpsPilot case study."
+    }
+  },
+  {
+    "name": "Pace / Personal Authority",
+    "file": "04-pace.png",
+    "source": "/home/nagumomiyabi/.codex/generated_images/01a1b063-c48d-7433-ad51-d48377478c66/exec-7038d803-9273-4f9a-9a03-c2e5572495c2.png",
+    "motion": {
+      "entrance": "The personal name reveals behind the portrait in two complementary movements.",
+      "idle": "A single cobalt sculptural mark rotates slowly with subtle lighting.",
+      "pointer": "Small shadow and depth changes give the portrait/name composition a tactile feel.",
+      "scroll": "The large name contracts into the navigation as selected work enters view."
+    }
+  },
+  {
+    "name": "Alloy / Intelligence Studio",
+    "file": "05-alloy.png",
+    "source": "/home/nagumomiyabi/.codex/generated_images/01a1b063-c48d-7433-ad51-d48377478c66/exec-94966c71-a673-4b71-8075-0527e970b3d8.png",
+    "motion": {
+      "entrance": "The monogram turns into its opening position while identity text appears first.",
+      "idle": "A slow sculptural rotation and restrained reflections give the scene continuous motion.",
+      "pointer": "A small viewing-angle change reveals the monogram's construction.",
+      "scroll": "The sculpture separates into planes that introduce the selected work."
+    }
+  }
+]
+

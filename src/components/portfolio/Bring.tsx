@@ -1,50 +1,103 @@
-import { Code2, Brain, Cloud, CreditCard } from "lucide-react";
-import { Reveal, SectionHeader } from "./Reveal";
-
-const items = [
-  {
-    icon: Code2,
-    title: "Full-Stack Delivery",
-    desc: "End-to-end SaaS on MERN and NestJS — React/Next.js, Node.js, TypeScript, PostgreSQL & MongoDB.",
-  },
-  {
-    icon: CreditCard,
-    title: "Payments & Integrations",
-    desc: "Production payment rails (Stripe, PayPal, Cryptomus) and accounting syncs (Zoho Books, QuickBooks), plus third-party APIs wired into real workflows.",
-  },
-  {
-    icon: Brain,
-    title: "AI & LLM Integration",
-    desc: "Production LLM workflows with OpenAI, Gemini, and AWS Bedrock (Claude) — RAG, agents, and evaluation loops.",
-  },
-  {
-    icon: Cloud,
-    title: "Cloud, APIs & Performance",
-    desc: "AWS (EC2, S3, Lambda), REST/GraphQL, WebSockets, Redis caching, Docker/CI/CD, and query optimization for production traffic.",
-  },
-];
-
+import { useState } from "react";
+import { ArrowRight, Check, Fingerprint } from "lucide-react";
+import { projects } from "@/lib/projects";
+import { Reveal } from "./Reveal";
 export function Bring() {
+  const [selected, setSelected] = useState(0);
+  const [step, setStep] = useState(0);
+  const project = projects[selected];
   return (
-    <section className="relative py-24">
-      <div className="max-w-6xl mx-auto px-4">
-        <SectionHeader
-          eyebrow="What I Bring"
-          title="What I bring to a |team|."
-          subtitle="Things I've already done on production teams — not services, capabilities I bring on day one."
-        />
-        <div className="grid sm:grid-cols-2 gap-5">
-          {items.map((it, i) => (
-            <Reveal key={it.title} delay={i * 0.08}>
-              <div className="relative glass rounded-2xl p-6 md:p-7 h-full group hover:-translate-y-1 transition overflow-hidden">
-                <div className="w-12 h-12 rounded-xl gradient-bg grid place-items-center text-white shadow-lg shadow-primary/30">
-                  <it.icon className="w-5 h-5" />
-                </div>
-                <h3 className="mt-4 font-display font-semibold text-lg">{it.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{it.desc}</p>
-                <div className="absolute -right-8 -bottom-8 w-40 h-40 rounded-full blur-3xl opacity-0 group-hover:opacity-40 transition"
-                  style={{ background: "radial-gradient(circle, var(--brand-from), transparent 60%)" }} />
-              </div>
+    <section className="system-section" id="systems" aria-labelledby="system-title">
+      <div className="section-wrap">
+        <div className="section-label">
+          <span>04 / UNDER THE HOOD</span>
+          <span>GOOD INTERFACES ARE ONLY THE BEGINNING.</span>
+        </div>
+        <Reveal className="system-heading">
+          <h2 id="system-title">
+            The work beneath
+            <br />
+            <span className="serif-word">the interface.</span>
+          </h2>
+          <p>
+            AI is useful when it connects to real systems.
+            <br />
+            Explore the decisions behind the experience.
+          </p>
+        </Reveal>
+        <div className="system-tabs" aria-label="Choose project architecture">
+          {projects.map((p, i) => (
+            <button
+              key={p.slug}
+              aria-pressed={i === selected}
+              onClick={() => {
+                setSelected(i);
+                setStep(0);
+              }}
+            >
+              <span>0{i + 1}</span>
+              {p.title}
+            </button>
+          ))}
+        </div>
+        <div className="system-explorer">
+          <div className="system-topline">
+            <span>
+              <Fingerprint size={15} /> {project.title} / WORKFLOW
+            </span>
+            <span>SELECT A STAGE TO EXPLORE</span>
+          </div>
+          <ol className="workflow">
+            {project.flow.map((node, i) => (
+              <li key={`${project.slug}-${node.title}`}>
+                <button aria-pressed={step === i} onClick={() => setStep(i)}>
+                  <span className="workflow-node-number">0{i + 1}</span>
+                  <strong>{node.title}</strong>
+                  <span className="workflow-node-icon">
+                    {i === project.flow.length - 1 ? <Check size={20} /> : <ArrowRight size={20} />}
+                  </span>
+                </button>
+                {i < 3 && (
+                  <span className="workflow-connector" aria-hidden="true">
+                    <i />
+                  </span>
+                )}
+              </li>
+            ))}
+          </ol>
+          <div className="workflow-explanation" aria-live="polite">
+            <span className="eyebrow">
+              0{step + 1} / {project.flow[step].title.toUpperCase()}
+            </span>
+            <p>{project.flow[step].detail}</p>
+          </div>
+          <div className="system-principle">
+            <span>THE ENGINEERING CHOICE</span>
+            <p>{project.engineering}</p>
+          </div>
+        </div>
+        <div className="principle-row">
+          {[
+            [
+              "01",
+              "Intelligence with boundaries",
+              "Scoped tools, validated outputs, and explicit human approval where actions need it.",
+            ],
+            [
+              "02",
+              "Reliability beyond happy paths",
+              "Idempotency, durable events, retries, and reconciliation for the failures that actually happen.",
+            ],
+            [
+              "03",
+              "Ownership across layers",
+              "From interface and API to data model, integration, tests, and deployment.",
+            ],
+          ].map(([n, title, text]) => (
+            <Reveal key={n}>
+              <span>{n} /</span>
+              <h3>{title}</h3>
+              <p>{text}</p>
             </Reveal>
           ))}
         </div>

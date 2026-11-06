@@ -1,65 +1,68 @@
-import { motion, useInView, useMotionValue, useTransform, animate } from "framer-motion";
-import { useEffect, useRef } from "react";
-import { Reveal, SectionHeader } from "./Reveal";
-
-function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true });
-  const v = useMotionValue(0);
-  const rounded = useTransform(v, (val) => Math.round(val).toString() + suffix);
-  useEffect(() => {
-    if (inView) animate(v, to, { duration: 1.6, ease: "easeOut" });
-  }, [inView, to, v]);
-  return <motion.span ref={ref}>{rounded}</motion.span>;
-}
-
-const stats = [
-  { value: 1.5, suffix: "+", label: "Years Experience", decimals: true },
-  { value: 10, suffix: "+", label: "Production Projects" },
-  { value: 6, suffix: "", label: "SaaS Platforms Built" },
-  { value: 25, suffix: "%+", label: "Latency Reduced" },
-];
-
+import { ArrowUpRight, MapPin } from "lucide-react";
+import { socials } from "@/lib/socials";
+import { Reveal } from "./Reveal";
 export function About() {
   return (
-    <section id="about" className="relative py-24">
-      <div className="max-w-6xl mx-auto px-4">
-        <SectionHeader
-          eyebrow="About"
-          title="Engineer who ships |production-grade| systems."
-          subtitle="Not just prototypes — full-lifecycle features from database design to deployed UI."
-        />
-        <div className="grid md:grid-cols-2 gap-10 items-center">
-          <Reveal>
-            <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
-              I'm a full-stack developer with <span className="text-foreground font-medium">1.5+ years</span> of
-              hands-on experience shipping end-to-end SaaS on the{" "}
-              <span className="text-foreground font-medium">MERN stack</span> and{" "}
-              <span className="text-foreground font-medium">NestJS</span> — with MongoDB or PostgreSQL depending on
-              the product. I focus on clean, scalable code and have real production experience deploying on{" "}
-              <span className="text-foreground font-medium">AWS (EC2, S3, Lambda)</span>.
-            </p>
-            <p className="mt-4 text-base md:text-lg text-muted-foreground leading-relaxed">
-              I've shipped multi-tenant platforms, payment systems (Stripe, PayPal, Cryptomus), accounting syncs
-              (Zoho Books, QuickBooks), real-time features, and AI/LLM tools — working with product, design, and QA
-              from database design through to deployed UI.
-            </p>
-          </Reveal>
-
-          <div className="grid grid-cols-2 gap-4">
-            {stats.map((s, idx) => (
-              <Reveal key={s.label} delay={idx * 0.08}>
-                <div className="relative glass rounded-2xl p-5 md:p-6 group hover:-translate-y-1 transition">
-                  <div className="text-3xl md:text-4xl font-display font-bold gradient-text">
-                    {s.decimals ? <>1.5{s.suffix}</> : <><Counter to={s.value} suffix={s.suffix} /></>}
-                  </div>
-                  <div className="mt-1 text-sm text-muted-foreground">{s.label}</div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
+    <section className="about section-wrap" id="about" aria-labelledby="about-title">
+      <div className="section-label">
+        <span>01 / A LITTLE CONTEXT</span>
+        <span>THE PERSON BEHIND THE PRODUCTS ↙</span>
       </div>
+      <div className="about-grid">
+        <Reveal className="about-portrait">
+          <img
+            src={socials.portrait}
+            alt="Zohaib Haider"
+            width="1070"
+            height="1470"
+            loading="lazy"
+          />
+          <span>
+            <MapPin size={13} /> Islamabad, Pakistan
+          </span>
+        </Reveal>
+        <Reveal className="about-copy">
+          <p className="eyebrow">SOFTWARE ENGINEER. SYSTEMS THINKER. BUILDER.</p>
+          <h2 id="about-title">
+            I connect the
+            <br />
+            <span className="serif-word">whole</span> picture.
+          </h2>
+          <p className="lead">
+            I'm Zohaib. I build the interface, the intelligence, and everything that makes them work
+            together.
+          </p>
+          <p>
+            I'm a full-stack software engineer working across React, Node.js, Python, and applied
+            AI. Over two years at Jidat IT, I contributed to 12+ commercial applications across
+            SaaS, fintech, healthcare, marketplaces, and CRM.
+          </p>
+          <p>
+            My work now connects that full-stack foundation with agentic workflows, retrieval,
+            fine-tuning pipelines, voice, and automation. From the first screen to the database,
+            payment flow, and deployment, I care about how the complete system behaves.
+          </p>
+          <a className="text-link" href={socials.resume} target="_blank" rel="noreferrer">
+            A closer look at my experience <ArrowUpRight size={17} />
+          </a>
+        </Reveal>
+      </div>
+      <Reveal className="stats-grid">
+        {[
+          ["2+", "Years of hands-on engineering"],
+          ["16+", "Projects across my journey"],
+          ["4+", "Applications with payment integrations"],
+          ["04", "Selected systems to explore"],
+        ].map(([number, label]) => (
+          <div className="stat" key={label}>
+            <strong>
+              {number}
+              <span>↗</span>
+            </strong>
+            <p>{label}</p>
+          </div>
+        ))}
+      </Reveal>
     </section>
   );
 }

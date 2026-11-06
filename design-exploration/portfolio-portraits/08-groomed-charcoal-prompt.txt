@@ -1,0 +1,11 @@
+Tool: built-in image_gen
+Reference: 01-charcoal-cutout.png
+Transparent background: true
+
+Use case: identity-preserve.
+Asset type: polished professional portfolio hero portrait, transparent person cutout.
+Edit the supplied charcoal three-piece-suit portrait. Make a focused refinement to HAIRSTYLE and FACIAL EXPRESSION only.
+Hair: replace the longer sweeping fringe with an expertly groomed contemporary textured side-part quiff: neatly tapered shorter sides and back, natural low taper rather than a harsh skin fade, moderate controlled volume on top brushed up and back with a subtle side part. Expose the forehead and eyebrows, no floppy strands across face, no exaggerated pompadour. Keep natural dark-black hair color, believable hairline, individual hair texture and a matte lightly styled finish. It should visibly look like a fresh professional haircut rather than the original long sweep.
+Expression: composed self-assured professional presence, direct alert eye contact, head held naturally upright, mouth relaxed and closed with an almost neutral expression and only the faintest warmth. Relax the current smile slightly. Calm confidence, not anger, scowling or an artificial smirk. Brows natural, eyes bright and clearly visible. Very subtle tidy grooming of existing moustache and short beard; retain his actual facial hair pattern.
+STRICT INVARIANTS: keep this exact person's recognizable face, natural age, face shape, warm skin tone, brown eyes, eyebrows, cheek mole and realistic skin texture. Do not reshape jaw/nose, alter ethnicity or replace him with a generic model. Keep the charcoal jacket, buttoned matching waistcoat, trousers, shirt, tie, pocket square, body proportions, standing pose, hand in pocket, framing and soft photographic lighting unchanged. Retain complete head and suit in frame. No accessories or props added.
+Background: actual fully TRANSPARENT alpha, clean cutout edges with fine hair detail, no background gradient, glow, scenery, black rectangle or checkerboard art. No text or watermark. ONE vertical portrait, same composition and proportions as source.
