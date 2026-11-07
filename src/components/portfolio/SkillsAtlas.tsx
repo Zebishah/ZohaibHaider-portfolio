@@ -375,12 +375,12 @@ export function SkillsAtlas() {
       )
     : [];
   const domainProjects: Record<number, string[]> = {
-    3: ["trace-ops", "hr-intelligence"],
+    3: ["trace-ops", "case-lens"],
     4: ["trace-ops"],
     5: ["trace-ops"],
     6: ["trace-ops"],
-    8: ["trace-ops", "hr-intelligence", "rta-mark"],
-    10: ["dsp"],
+    8: ["trace-ops", "case-lens", "dealer-flow"],
+    10: ["drive-pilot"],
     11: ["trace-ops"],
   };
   const related = exactProjects.length

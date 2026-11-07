@@ -42,11 +42,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               <i />
               <i />
               <i />
-              <span>
-                {project.slug === "trace-ops"
-                  ? "Trace Ops · Product preview"
-                  : new URL(project.demo).hostname}
-              </span>
+              <span>{project.title} · Product preview</span>
               <ArrowUpRight size={12} />
             </div>
             <img
@@ -120,7 +116,7 @@ export function ProjectsGrid() {
         <div>
           <ArrowDownRight size={58} strokeWidth={1} />
           <p>
-            AI investigations. HR intelligence.
+            AI investigations. HR case intelligence.
             <br />
             Payments. Vehicle data.
             <br />

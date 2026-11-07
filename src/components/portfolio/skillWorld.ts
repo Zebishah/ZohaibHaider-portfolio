@@ -320,7 +320,8 @@ export const toolNotes: Record<string, { label: string; description: string }> =
   },
   "Stripe Connect": {
     label: "Marketplace payments",
-    description: "Connects marketplace checkout, connected accounts, and payment workflows in DSP.",
+    description:
+      "Connects marketplace checkout, connected accounts, and payment workflows in Drive Pilot.",
   },
   PostgreSQL: {
     label: "Relational application data",

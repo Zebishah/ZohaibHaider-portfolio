@@ -11,12 +11,12 @@ Material UI). Standalone type declaration packages and internal workspace
 imports are represented by TypeScript and their parent technologies. Lockfile
 transitive dependencies are not presented as independently selected tools.
 
-| Portfolio project | Repository snapshot                                                 | Direct dependency entries checked | Displayed tools and techniques |
-| ----------------- | ------------------------------------------------------------------- | --------------------------------: | -----------------------------: |
-| Trace Ops         | `Zebishah/TraceOps@97c40040f0ac9299766b3d5e831d726461c2b327`        |                                76 |                            131 |
-| HR Intelligence   | `Zebishah/Hr-intercom@cfe74e70b59c1da482e3bb80856fa72d22ae7fe1`     |                                49 |                             77 |
-| DSP Marketplace   | `Zebishah/dsp-marketplace@49266c96268e031350fbdfa030e2ad8a564c78bf` |                                96 |                            117 |
-| RTA Marketing     | `Zebishah/Rta-mark@67836d642f88996aa8ae3979ed9705db6f32714b`        |                                54 |                             80 |
+| Portfolio project | Repository snapshot                                            | Direct dependency entries checked | Displayed tools and techniques |
+| ----------------- | -------------------------------------------------------------- | --------------------------------: | -----------------------------: |
+| Trace Ops         | `Zebishah/TraceOps@97c40040f0ac9299766b3d5e831d726461c2b327`   |                                76 |                            131 |
+| Case Lens         | `Zebishah/CaseLens@cfe74e70b59c1da482e3bb80856fa72d22ae7fe1`   |                                49 |                             77 |
+| Drive Pilot       | `Zebishah/DrivePilot@49266c96268e031350fbdfa030e2ad8a564c78bf` |                                96 |                            117 |
+| Dealer Flow       | `Zebishah/DealerFlow@67836d642f88996aa8ae3979ed9705db6f32714b` |                                54 |                             80 |
 
 ## Trace Ops
 
@@ -35,7 +35,7 @@ transitive dependencies are not presented as independently selected tools.
 The training group describes a separate configured environment, not evidence of
 a production GPU/QLoRA run or model-quality result.
 
-## HR Intelligence
+## Case Lens
 
 - `Intercom-app/backend/package.json` and `frontend/package.json`: every direct
   application and development dependency, normalized by tool family.
@@ -46,7 +46,7 @@ a production GPU/QLoRA run or model-quality result.
 BullMQ and its optional Resend worker are shown as supported alternative paths.
 The documented current background-execution architecture uses Apify.
 
-## DSP Marketplace
+## Drive Pilot
 
 - `Frontend/package.json`: interface frameworks, state, GraphQL client, Stripe,
   maps, charts, documents, editors, carousels, utilities, and development tools.
@@ -57,7 +57,7 @@ The documented current background-execution architecture uses Apify.
   integrations, Elastic Email, Google/Facebook OAuth, Gemini-backed read-only
   assistance, scheduling, financial consistency, and verification.
 
-## RTA Marketing
+## Dealer Flow
 
 - `rta-marketing/package.json`, every `apps/*/package.json`, and every
   `packages/*/package.json`: all workspace application and development tools.

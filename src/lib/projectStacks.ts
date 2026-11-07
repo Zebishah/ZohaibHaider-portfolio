@@ -183,7 +183,7 @@ export const projectStacks: Record<string, ProjectStackGroup[]> = {
       ],
     },
   ],
-  "hr-intelligence": [
+  "case-lens": [
     {
       title: "AI agents & retrieval",
       items: ["Gemini API", "Semantic Search", "Read-only AI Tools"],
@@ -292,7 +292,7 @@ export const projectStacks: Record<string, ProjectStackGroup[]> = {
       reference: true,
     },
   ],
-  dsp: [
+  "drive-pilot": [
     {
       title: "Languages & interface",
       items: [
@@ -437,7 +437,7 @@ export const projectStacks: Record<string, ProjectStackGroup[]> = {
       ],
     },
   ],
-  "rta-mark": [
+  "dealer-flow": [
     {
       title: "Integrations & security",
       items: [

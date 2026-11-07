@@ -7,10 +7,18 @@ import { Reveal } from "@/components/portfolio/Reveal";
 import { getProject, projects } from "@/lib/projects";
 import { ProjectTechStack } from "@/components/portfolio/ProjectTechStack";
 
+const legacyProjectSlugs = new Map([
+  ["ops-pilot", "trace-ops"],
+  ["hr-intelligence", "case-lens"],
+  ["dsp", "drive-pilot"],
+  ["rta-mark", "dealer-flow"],
+]);
+
 export const Route = createFileRoute("/projects/$slug")({
   loader: ({ params }) => {
-    if (params.slug === "ops-pilot") {
-      throw redirect({ to: "/projects/$slug", params: { slug: "trace-ops" }, statusCode: 301 });
+    const canonicalSlug = legacyProjectSlugs.get(params.slug);
+    if (canonicalSlug) {
+      throw redirect({ to: "/projects/$slug", params: { slug: canonicalSlug }, statusCode: 301 });
     }
     const project = getProject(params.slug);
     if (!project) throw notFound();

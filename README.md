@@ -29,7 +29,7 @@ The existing TanStack Start / Vite / Lovable build integration is retained. The 
 
 ## Content and assets
 
-- `src/lib/projects.ts` — Trace Ops, HR Intelligence, DSP Marketplace, and RTA Marketing, including exact demo/repository URLs and case-study content.
+- `src/lib/projects.ts` — Trace Ops, Case Lens, Drive Pilot, and Dealer Flow, including exact demo/repository URLs and case-study content.
 - `src/lib/skills.ts` — the complete categorized skills inventory.
 - `src/lib/socials.ts` — all contact, portrait, and résumé destinations.
 - `public/images/zohaib-haider.png` — the exact supplied glasses portrait, without face or eye editing.

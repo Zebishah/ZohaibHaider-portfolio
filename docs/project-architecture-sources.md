@@ -14,9 +14,9 @@ Repository: `Zebishah/TraceOps`, snapshot `97c40040f0ac9299766b3d5e831d726461c2b
 
 The older `docs/architecture.md` describes LangGraph as a future phase; the implemented graph takes precedence. No separate reviewer/critic graph node is invented. Clarification, no-action, rejection, and approval paths are conditional. Public refund execution uses an internal simulated ledger, not a live payment-provider transfer. Automation acknowledgement is not evidence that downstream work completed. Voice is configuration dependent; training is isolated, with QLoRA dependent on supported CUDA hardware.
 
-## HR Intelligence
+## Case Lens
 
-Repository: `Zebishah/Hr-intercom`, snapshot `cfe74e70b59c1da482e3bb80856fa72d22ae7fe1`.
+Repository: `Zebishah/CaseLens`, snapshot `cfe74e70b59c1da482e3bb80856fa72d22ae7fe1`.
 
 - `docs/ARCHITECTURE.md` and `docs/RECRUITER_EVIDENCE.md`: current Actor topology, case evidence, human review, and supported alternatives.
 - `Intercom-app/backend/src/modules/ingestion/`: normalization, durable intake, Actor run state, error classification, and recovery.
@@ -24,9 +24,9 @@ Repository: `Zebishah/Hr-intercom`, snapshot `cfe74e70b59c1da482e3bb80856fa72d22
 
 Generic intake uses transactional ingestion/outbox; Intercom uses durable event/revision dispatch. They are grouped in the map without claiming identical mechanisms. Apify is the current processing path; BullMQ is a retained alternative. PostgreSQL owns durable case state; Redis holds ephemeral routing/directory/rate-limit data with database fallback. Human corrections survive routine subsequent analysis until explicit re-analysis. Read-only Ask CaseLens and fixture evaluation are supporting paths.
 
-## DSP Marketplace
+## Drive Pilot
 
-Repository: `Zebishah/dsp-marketplace`, snapshot `49266c96268e031350fbdfa030e2ad8a564c78bf`.
+Repository: `Zebishah/DrivePilot`, snapshot `49266c96268e031350fbdfa030e2ad8a564c78bf`.
 
 - `README.md`, `docs/ARCHITECTURE.md`, and client/server manifests: product surfaces and deployment stack.
 - `server/src/services/financialOperationService.js` and `financialReconciliationService.js`: operation records, idempotency, and reconciliation.
@@ -35,9 +35,9 @@ Repository: `Zebishah/dsp-marketplace`, snapshot `49266c96268e031350fbdfa030e2ad
 
 This is a booking and financial lifecycle map. Scheduled charging, cancellation, refund, and payout actions apply only when eligible; they are not mandatory steps for every booking. The assistant is a separate read-oriented product feature. No unsupported transaction-volume or business-impact metrics are displayed.
 
-## RTA Marketing
+## Dealer Flow
 
-Repository: `Zebishah/Rta-mark`, snapshot `67836d642f88996aa8ae3979ed9705db6f32714b`.
+Repository: `Zebishah/DealerFlow`, snapshot `67836d642f88996aa8ae3979ed9705db6f32714b`.
 
 - `rta-marketing/docs/architecture/current-production.md`: current React/Express/Neon/Upstash/Apify topology and ownership of inventory writes.
 - `rta-marketing/docs/architecture/ai-assistant.md`: authorized read tools, bounded contracts, deterministic answers, provider routing, and restrictions.

@@ -256,7 +256,7 @@ export const projectArchitectures: Record<string, ProjectArchitecture> = {
     context:
       "This map groups the implemented lifecycle. Clarification, no-action, approval, and rejection routes are conditional; an incident does not execute every stage. Training and voice depend on configuration.",
   },
-  "hr-intelligence": {
+  "case-lens": {
     headline: "Turn fragmented HR conversations into reviewable case intelligence.",
     description:
       "Signed intake, durable processing, employee identity, AI extraction, related history, and operator review share one PostgreSQL-backed case domain.",
@@ -491,7 +491,7 @@ export const projectArchitectures: Record<string, ProjectArchitecture> = {
     context:
       "The map groups the case lifecycle and its review/recovery paths. Apify is the current background-processing path; BullMQ is a supported alternative. Public walkthroughs use synthetic reviewer data.",
   },
-  dsp: {
+  "drive-pilot": {
     headline: "Connect a lesson booking to a dependable financial lifecycle.",
     description:
       "Student, instructor, and administrator experiences meet scheduling, payments, durable events, payouts, and reconciliation.",
@@ -725,7 +725,7 @@ export const projectArchitectures: Record<string, ProjectArchitecture> = {
     context:
       "These layers describe the marketplace lifecycle. Scheduled charges, refunds, rescheduling, and payouts are conditional paths; they are not operations every booking performs. No public transaction-volume claim is made.",
   },
-  "rta-mark": {
+  "dealer-flow": {
     headline: "Connect dealership operations to trustworthy vehicle intelligence.",
     description:
       "Role-scoped CRM workflows, on-demand acquisition, durable inventory, operational visibility, and a read-only assistant work across shared application boundaries.",
