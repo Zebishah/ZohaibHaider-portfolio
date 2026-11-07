@@ -33,8 +33,12 @@ CPU-backed WebGL implementations such as SwiftShader use this worker path too.
 WebGL raycasts room and object bounds instead of the furnished mesh. Resolution
 stays fixed throughout a drag and returns to 4K after settling. Decorative idle
 animation runs only in the focused agent/cloud rooms. Labels sit on the entrance
-of their own room. `studioDetails.ts` supplies the same suspended ML training
-board, LoRA adaptation diagram, and loss curve to both rendering paths.
+of their own room, with matching category icons. `studioDetails.ts` supplies
+category-specific monitor displays and small architectural corner markers in
+all twelve rooms. UI wireframes, API requests, database schemas, agent graphs,
+retrieval diagrams, training curves, audio waveforms, deployment pipelines,
+automation flows, test checklists, payments, and security diagrams share one
+2048-pixel atlas in both rendering paths. There are no hanging banners.
 
 `layout.json` contains the 34 purposeful object bounds. The twelve skill rooms
 and the searchable archive still expose all 233 skills in `skillWorld.ts`.

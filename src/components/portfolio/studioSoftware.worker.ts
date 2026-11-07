@@ -3,7 +3,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
 import { Color, Matrix3, Mesh, MeshStandardMaterial, Vector2, Vector3 } from "three";
 import { hotspotAtPoint, roomAtPoint, type StudioLayout } from "./studioScene";
-import { createTrainingLab } from "./studioDetails";
+import { createRoomDetails } from "./studioDetails";
 type Raster = {
   memory: WebAssembly.Memory;
   prepare: (...a: number[]) => void;
@@ -94,8 +94,8 @@ async function initialise(url: string, layout: StudioLayout, textureSize = 4096)
   ]);
   raster = wasm.instance.exports as unknown as Raster;
   const meshes: Mesh[] = [];
-  const trainingLab = createTrainingLab();
-  gltf.scene.add(trainingLab);
+  const roomDetails = createRoomDetails();
+  gltf.scene.add(roomDetails);
   if (motion) {
     const materials = new Map<string, MeshStandardMaterial>();
     gltf.scene.traverse((o) => {
@@ -112,7 +112,7 @@ async function initialise(url: string, layout: StudioLayout, textureSize = 4096)
         o.material = materials.get(material.name) ?? material;
       }
     });
-    motion.scene.add(trainingLab.clone(true));
+    motion.scene.add(roomDetails.clone(true));
   }
   const images: CanvasImageSource[] = [];
   const imageIndices = new Map<CanvasImageSource, number>();
@@ -147,7 +147,7 @@ async function initialise(url: string, layout: StudioLayout, textureSize = 4096)
   mp = reserve(16 * 4);
   pp = reserve(nv * 4 * 4);
   const textures = images.map((image) => {
-    // The small training board does not need a floor-sized 89 MB mip chain.
+    // All twelve room identities share one smaller atlas.
     const size = image instanceof OffscreenCanvas ? Math.min(2048, tw) : tw;
     let pixels = 0;
     for (let level = size; level >= 1; level >>= 1) pixels += level * level;

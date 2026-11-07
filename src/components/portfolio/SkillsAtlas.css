@@ -1158,6 +1158,9 @@
 .studio-room-label,
 .studio-live-label {
   transform: translate(-50%, -50%);
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
   padding: 4px 9px;
   min-height: 24px;
   border: 1px solid #65836a;
@@ -1171,6 +1174,11 @@
   font-size: clamp(8px, 0.82vw, 13px);
   font-weight: 700;
   letter-spacing: -0.025em;
+}
+.studio-room-label > svg {
+  flex-shrink: 0;
+  width: 13px;
+  height: 13px;
 }
 .studio-room-label.is-selected {
   background: #c4d568;
@@ -1352,6 +1360,10 @@
   .studio-room-label strong {
     font-size: 5.5px;
     letter-spacing: -0.025em;
+  }
+  .studio-room-label > svg {
+    width: 8px;
+    height: 8px;
   }
   .studio-object-pin {
     width: 19px;

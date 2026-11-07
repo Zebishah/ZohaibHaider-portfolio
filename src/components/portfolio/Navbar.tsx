@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Menu, X, Pause, Play, ArrowUpRight } from "lucide-react";
 import { usePortfolioMotion } from "./Motion";
 import { socials } from "@/lib/socials";
+import { RoleTitle } from "./RoleTitle";
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const { enabled, toggle } = usePortfolioMotion();
@@ -11,7 +12,9 @@ export function Navbar() {
         <a href="/" className="wordmark" aria-label="Zohaib Haider, home">
           Zohaib Haider
         </a>
-        <span className="nav-role">Full-stack AI Engineer</span>
+        <span className="nav-role">
+          <RoleTitle />
+        </span>
         <span className="nav-line" aria-hidden="true">
           <i />
         </span>

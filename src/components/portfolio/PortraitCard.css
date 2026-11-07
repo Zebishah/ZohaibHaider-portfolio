@@ -1,0 +1,216 @@
+.portrait-card {
+  position: relative;
+  min-width: 0;
+  max-width: 450px;
+  width: 100%;
+  margin: 0;
+  padding: 14px;
+  border: 1px solid #38614a;
+  border-radius: 17px;
+  background: linear-gradient(145deg, #254e3c, #143c2e 70%);
+  box-shadow: 0 16px 36px #233e211c;
+}
+.portrait-card::before {
+  content: "";
+  position: absolute;
+  top: 28px;
+  right: -12px;
+  bottom: 28px;
+  width: 12px;
+  border: 1px solid #a7b384;
+  border-left: 0;
+  border-radius: 0 9px 9px 0;
+  background: #c5d19338;
+  z-index: -1;
+}
+.portrait-card-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 1px 2px 13px;
+  color: #c1d09c;
+  font-size: 7px;
+  font-weight: 650;
+  letter-spacing: 0.09em;
+  line-height: 1.7;
+}
+.portrait-card-label i {
+  width: 5px;
+  height: 5px;
+  flex-shrink: 0;
+  background: #c4d568;
+  border-radius: 50%;
+}
+.portrait-card-photo {
+  position: relative;
+  overflow: hidden;
+  padding: 4px;
+  border: 1px solid #e1e0cc;
+  border-radius: 7px;
+  background: #eee8d9;
+}
+.portrait-card-photo img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: 50% 27%;
+  border-radius: 3px;
+}
+.portrait-card-corner {
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+  padding: 5px 7px;
+  border: 1px solid #dbdfbf4d;
+  border-radius: 4px;
+  background: #193e30db;
+  color: #e4e7c4;
+  font-size: 7px;
+  letter-spacing: 0.1em;
+}
+.portrait-card figcaption {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 13px;
+  padding: 17px 3px 3px;
+}
+.portrait-card figcaption strong {
+  display: block;
+  color: #f5f2de;
+  font-size: 18px;
+  line-height: 1.4;
+  letter-spacing: -0.04em;
+  font-weight: 650;
+}
+.portrait-card figcaption span {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #b0c4a0;
+}
+.portrait-card figcaption > p {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #cfdbac;
+  font-size: 8px;
+  line-height: 1.6;
+}
+.portrait-card-availability {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 15px;
+  padding: 12px 3px 2px;
+  border-top: 1px solid #b6cc902e;
+  color: #d6e2b9;
+  font-size: 11px;
+  line-height: 1.7;
+}
+.portrait-card-availability i {
+  width: 5px;
+  height: 5px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #c4d568;
+}
+@media (max-width: 1100px) {
+  .portrait-card {
+    padding: 11px;
+  }
+  .portrait-card-label {
+    font-size: 6px;
+  }
+  .portrait-card figcaption strong {
+    font-size: 16px;
+  }
+  .portrait-card figcaption span {
+    font-size: 11px;
+  }
+}
+@media (max-width: 760px) {
+  .portrait-card {
+    display: grid;
+    grid-template-columns: minmax(110px, 0.85fr) minmax(0, 1.15fr);
+    grid-template-areas: "photo label" "photo caption";
+    gap: 0 18px;
+    max-width: 530px;
+    justify-self: start;
+    align-items: start;
+    padding: 13px;
+    border-radius: 13px;
+  }
+  .portrait-card::before {
+    display: none;
+  }
+  .portrait-card-label {
+    grid-area: label;
+    padding-top: 12px;
+    font-size: 7px;
+    line-height: 1.9;
+  }
+  .portrait-card-label i {
+    display: none;
+  }
+  .portrait-card-photo {
+    grid-area: photo;
+  }
+  .portrait-card-corner {
+    font-size: 6px;
+    right: 9px;
+    bottom: 9px;
+    padding: 4px 5px;
+  }
+  .portrait-card figcaption {
+    grid-area: caption;
+    align-self: end;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 0 10px;
+    gap: 13px;
+  }
+  .portrait-card figcaption strong {
+    font-size: 20px;
+  }
+  .portrait-card figcaption span {
+    font-size: 11px;
+    max-width: 170px;
+  }
+  .portrait-card figcaption > p {
+    font-size: 8px;
+  }
+  .portrait-card-availability {
+    grid-column: 1 / -1;
+    font-size: 10px;
+    margin-top: 13px;
+    padding-top: 11px;
+  }
+}
+@media (max-width: 390px) {
+  .portrait-card {
+    column-gap: 13px;
+  }
+  .portrait-card-label {
+    font-size: 6px;
+    padding-top: 6px;
+    padding-bottom: 8px;
+  }
+  .portrait-card figcaption {
+    gap: 9px;
+    padding-bottom: 5px;
+  }
+  .portrait-card figcaption strong {
+    font-size: 17px;
+  }
+  .portrait-card figcaption span {
+    font-size: 11px;
+  }
+  .portrait-card figcaption > p {
+    font-size: 7px;
+  }
+}

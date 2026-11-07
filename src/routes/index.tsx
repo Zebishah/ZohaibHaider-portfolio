@@ -12,17 +12,20 @@ import { Footer } from "@/components/portfolio/Footer";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Zohaib Haider — Full-stack AI & Software Engineer" },
+      { title: "Zohaib Haider — Full-stack Software Engineer | AI Systems" },
       {
         name: "description",
         content:
-          "Zohaib Haider is a full-stack software and AI engineer building agentic AI, RAG systems, production platforms, payment integrations, and reliable automation with React, Node.js, Python, and FastAPI.",
+          "Zohaib Haider builds websites, web applications, business dashboards, AI integrations, and workflow automation that connect operations, reporting, and business data.",
       },
-      { property: "og:title", content: "Zohaib Haider — Full-stack AI & Software Engineer" },
+      {
+        property: "og:title",
+        content: "Zohaib Haider — Full-stack Software Engineer | AI Systems",
+      },
       {
         property: "og:description",
         content:
-          "Production SaaS, Stripe payments, NestJS backends, and AI/LLM integrations. React · Node.js · PostgreSQL · AWS.",
+          "Custom websites, business dashboards, AI integrations, and workflow automation. Full-stack engineering with React, Node.js, Python, and FastAPI.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

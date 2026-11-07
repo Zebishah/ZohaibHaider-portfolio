@@ -1,13 +1,17 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, redirect } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Github } from "lucide-react";
 import { Navbar } from "@/components/portfolio/Navbar";
 import { Footer } from "@/components/portfolio/Footer";
 import { Contact } from "@/components/portfolio/Contact";
 import { Reveal } from "@/components/portfolio/Reveal";
 import { getProject, projects } from "@/lib/projects";
+import { ProjectTechStack } from "@/components/portfolio/ProjectTechStack";
 
 export const Route = createFileRoute("/projects/$slug")({
   loader: ({ params }) => {
+    if (params.slug === "ops-pilot") {
+      throw redirect({ to: "/projects/$slug", params: { slug: "trace-ops" }, statusCode: 301 });
+    }
     const project = getProject(params.slug);
     if (!project) throw notFound();
     return { project };
@@ -124,11 +128,7 @@ function ProjectDetail() {
           <div className="case-stack">
             <p className="eyebrow">THE STACK</p>
             <h2 style={{ marginTop: 16 }}>Tools behind the build.</h2>
-            <div className="skill-chips">
-              {project.stack.map((tool) => (
-                <span key={tool}>{tool}</span>
-              ))}
-            </div>
+            <ProjectTechStack project={project} full />
           </div>
           <div className="case-note">
             <strong>Project context. </strong>

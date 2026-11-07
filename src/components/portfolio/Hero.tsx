@@ -1,73 +1,74 @@
-import { ArrowDown, ArrowUpRight, Github, Linkedin, Mail, MessageCircle } from "lucide-react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { ArrowUpRight, Github, Linkedin, Mail, MessageCircle, Phone } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { socials } from "@/lib/socials";
 import { usePortfolioMotion } from "./Motion";
-import { Tilt } from "./Tilt";
+import { RoleTitle } from "./RoleTitle";
+import { PortraitCard } from "./PortraitCard";
+import "./Hero.css";
+
+const focusAreas = ["Production platforms.", "Payment integrations.", "AI-powered features."];
+const coreStack = [
+  "React / Next.js",
+  "JavaScript / TypeScript",
+  "Node.js / NestJS",
+  "Python / FastAPI",
+  "PostgreSQL / MongoDB",
+  "Redis / BullMQ",
+  "Stripe / Payments",
+  "AWS / Docker",
+  "RAG / LangGraph",
+];
+
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
   const { enabled } = usePortfolioMotion();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const [entered, setEntered] = useState(false);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      setInView(entry.isIntersecting);
+      if (entry.isIntersecting) setEntered(true);
+    });
+    observer.observe(element);
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
   return (
-    <section className="hero" ref={ref} aria-labelledby="hero-title">
-      <div className="hero-stage">
-        <h1 className="hero-title" id="hero-title" aria-label="Full-stack AI Engineer">
-          <span className="hero-full">FULL-STACK</span>
-          <span className="hero-ai">AI ENGINEER</span>
-        </h1>
-        <motion.div className="hero-portrait-scene" style={{ y: enabled ? y : 0 }}>
-          <div className="hero-platform" aria-hidden="true" />
-          <Tilt className="portrait-tilt" strength={7}>
-            <div className="portrait-sheet sheet-back" aria-hidden="true" />
-            <div className="portrait-sheet sheet-middle" aria-hidden="true" />
-            <div className="portrait-sheet sheet-front">
-              <img
-                src={socials.portrait}
-                alt="Zohaib Haider wearing a charcoal three-piece suit and glasses"
-                width="1070"
-                height="1470"
-                fetchPriority="high"
-              />
-            </div>
-          </Tilt>
-        </motion.div>
-        <div className="hero-statement">
-          <span className="small-line" aria-hidden="true" />
-          <p>
-            AI products.
-            <br />
-            Production platforms.
-            <br />
-            Real integrations.
-          </p>
-          <div className="hero-disciplines">AI agents + RAG · Full-stack software · Payments</div>
-        </div>
-        <div className="hero-index" aria-hidden="true">
-          <span>01 / INTRODUCTION</span>
-          <span>ISLAMABAD, PK</span>
-        </div>
-      </div>
-      <div className="hero-actions">
+    <section
+      className="hero hero-intro"
+      ref={ref}
+      aria-labelledby="hero-title"
+      data-entered={enabled && entered}
+      data-in-view={inView}
+    >
+      <div className="hero-intro-kicker">
         <p>
-          <i className="status-dot" />
-          2+ years of hands-on engineering
+          <span className="hero-kicker-dot" /> ZOHAIB HAIDER <i>/</i> <RoleTitle />
         </p>
-        <span className="action-rule" />
-        <a className="button button-green" href="#work">
-          Explore my work <ArrowUpRight size={22} />
-        </a>
-        <a className="text-link" href={socials.resume} target="_blank" rel="noreferrer">
-          View résumé <ArrowUpRight size={19} />
-        </a>
+        <span>PRODUCT THINKING. SYSTEMS BUILT TO WORK.</span>
       </div>
-      <div className="hero-socials">
-        <span>BUILDING INTELLIGENT, USEFUL THINGS.</span>
-        <div>
+      <div
+        className="hero-socials hero-contact-footer hero-contact-bar"
+        role="group"
+        aria-label="Contact and social links"
+      >
+        <div className="hero-direct-contacts">
+          <a href={socials.emailHref}>
+            <Mail size={16} />
+            <span>{socials.email}</span>
+          </a>
+          <a href={socials.phoneHref}>
+            <Phone size={15} />
+            <span>{socials.phone}</span>
+          </a>
+        </div>
+        <div className="hero-network-links">
           {[
             [Github, "GitHub", socials.github],
             [Linkedin, "LinkedIn", socials.linkedin],
-            [Mail, "Email", socials.emailHref],
             [MessageCircle, "WhatsApp", socials.whatsapp],
           ].map(([Icon, label, href]) => {
             const I = Icon as typeof Github;
@@ -86,9 +87,57 @@ export function Hero() {
             );
           })}
         </div>
-        <a href="#about" className="scroll-cue" aria-label="Scroll to about">
-          <ArrowDown size={17} /> SCROLL TO DISCOVER
-        </a>
+      </div>
+      <div className="hero-intro-grid">
+        <h1
+          className="hero-intro-title"
+          id="hero-title"
+          aria-label="Zohaib Haider — Full-stack Software Engineer | AI Systems"
+        >
+          <span className="hero-intro-mask" aria-hidden="true">
+            <span>FULL-STACK</span>
+          </span>
+          <span className="hero-intro-mask" aria-hidden="true">
+            <span>SOFTWARE ENGINEER</span>
+          </span>
+        </h1>
+        <div className="hero-intro-story">
+          <div className="hero-focus">
+            <span className="hero-focus-label">I BUILD</span>
+            <p className="hero-focus-statements">
+              {focusAreas.map((area) => (
+                <span key={area}>{area}</span>
+              ))}
+            </p>
+          </div>
+          <p className="hero-intro-description">
+            Full Stack Software Engineer with 2+ years of experience building and shipping 12+
+            production applications. I specialize in secure web platforms, dashboards, and payment
+            integrations, with experience implementing LLM integrations and workflow automations in
+            professional projects. Recently, I’ve expanded into AI systems by building RAG
+            assistants and LangGraph agents with human-in-the-loop workflows. I work across the full
+            lifecycle — architecture, development, testing, deployment, and production support.
+          </p>
+          <div className="hero-action-slot">
+            <div className="hero-actions hero-intro-actions">
+              <a className="button button-green" href="#work">
+                Explore my work <ArrowUpRight size={22} />
+              </a>
+              <a className="text-link" href={socials.resume} target="_blank" rel="noreferrer">
+                View résumé <ArrowUpRight size={19} />
+              </a>
+            </div>
+          </div>
+          <div className="hero-core-stack">
+            <span className="hero-strip-label">Core stack</span>
+            <ul aria-label="Selected core technologies">
+              {coreStack.map((technology) => (
+                <li key={technology}>{technology}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <PortraitCard className="hero-profile" priority availability />
       </div>
     </section>
   );

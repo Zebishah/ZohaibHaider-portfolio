@@ -6,6 +6,7 @@ import { projects, type Project } from "@/lib/projects";
 import { Reveal } from "./Reveal";
 import { Tilt } from "./Tilt";
 import { usePortfolioMotion } from "./Motion";
+import { ProjectTechStack } from "./ProjectTechStack";
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   const ref = useRef<HTMLElement>(null);
   const { enabled } = usePortfolioMotion();
@@ -41,7 +42,11 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               <i />
               <i />
               <i />
-              <span>{new URL(project.demo).hostname}</span>
+              <span>
+                {project.slug === "trace-ops"
+                  ? "Trace Ops · Product preview"
+                  : new URL(project.demo).hostname}
+              </span>
               <ArrowUpRight size={12} />
             </div>
             <img
@@ -70,11 +75,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         <h3>{project.title}</h3>
         <p className="project-tagline">{project.tagline}</p>
         <p className="project-description">{project.overview}</p>
-        <div className="project-tags">
-          {project.tags.map((tag) => (
-            <span key={tag}>{tag}</span>
-          ))}
-        </div>
+        <ProjectTechStack project={project} />
         <div className="project-links">
           <Link
             className="button button-green"
@@ -133,7 +134,7 @@ export function ProjectsGrid() {
         ))}
       </div>
       <p className="work-postscript">
-        A selection from 16+ projects across SaaS, fintech, healthcare, marketplaces, and CRM.
+        Selected work, backed by experience contributing to 12+ commercial applications.
         <span>BUILT ACROSS THE STACK ↗</span>
       </p>
     </section>

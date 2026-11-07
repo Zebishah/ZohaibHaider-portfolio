@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { SkillsStudio } from "./SkillsStudio";
+import { SkillsRoomDirectory } from "./SkillsRoomDirectory";
+import { SkillsRibbon } from "./SkillsRibbon";
 import {
   initialStudioPose,
   roomHeadings,
@@ -15,7 +17,6 @@ import {
   Compass,
   ZoomIn,
   ZoomOut,
-  Move3D,
   List,
   ChevronDown,
   ArrowLeft,
@@ -121,6 +122,7 @@ import { skillGroups, totalSkills } from "@/lib/skills";
 import { projects } from "@/lib/projects";
 import { usePortfolioMotion } from "./Motion";
 import "./SkillsAtlas.css";
+import "./SkillsDiscovery.css";
 
 type SkillGroup = (typeof skillGroups)[number];
 const profiles: Record<SkillGroup["name"], { icon: LucideIcon; description: string }> = {
@@ -326,7 +328,7 @@ export function SkillsAtlas() {
   const coverage = useMemo(skillCoverage, []);
   const [view, setView] = useState<"studio" | "all">("studio");
   const [query, setQuery] = useState("");
-  const [expanded, setExpanded] = useState(false);
+  const [skillsVisible, setSkillsVisible] = useState(true);
   const [panelOpen, setPanelOpen] = useState(true);
   const [pose, setPose] = useState<StudioPose>(initialStudioPose);
   const [opened, setOpened] = useState<SkillName | null>(null);
@@ -336,12 +338,10 @@ export function SkillsAtlas() {
   const [liveModel, setLiveModel] = useState(false);
   const [scene, setScene] = useState<HTMLDivElement | null>(null);
   const [inView, setInView] = useState(false);
-  const nav = useRef<HTMLDivElement>(null);
   const lastFocus = useRef<HTMLElement | null>(null);
   const { enabled } = usePortfolioMotion();
   const current = skillDomains[domain];
   const allTools = domainTools(domain);
-  const tools = expanded ? allTools : current.featured;
   const normalized = query.trim().toLowerCase();
   const openedGroup = skillGroups.find((group) => group.name === opened);
   const selectedGroup = skillGroups.find((group) =>
@@ -375,13 +375,13 @@ export function SkillsAtlas() {
       )
     : [];
   const domainProjects: Record<number, string[]> = {
-    3: ["ops-pilot", "hr-intelligence"],
-    4: ["ops-pilot"],
-    5: ["ops-pilot"],
-    6: ["ops-pilot"],
-    8: ["ops-pilot", "hr-intelligence", "rta-mark"],
+    3: ["trace-ops", "hr-intelligence"],
+    4: ["trace-ops"],
+    5: ["trace-ops"],
+    6: ["trace-ops"],
+    8: ["trace-ops", "hr-intelligence", "rta-mark"],
     10: ["dsp"],
-    11: ["ops-pilot"],
+    11: ["trace-ops"],
   };
   const related = exactProjects.length
     ? exactProjects
@@ -411,12 +411,29 @@ export function SkillsAtlas() {
 
   function choose(index: number) {
     setDomain(index);
-    setExpanded(false);
+    setSkillsVisible(true);
     setPanelOpen(true);
     setPose((p) => ({ ...p, room: index, zoom: 1, angle: 0, serial: p.serial + 1 }));
   }
   function overview() {
     setPose((p) => ({ ...initialStudioPose, serial: p.serial + 1 }));
+  }
+  function chooseFromDirectory(index: number, revealRoom = false) {
+    choose(index);
+    if (revealRoom)
+      requestAnimationFrame(() => {
+        scene?.scrollIntoView({ behavior: enabled ? "smooth" : "auto", block: "start" });
+      });
+  }
+  function browseAll() {
+    setQuery("");
+    setView("all");
+    requestAnimationFrame(() => {
+      document.getElementById("skill-collection")?.scrollIntoView({
+        behavior: enabled ? "smooth" : "auto",
+        block: "start",
+      });
+    });
   }
   function rememberFocus() {
     lastFocus.current =
@@ -432,6 +449,7 @@ export function SkillsAtlas() {
   }
   function inspectObject(tool: string, room: number) {
     setDomain(room);
+    setSkillsVisible(true);
     setPanelOpen(true);
     if (pose.room !== room) setPose((p) => ({ ...p, room, zoom: 1, serial: p.serial + 1 }));
     openTool(tool);
@@ -466,13 +484,7 @@ export function SkillsAtlas() {
           >
             <Compass size={19} /> Explore rooms
           </button>
-          <button
-            aria-pressed={view === "all" || !!normalized}
-            onClick={() => {
-              setQuery("");
-              setView("all");
-            }}
-          >
+          <button aria-pressed={view === "all" || !!normalized} onClick={browseAll}>
             <Layers3 size={20} /> View all skills{" "}
             <span className="studio-count">{totalSkills}</span>
           </button>
@@ -575,7 +587,7 @@ export function SkillsAtlas() {
 
             {panelOpen ? (
               <section
-                className={"studio-room-panel" + (expanded ? " is-expanded" : "")}
+                className="studio-room-panel is-expanded"
                 id="studio-skill-panel"
                 aria-labelledby="studio-room-heading"
                 key={domain}
@@ -598,10 +610,7 @@ export function SkillsAtlas() {
                     {roomHeadings[domain]}
                     <em>.</em>
                   </h3>
-                  <span>
-                    {expanded ? allTools.length : current.featured.length}{" "}
-                    {expanded ? "tools & techniques" : "featured skills"}
-                  </span>
+                  <span>{allTools.length} tools & techniques</span>
                 </div>
                 <div className="studio-room-objects" aria-label="Interactive objects in this room">
                   <span>EXPLORE THE OBJECTS</span>
@@ -619,8 +628,8 @@ export function SkillsAtlas() {
                       </button>
                     ))}
                 </div>
-                <div className="studio-tool-grid">
-                  {tools.map((tool) => (
+                <div className="studio-tool-grid" id="studio-room-skills" hidden={!skillsVisible}>
+                  {allTools.map((tool) => (
                     <button
                       key={tool}
                       onClick={() => openTool(tool)}
@@ -633,15 +642,19 @@ export function SkillsAtlas() {
                   ))}
                 </div>
                 <div className="studio-panel-footer">
-                  <p>Explore the tools. Discover the projects.</p>
+                  <p>Select any skill to see how I use it.</p>
                   <div>
                     <button
                       className="studio-expand"
-                      aria-expanded={expanded}
-                      onClick={() => setExpanded(!expanded)}
+                      aria-expanded={skillsVisible}
+                      aria-controls="studio-room-skills"
+                      onClick={() => setSkillsVisible((value) => !value)}
                     >
-                      {expanded ? "Show highlights" : "All " + allTools.length + " in this room"}
-                      <ChevronDown size={15} style={{ rotate: expanded ? "180deg" : undefined }} />
+                      {skillsVisible ? "Hide skills" : "Show all " + allTools.length + " skills"}
+                      <ChevronDown
+                        size={15}
+                        style={{ rotate: skillsVisible ? "180deg" : undefined }}
+                      />
                     </button>
                     <a href="#work">
                       See related work <ArrowUpRight size={16} />
@@ -650,56 +663,24 @@ export function SkillsAtlas() {
                 </div>
               </section>
             ) : (
-              <button className="studio-reopen" onClick={() => setPanelOpen(true)}>
+              <button
+                className="studio-reopen"
+                onClick={() => {
+                  setSkillsVisible(true);
+                  setPanelOpen(true);
+                }}
+              >
                 Explore {current.name} <ArrowUpRight size={16} />
               </button>
             )}
           </div>
-          <div className="studio-bottom-nav">
-            <p>Select a room to explore</p>
-            <div ref={nav} role="group" aria-label="Choose a skills room">
-              {skillDomains.map((item, index) => (
-                <button
-                  key={item.name}
-                  onClick={() => choose(index)}
-                  aria-pressed={domain === index}
-                  aria-controls="studio-skill-panel"
-                  onKeyDown={(event) => {
-                    const next =
-                      event.key === "ArrowRight"
-                        ? (index + 1) % skillDomains.length
-                        : event.key === "ArrowLeft"
-                          ? (index + skillDomains.length - 1) % skillDomains.length
-                          : event.key === "Home"
-                            ? 0
-                            : event.key === "End"
-                              ? skillDomains.length - 1
-                              : null;
-                    if (next === null) return;
-                    event.preventDefault();
-                    choose(next);
-                    nav.current
-                      ?.querySelectorAll<HTMLButtonElement>("button")
-                      [next]?.focus({ preventScroll: true });
-                  }}
-                >
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                  {item.name}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="studio-under-note">
-            <span>
-              <Move3D size={15} />{" "}
-              {liveModel
-                ? "Drag to rotate · Scroll or pinch to zoom · Click objects to explore"
-                : "Select a room · Zoom to explore the details"}
-            </span>
-            <button onClick={() => setView("all")}>
-              Browse all {totalSkills} skills <ArrowRight size={15} />
-            </button>
-          </div>
+          <SkillsRoomDirectory
+            selected={domain}
+            onChoose={chooseFromDirectory}
+            onBrowse={browseAll}
+            liveModel={liveModel}
+          />
+          <SkillsRibbon onBrowse={browseAll} />
         </>
       ) : (
         <div className="circuit-inventory">

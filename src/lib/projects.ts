@@ -1,3 +1,6 @@
+import { getArchitectureFlow } from "./projectArchitectures";
+import { getProjectStack, projectStacks, type ProjectStackGroup } from "./projectStacks";
+
 export type Project = {
   slug: string;
   title: string;
@@ -8,6 +11,7 @@ export type Project = {
   role: string;
   tags: string[];
   stack: string[];
+  stackGroups: ProjectStackGroup[];
   features: string[];
   impact: string;
   github: string;
@@ -23,49 +27,17 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    slug: "ops-pilot",
-    title: "OpsPilot",
-    shortTitle: "OpsPilot",
+    slug: "trace-ops",
+    title: "Trace Ops",
+    shortTitle: "Trace Ops",
     category: "Agentic AI · Operations",
     tagline: "From operational incident to evidence-backed action.",
     overview:
       "A multi-tenant AI platform that investigates incidents using company knowledge and live business data. Stateful agents retrieve evidence, inspect operational records, recommend actions, pause for human approval, and verify execution before recording incident memory.",
     role: "Full-stack AI engineering across FastAPI services, LangGraph orchestration, retrieval, operational tools, approvals, voice interfaces, the frontend, and an isolated classifier fine-tuning pipeline.",
     tags: ["LangGraph", "FastAPI", "RAG", "Qdrant", "Human-in-the-loop"],
-    stack: [
-      "Python",
-      "TypeScript",
-      "Next.js",
-      "React",
-      "Tailwind CSS",
-      "shadcn/ui",
-      "FastAPI",
-      "SQLAlchemy",
-      "PostgreSQL",
-      "Alembic",
-      "Redis",
-      "Qdrant",
-      "LangChain",
-      "LangGraph",
-      "Groq",
-      "Mistral Embed",
-      "Voyage AI",
-      "Amazon S3",
-      "Inngest",
-      "n8n",
-      "MCP",
-      "OAuth",
-      "PKCE",
-      "Whisper",
-      "Orpheus",
-      "PyTorch",
-      "Transformers",
-      "PEFT",
-      "LoRA",
-      "QLoRA",
-      "Modal",
-      "pytest",
-    ],
+    stack: getProjectStack("trace-ops"),
+    stackGroups: projectStacks["trace-ops"],
     features: [
       "Tenant-scoped retrieval with embeddings, reranking, and source citations.",
       "Checkpointed LangGraph investigations with operational tools and incident memory.",
@@ -82,28 +54,11 @@ export const projects: Project[] = [
     impact:
       "Connects investigation and controlled execution in an auditable workflow, with tenant boundaries and recovery paths built into the backend.",
     note: "Active development. The fine-tuning pipeline is implemented; no production model-quality or customer-scale results are claimed. Voice features depend on configuration.",
-    github: "https://github.com/Zebishah/ops-pilot",
+    github: "https://github.com/Zebishah/TraceOps",
     demo: "https://ops-pilot-sage.vercel.app",
     accent: ["#0c4935", "#c4d46b"],
-    cover: "/projects/ops-pilot.png",
-    flow: [
-      {
-        title: "Retrieve",
-        detail: "Tenant-scoped documents and incident memories supply cited evidence.",
-      },
-      {
-        title: "Investigate",
-        detail: "A stateful LangGraph agent inspects live operational data with scoped tools.",
-      },
-      {
-        title: "Approve",
-        detail: "Sensitive actions pause for an explicit authorized human decision.",
-      },
-      {
-        title: "Verify",
-        detail: "Check execution, record memory, and dispatch business automation.",
-      },
-    ],
+    cover: "/projects/trace-ops.png",
+    flow: getArchitectureFlow("trace-ops"),
   },
   {
     slug: "hr-intelligence",
@@ -115,32 +70,8 @@ export const projects: Project[] = [
       "An Intercom-integrated HR case intelligence platform that identifies employees, classifies cases, surfaces related histories, and recommends stakeholders inside the support workflow, with a separate operations dashboard for review.",
     role: "Full-stack development across the Next.js dashboard, TypeScript API, Intercom Canvas and webhooks, Gemini intelligence, Box directory sync, durable ingestion, and background processing.",
     tags: ["Next.js", "Gemini", "Intercom", "PostgreSQL", "Apify"],
-    stack: [
-      "TypeScript",
-      "Next.js",
-      "React",
-      "Tailwind CSS",
-      "Node.js",
-      "Express",
-      "Zod",
-      "PostgreSQL",
-      "Drizzle ORM",
-      "pgvector",
-      "Redis",
-      "BullMQ",
-      "Apify",
-      "Intercom Canvas Kit",
-      "Gemini API",
-      "Box API",
-      "Resend",
-      "JWT",
-      "HMAC",
-      "Jest",
-      "Supertest",
-      "Vitest",
-      "Playwright",
-      "GitHub Actions",
-    ],
+    stack: getProjectStack("hr-intelligence"),
+    stackGroups: projectStacks["hr-intelligence"],
     features: [
       "Intercom sidebar with employee identity, classification, related history, and recommended CC contacts.",
       "Gemini analysis, alias-aware matching, related-case retrieval, and persistent human corrections.",
@@ -161,23 +92,7 @@ export const projects: Project[] = [
     demo: "https://nagumo-hr-intelligence.vercel.app",
     accent: ["#e4e5cf", "#244735"],
     cover: "/projects/hr-intelligence.png",
-    flow: [
-      { title: "Ingest", detail: "Verify Intercom signatures and commit case events durably." },
-      {
-        title: "Resolve",
-        detail:
-          "Match employees using directory records, emails, aliases, and reviewable evidence.",
-      },
-      {
-        title: "Analyze",
-        detail:
-          "Surface classifications, related cases, and stakeholders with Gemini and retrieval.",
-      },
-      {
-        title: "Support",
-        detail: "Show evidence in Intercom and the dashboard while retaining human corrections.",
-      },
-    ],
+    flow: getArchitectureFlow("hr-intelligence"),
   },
   {
     slug: "dsp",
@@ -189,34 +104,8 @@ export const projects: Project[] = [
       "An end-to-end driving lesson marketplace connecting students, instructors, and administrators. Instructor discovery, timezone-aware booking, real-time messaging, learning progress, and document verification meet a complete Stripe payment lifecycle.",
     role: "Full-stack engineering across role-based dashboards, GraphQL APIs, scheduling, messaging, Stripe checkout and Connect payouts, refund consistency, and background processing.",
     tags: ["React", "GraphQL", "Stripe Connect", "MongoDB", "Redis"],
-    stack: [
-      "JavaScript",
-      "TypeScript",
-      "React",
-      "Vite",
-      "Tailwind CSS",
-      "Material UI",
-      "Ant Design",
-      "Redux Toolkit",
-      "Apollo Client",
-      "Node.js",
-      "Express",
-      "GraphQL",
-      "Apollo Server",
-      "MongoDB",
-      "Mongoose",
-      "Redis",
-      "Stripe",
-      "Stripe Connect",
-      "Socket.IO",
-      "WebSockets",
-      "JWT",
-      "Passport.js",
-      "OAuth",
-      "Amazon S3",
-      "Zod",
-      "Node.js Test Runner",
-    ],
+    stack: getProjectStack("dsp"),
+    stackGroups: projectStacks["dsp"],
     features: [
       "Scoped student, instructor, and administrator workflows and dashboards.",
       "Discovery, availability, timezone-aware lessons, rescheduling, and progress tracking.",
@@ -237,25 +126,7 @@ export const projects: Project[] = [
     demo: "https://dsp-marketplace.vercel.app",
     accent: ["#d8e5e7", "#144952"],
     cover: "/projects/dsp.png",
-    flow: [
-      {
-        title: "Discover",
-        detail: "Find instructors and availability through scoped GraphQL APIs.",
-      },
-      {
-        title: "Book",
-        detail:
-          "Reserve lesson slots with timezone-aware scheduling and guarded state transitions.",
-      },
-      {
-        title: "Pay",
-        detail: "Stripe handles checkout and scheduled charges with idempotency protections.",
-      },
-      {
-        title: "Reconcile",
-        detail: "Durable events keep refunds, booking states, and instructor payouts consistent.",
-      },
-    ],
+    flow: getArchitectureFlow("dsp"),
   },
   {
     slug: "rta-mark",
@@ -267,32 +138,8 @@ export const projects: Project[] = [
       "An automotive sales CRM and vehicle-intelligence platform combining leads, appointments, follow-ups, deals, commissions, analytics, inventory comparisons, and a role-aware AI assistant.",
     role: "Full-stack engineering across dealership workflows, React interfaces, typed APIs, PostgreSQL data models, vehicle acquisition, AI tools, and asynchronous ingestion architectures.",
     tags: ["React", "PostgreSQL", "Apify", "Puppeteer", "AI Tools"],
-    stack: [
-      "TypeScript",
-      "React",
-      "Vite",
-      "TanStack Query",
-      "Tailwind CSS",
-      "Node.js",
-      "Express",
-      "PostgreSQL",
-      "Neon",
-      "Drizzle ORM",
-      "Upstash Redis",
-      "Apify",
-      "Puppeteer",
-      "Zod",
-      "Gemini",
-      "Groq",
-      "OpenRouter",
-      "Amazon S3",
-      "AWS SQS",
-      "AWS Lambda",
-      "BullMQ",
-      "Resend",
-      "Docker",
-      "Node.js Test Runner",
-    ],
+    stack: getProjectStack("rta-mark"),
+    stackGroups: projectStacks["rta-mark"],
     features: [
       "Role-aware leads, appointments, follow-ups, sales, commissions, and reporting.",
       "Multi-source vehicle acquisition, normalized listings, comparisons, and source-health visibility.",
@@ -313,21 +160,7 @@ export const projects: Project[] = [
     demo: "https://rta-dealership-web.vercel.app",
     accent: ["#e9ddcb", "#634e30"],
     cover: "/projects/rta-mark.png",
-    flow: [
-      {
-        title: "Operate",
-        detail: "Role-scoped CRM workflows organize leads, follow-ups, deals, and reports.",
-      },
-      {
-        title: "Acquire",
-        detail: "Authorized requests start on-demand Apify runs for approved sources.",
-      },
-      {
-        title: "Normalize",
-        detail: "Validate listings and persist comparable inventory in PostgreSQL.",
-      },
-      { title: "Explain", detail: "Answer using authorized data and bounded provider fallbacks." },
-    ],
+    flow: getArchitectureFlow("rta-mark"),
   },
 ];
 export const getProject = (slug: string) => projects.find((project) => project.slug === slug);

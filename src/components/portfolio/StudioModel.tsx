@@ -30,7 +30,7 @@ import {
   type StudioLayout,
 } from "./studioScene";
 import { createStudioEnvironment } from "./stackStudio";
-import { createTrainingLab } from "./studioDetails";
+import { createRoomDetails, disposeRoomDetails } from "./studioDetails";
 import type { StudioProps } from "./SkillsStudio";
 type Props = StudioProps & { onReady: () => void; onUnavailable: () => void };
 function Architecture(props: Props & { onDprChange: (dpr: number) => void }) {
@@ -40,7 +40,7 @@ function Architecture(props: Props & { onDprChange: (dpr: number) => void }) {
   const gltf = useGLTF(studioAsset + "studio.glb", false, true);
   const model = useMemo(() => {
     const scene = gltf.scene.clone(true);
-    scene.add(createTrainingLab());
+    scene.add(createRoomDetails());
     return scene;
   }, [gltf.scene]);
   const { camera, gl, scene, invalidate, size } = useThree();
@@ -239,22 +239,15 @@ function Architecture(props: Props & { onDprChange: (dpr: number) => void }) {
     animations.current = { neural: pivot(neural), cloud: pivot(cloud) };
     animations.current.cloudY = animations.current.cloud?.position.y;
     invalidate();
-    return () =>
+    return () => {
+      disposeRoomDetails(model);
       model.traverse((item) => {
-        if (item instanceof Mesh && item.name === "Machine learning training diagram") {
-          item.geometry.dispose();
-          (item.material as MeshBasicMaterial).map?.dispose();
-          (item.material as MeshBasicMaterial).dispose();
-        }
-        if (item instanceof Mesh && item.userData.trainingLabSupport) {
-          item.geometry.dispose();
-          (item.material as MeshBasicMaterial).dispose();
-        }
         if (item instanceof Mesh && item.userData.ownedMaterial) {
           if (item.userData.ownedMap) (item.material as MeshBasicMaterial).map?.dispose();
           (item.material as MeshStandardMaterial).dispose();
         }
       });
+    };
   }, [model, invalidate, gl]);
   useEffect(() => {
     model.traverse((item) => {
@@ -416,6 +409,7 @@ function Architecture(props: Props & { onDprChange: (dpr: number) => void }) {
                 aria-pressed={props.selected === index}
                 onClick={() => props.onSelect(index)}
               >
+                <item.icon size={13} aria-hidden="true" />
                 <strong>
                   {String(index + 1).padStart(2, "0")} {item.name}
                 </strong>

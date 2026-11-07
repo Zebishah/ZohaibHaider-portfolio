@@ -440,6 +440,7 @@ export default function SoftwareStudio(
                 onClick={() => props.onSelect(index)}
                 aria-pressed={props.selected === index}
               >
+                <item.icon size={13} aria-hidden="true" />
                 <strong>
                   {String(index + 1).padStart(2, "0")} {item.name}
                 </strong>
