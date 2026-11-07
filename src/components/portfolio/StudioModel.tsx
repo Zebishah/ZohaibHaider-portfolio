@@ -1,6 +1,6 @@
 import { Canvas, addAfterEffect, useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
 import { ContactShadows, Html, OrbitControls, useGLTF } from "@react-three/drei";
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   AgXToneMapping,
   Box3,
@@ -22,50 +22,66 @@ import {
   loadStudioLayout,
   roomAtPoint,
   roomLabel,
+  roomBases,
+  roomCenters,
   studioAsset,
   studioCamera,
   studioWidth,
   type StudioLayout,
 } from "./studioScene";
 import { createStudioEnvironment } from "./stackStudio";
+import { createTrainingLab } from "./studioDetails";
 import type { StudioProps } from "./SkillsStudio";
 type Props = StudioProps & { onReady: () => void; onUnavailable: () => void };
 function Architecture(props: Props & { onDprChange: (dpr: number) => void }) {
+  const { onDprChange } = props;
+  const active = useRef(props.active);
+  active.current = props.active;
   const gltf = useGLTF(studioAsset + "studio.glb", false, true);
-  const model = useMemo(() => gltf.scene.clone(true), [gltf.scene]);
+  const model = useMemo(() => {
+    const scene = gltf.scene.clone(true);
+    scene.add(createTrainingLab());
+    return scene;
+  }, [gltf.scene]);
   const { camera, gl, scene, invalidate, size } = useThree();
   const detailTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const dragging = useRef(false);
   const resolution = useRef({ moving: 1, detail: 1 });
   const appliedDpr = useRef(0);
-  function applyDpr(value: number) {
-    if (Math.abs(appliedDpr.current - value) < 0.001) return;
-    appliedDpr.current = value;
-    props.onDprChange(value);
-  }
+  const applyDpr = useCallback(
+    (value: number) => {
+      if (Math.abs(appliedDpr.current - value) < 0.001) return;
+      appliedDpr.current = value;
+      onDprChange(value);
+    },
+    [onDprChange],
+  );
   useEffect(() => {
     const desktop = window.matchMedia("(min-width: 900px)").matches;
     resolution.current = {
-      moving: Math.min(desktop ? 1920 / size.width : 1.5, 2),
+      moving: Math.min(desktop ? 2560 / size.width : 1.75, 2),
       detail: desktop ? 3840 / size.width : Math.min(2.5, 1920 / size.width),
     };
     appliedDpr.current = resolution.current.detail;
-    props.onDprChange(resolution.current.detail);
+    onDprChange(resolution.current.detail);
     gl.domElement.dataset.quality = "detail";
     invalidate();
     return () => {
       if (detailTimer.current) clearTimeout(detailTimer.current);
     };
-  }, [size.width, props.onDprChange, gl, invalidate]);
-  function cameraMoving() {
+  }, [size.width, onDprChange, gl, invalidate]);
+  const cameraMoving = useCallback(() => {
     applyDpr(resolution.current.moving);
     gl.domElement.dataset.quality = "interactive";
     if (detailTimer.current) clearTimeout(detailTimer.current);
+    // A slow frame must not trigger a 4K resize halfway through a drag.
+    if (dragging.current || transition.current?.moving) return;
     detailTimer.current = setTimeout(() => {
       applyDpr(resolution.current.detail);
       gl.domElement.dataset.quality = "detail";
       invalidate();
     }, 350);
-  }
+  }, [applyDpr, gl, invalidate]);
   const annotationPortal = useMemo(
     () => ({ current: gl.domElement.parentElement as HTMLElement }),
     [gl],
@@ -225,6 +241,15 @@ function Architecture(props: Props & { onDprChange: (dpr: number) => void }) {
     invalidate();
     return () =>
       model.traverse((item) => {
+        if (item instanceof Mesh && item.name === "Machine learning training diagram") {
+          item.geometry.dispose();
+          (item.material as MeshBasicMaterial).map?.dispose();
+          (item.material as MeshBasicMaterial).dispose();
+        }
+        if (item instanceof Mesh && item.userData.trainingLabSupport) {
+          item.geometry.dispose();
+          (item.material as MeshBasicMaterial).dispose();
+        }
         if (item instanceof Mesh && item.userData.ownedMaterial) {
           if (item.userData.ownedMap) (item.material as MeshBasicMaterial).map?.dispose();
           (item.material as MeshStandardMaterial).dispose();
@@ -256,18 +281,19 @@ function Architecture(props: Props & { onDprChange: (dpr: number) => void }) {
       toZoom: zoom,
       moving: true,
     };
-    if (!props.active) {
+    if (!active.current) {
       camera.position.copy(desired.camera.position);
       (camera as OrthographicCamera).zoom = zoom;
       (camera as OrthographicCamera).updateProjectionMatrix();
       controls.current?.target.copy(desired.target);
       controls.current?.update();
       transition.current.moving = false;
+      cameraMoving();
     }
     invalidate();
-  }, [props.pose, camera, invalidate]);
+  }, [props.pose, camera, invalidate, cameraMoving]);
   useEffect(() => {
-    if (!props.active) return;
+    if (!props.active || (props.pose.room !== 3 && props.pose.room !== 7)) return;
     let frame = 0,
       previous = 0;
     const tick = () => {
@@ -279,7 +305,7 @@ function Architecture(props: Props & { onDprChange: (dpr: number) => void }) {
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [props.active, invalidate]);
+  }, [props.active, props.pose.room, invalidate]);
   useFrame(({ clock }) => {
     const t = transition.current;
     if (t?.moving) {
@@ -290,8 +316,10 @@ function Architecture(props: Props & { onDprChange: (dpr: number) => void }) {
       (camera as OrthographicCamera).zoom = MathUtils.lerp(t.fromZoom, t.toZoom, ease);
       (camera as OrthographicCamera).updateProjectionMatrix();
       controls.current?.update();
-      if (progress === 1) t.moving = false;
-      else invalidate();
+      if (progress === 1) {
+        t.moving = false;
+        cameraMoving();
+      } else invalidate();
     }
     if (props.active) {
       if (animations.current.neural)
@@ -302,7 +330,7 @@ function Architecture(props: Props & { onDprChange: (dpr: number) => void }) {
     }
   });
   function inspect(event: ThreeEvent<MouseEvent | PointerEvent>) {
-    const room = roomAtPoint(event.point);
+    const room = (event.object.userData.room as number | undefined) ?? roomAtPoint(event.point);
     let tool = event.object.userData.skill as string | undefined;
     if (!tool && layout) {
       const index = hotspotAtPoint(event.point, layout.hotspots);
@@ -314,18 +342,20 @@ function Architecture(props: Props & { onDprChange: (dpr: number) => void }) {
     <>
       <ambientLight intensity={0.8} color="#f3f1d9" />
       <directionalLight position={[-6, 14, 10]} intensity={1.8} color="#f3f8e8" />
-      <primitive
-        object={model}
-        dispose={null}
+      <primitive object={model} dispose={null} />
+      {/* Raycast small proxies instead of every triangle in the furnished building. */}
+      <group
         onClick={(event: ThreeEvent<MouseEvent>) => {
           if (event.delta > 5) return;
           const { room, tool } = inspect(event);
           if (room !== null) {
             event.stopPropagation();
-            tool ? props.onInspect(tool, room) : props.onSelect(room);
+            if (tool) props.onInspect(tool, room);
+            else props.onSelect(room);
           }
         }}
         onPointerMove={(event: ThreeEvent<PointerEvent>) => {
+          event.stopPropagation();
           const { room, tool } = inspect(event);
           setHover(room);
           setHoverTool(tool ?? null);
@@ -336,7 +366,28 @@ function Architecture(props: Props & { onDprChange: (dpr: number) => void }) {
           setHoverTool(null);
           gl.domElement.style.cursor = "grab";
         }}
-      />
+      >
+        {roomCenters.map((x, index) => (
+          <mesh
+            key={index}
+            position={[x, roomBases[index] + 1.08, -1.51]}
+            userData={{ room: index }}
+          >
+            <planeGeometry args={[4.3, 2.16]} />
+            <meshBasicMaterial visible={false} side={DoubleSide} />
+          </mesh>
+        ))}
+        {layout?.hotspots.map((h) => (
+          <mesh
+            key={`${h.room}-${h.tool}`}
+            position={h.center}
+            userData={{ room: h.room, skill: h.tool }}
+          >
+            <boxGeometry args={h.size} />
+            <meshBasicMaterial visible={false} />
+          </mesh>
+        ))}
+      </group>
       <ContactShadows
         position={[0, -0.145, 0]}
         opacity={0.24}
@@ -423,7 +474,12 @@ function Architecture(props: Props & { onDprChange: (dpr: number) => void }) {
         rotateSpeed={0.65}
         zoomSpeed={0.85}
         onStart={() => {
+          dragging.current = true;
           if (transition.current) transition.current.moving = false;
+          cameraMoving();
+        }}
+        onEnd={() => {
+          dragging.current = false;
           cameraMoving();
         }}
         onChange={() => {

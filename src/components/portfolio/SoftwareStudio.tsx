@@ -17,6 +17,14 @@ import {
 import type { StudioProps } from "./SkillsStudio";
 
 type Controls = { yaw: number; pitch: number; distance: number; zoom: number; target: Vector3 };
+type FrameView = { yaw: number; pitch: number; zoom: number; target: number[] };
+function canScaleFrame(controls: Controls, view: FrameView) {
+  return (
+    controls.yaw === view.yaw &&
+    controls.pitch === view.pitch &&
+    controls.target.toArray().every((v, i) => v === view.target[i])
+  );
+}
 const fromPose = (pose: StudioProps["pose"]): Controls => {
   const { camera, target } = studioCamera(pose),
     offset = camera.position.clone().sub(target);
@@ -66,14 +74,37 @@ export default function SoftwareStudio(
     generation = useRef(0);
   const [layout, setLayout] = useState<StudioLayout | null>(null),
     [hover, setHover] = useState<number | null>(null);
-  const [display, setDisplay] = useState<{ matrix: Matrix4; front: boolean } | null>(null);
+  const [display, setDisplay] = useState<{
+    matrix: Matrix4;
+    front: boolean;
+    view: FrameView;
+  } | null>(null);
+  const displayRef = useRef(display);
+  displayRef.current = display;
   const propsRef = useRef(props);
   propsRef.current = props;
   const camera = useMemo(() => makeCamera(controls), [controls]);
   const sendRef = useRef<(quality?: boolean) => void>(() => {});
+  const inFlight = useRef<{ quality: boolean } | null>(null);
+  const queued = useRef<boolean | null>(null);
+  const flushRef = useRef<() => void>(() => {});
   state.current = controls;
   function post(quality = false) {
+    queued.current = quality;
+    // At most one frame is in flight. Pointer events replace the queued camera
+    // instead of filling the worker's message queue with obsolete renders.
+    if (inFlight.current) {
+      if (inFlight.current.quality && !quality) worker.current?.postMessage({ type: "interrupt" });
+      return;
+    }
+    flush();
+  }
+  function flush() {
     if (!loaded.current || !canvas.current) return;
+    const quality = queued.current;
+    if (quality === null || inFlight.current) return;
+    queued.current = null;
+    inFlight.current = { quality };
     const rect = canvas.current.getBoundingClientRect();
     const frameCamera = makeCamera(state.current);
     const desktop = window.matchMedia("(min-width: 900px)").matches;
@@ -83,7 +114,7 @@ export default function SoftwareStudio(
         ? desktop
           ? 3840
           : Math.min(1920, rect.width * Math.min(3, Math.max(2, devicePixelRatio)))
-        : Math.min(desktop ? 1440 : 960, rect.width * (desktop ? 1.1 : 1.5)),
+        : Math.min(desktop ? 1920 : 1280, rect.width * 1.5),
     );
     const message = {
       type: "render",
@@ -93,6 +124,12 @@ export default function SoftwareStudio(
       front: frameCamera.position.z > 0,
       quality,
       selected: propsRef.current.selected,
+      view: {
+        yaw: state.current.yaw,
+        pitch: state.current.pitch,
+        zoom: state.current.zoom,
+        target: state.current.target.toArray(),
+      },
       serial: ++serial.current,
     };
     canvas.current.dataset.requestSerial = String(message.serial);
@@ -101,6 +138,7 @@ export default function SoftwareStudio(
     worker.current?.postMessage(message);
   }
   sendRef.current = post;
+  flushRef.current = flush;
   useEffect(() => {
     const w = new Worker(new URL("./studioSoftware.worker.ts", import.meta.url), {
       type: "module",
@@ -125,12 +163,13 @@ export default function SoftwareStudio(
         loaded.current = true;
         if (canvas.current) {
           canvas.current.dataset.modelTriangles = String(m.triangles);
+          canvas.current.dataset.motionTriangles = String(m.motionTriangles);
           canvas.current.dataset.lightmaps = String(m.textures);
           canvas.current.dataset.textureSize = String(m.textureSize);
         }
         sendRef.current(true);
       } else if (m.type === "frame") {
-        if (m.quality && m.serial < serial.current) return;
+        inFlight.current = null;
         const c = canvas.current;
         if (!c) return;
         c.width = m.width;
@@ -144,7 +183,7 @@ export default function SoftwareStudio(
           projection = new Matrix4().fromArray(m.matrix),
           ctx = c.getContext("2d")!;
         // Labels and geometry must use the same completed camera frame.
-        setDisplay({ matrix: projection, front: m.front });
+        setDisplay({ matrix: projection, front: m.front, view: m.view });
         const points = [
           [-2.14, 0.03],
           [2.14, 0.03],
@@ -160,7 +199,8 @@ export default function SoftwareStudio(
           points.forEach((p, i) => {
             const x = ((p.x + 1) * m.width) / 2,
               y = ((1 - p.y) * m.height) / 2;
-            i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+            if (i) ctx.lineTo(x, y);
+            else ctx.moveTo(x, y);
           });
           ctx.closePath();
           ctx.stroke();
@@ -169,6 +209,10 @@ export default function SoftwareStudio(
           reported.current = true;
           propsRef.current.onReady();
         }
+        flushRef.current();
+      } else if (m.type === "cancelled") {
+        inFlight.current = null;
+        flushRef.current();
       } else if (m.type === "pick") {
         if (m.click) {
           if (m.id >= 100) {
@@ -183,6 +227,7 @@ export default function SoftwareStudio(
         propsRef.current.onUnavailable();
       }
     };
+    w.onerror = () => propsRef.current.onUnavailable();
     const observer = new ResizeObserver(() => sendRef.current(true));
     if (canvas.current) observer.observe(canvas.current);
     return () => {
@@ -190,11 +235,16 @@ export default function SoftwareStudio(
       observer.disconnect();
       w.terminate();
       loaded.current = false;
+      inFlight.current = null;
+      queued.current = null;
       if (timer.current) clearTimeout(timer.current);
     };
   }, []);
   useEffect(() => {
-    sendRef.current(false);
+    // Orthographic zoom is an exact scale of the last frame. Keep its sharp
+    // pixels on the compositor while the camera moves, then render detail once.
+    if (!displayRef.current || !canScaleFrame(controls, displayRef.current.view))
+      sendRef.current(false);
     if (timer.current) clearTimeout(timer.current);
     timer.current = setTimeout(() => sendRef.current(true), 350);
   }, [controls, props.selected]);
@@ -205,7 +255,7 @@ export default function SoftwareStudio(
       origin = state.current;
     function step() {
       if (generation.current !== id) return;
-      const t = props.active ? Math.min(1, (performance.now() - start) / 550) : 1,
+      const t = propsRef.current.active ? Math.min(1, (performance.now() - start) / 550) : 1,
         e = 1 - (1 - t) ** 3;
       setControls({
         yaw: origin.yaw + (destination.yaw - origin.yaw) * e,
@@ -223,6 +273,18 @@ export default function SoftwareStudio(
     if (!element) return;
     const pointers = new Map<number, { x: number; y: number }>();
     const buttonPointers = new Set<number>();
+    const pickPosition = (e: PointerEvent) => {
+      const rect = element.getBoundingClientRect();
+      const frame = displayRef.current;
+      const scale =
+        frame && canScaleFrame(state.current, frame.view)
+          ? state.current.zoom / frame.view.zoom
+          : 1;
+      return {
+        x: 0.5 + ((e.clientX - rect.left) / rect.width - 0.5) / scale,
+        y: 0.5 + ((e.clientY - rect.top) / rect.height - 0.5) / scale,
+      };
+    };
     let origin: { x: number; y: number } | null = null,
       moved = false,
       pinch = 0;
@@ -282,11 +344,9 @@ export default function SoftwareStudio(
             pitch: Math.max(0.08, Math.min(1.35, state.current.pitch + dy * 0.005)),
           });
       } else {
-        const rect = element.getBoundingClientRect();
         worker.current?.postMessage({
           type: "pick",
-          x: (e.clientX - rect.left) / rect.width,
-          y: (e.clientY - rect.top) / rect.height,
+          ...pickPosition(e),
           click: false,
         });
       }
@@ -295,17 +355,14 @@ export default function SoftwareStudio(
       pointers.delete(e.pointerId);
       const wasButton = buttonPointers.delete(e.pointerId);
       if (!moved && origin && !wasButton) {
-        const r = element.getBoundingClientRect();
         worker.current?.postMessage({
           type: "pick",
-          x: (e.clientX - r.left) / r.width,
-          y: (e.clientY - r.top) / r.height,
+          ...pickPosition(e),
           click: true,
         });
       }
       origin = null;
       pinch = 0;
-      sendRef.current(true);
     };
     const wheel = (e: WheelEvent) => {
       e.preventDefault();
@@ -346,7 +403,7 @@ export default function SoftwareStudio(
   const hovered = hover === null ? null : layout?.hotspots[hover];
   const front = display?.front ?? camera.position.z > 0;
   function project(point: Vector3) {
-    if (!display) return screenPoint(point, camera);
+    if (!display || canScaleFrame(controls, display.view)) return screenPoint(point, camera);
     const p = point.clone().applyMatrix4(display.matrix);
     return { left: `${(p.x + 1) * 50}%`, top: `${(1 - p.y) * 50}%` };
   }
@@ -357,11 +414,21 @@ export default function SoftwareStudio(
       style={{ touchAction: "none" }}
       data-camera={JSON.stringify({ yaw: controls.yaw, zoom: controls.zoom })}
     >
-      <canvas
-        ref={canvas}
-        aria-label="Three-dimensional architectural skills studio. Drag to rotate, scroll to zoom, or use the room controls."
-        style={{ cursor: hovered ? "pointer" : "grab", touchAction: "none" }}
-      />
+      <div
+        className="studio-software-frame"
+        style={{
+          transform:
+            display && canScaleFrame(controls, display.view)
+              ? `scale(${controls.zoom / display.view.zoom})`
+              : undefined,
+        }}
+      >
+        <canvas
+          ref={canvas}
+          aria-label="Three-dimensional architectural skills studio. Drag to rotate, scroll to zoom, or use the room controls."
+          style={{ cursor: hovered ? "pointer" : "grab", touchAction: "none" }}
+        />
+      </div>
       <div className="studio-preview-labels">
         {front &&
           skillDomains.map((item, index) =>

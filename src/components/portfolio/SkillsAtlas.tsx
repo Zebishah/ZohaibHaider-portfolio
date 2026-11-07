@@ -566,7 +566,7 @@ export function SkillsAtlas() {
                 >
                   <ZoomIn size={17} />
                 </button>
-                <button className="studio-reset" onClick={overview}>
+                <button className="studio-reset" onClick={overview} aria-label="Reset view">
                   <RotateCcw size={15} />
                   <span>Reset view</span>
                 </button>

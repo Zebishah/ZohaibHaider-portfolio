@@ -34,7 +34,7 @@ export const roomHeadings = [
   "Databases, designed",
   "Intelligence, engineered",
   "Knowledge, retrieved",
-  "Models, adapted",
+  "Machine learning, fine-tuned",
   "A voice for the product",
   "Built to go live",
   "Workflows, connected",
@@ -69,7 +69,7 @@ export function studioCamera(pose: StudioPose, aspect = studioAspect) {
   return { camera, target };
 }
 export function roomLabel(index: number) {
-  return new Vector3(roomCenters[index], roomBases[index] - 0.12, 1.8);
+  return new Vector3(roomCenters[index], roomBases[index] + 2.16, 1.8);
 }
 export function screenPoint(point: Vector3, camera: OrthographicCamera) {
   const p = point.clone().project(camera);

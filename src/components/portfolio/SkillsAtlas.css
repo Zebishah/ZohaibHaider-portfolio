@@ -1136,7 +1136,12 @@
   position: absolute;
   inset: 0;
 }
-.studio-software > canvas {
+.studio-software-frame {
+  position: absolute;
+  inset: 0;
+  transform-origin: center;
+}
+.studio-software-frame > canvas {
   display: block;
   width: 100%;
   height: 100%;

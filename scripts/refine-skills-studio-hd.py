@@ -1,4 +1,4 @@
-"""Quality-first refinement of the twelve-room studio. No geometry decimation.
+"""Quality-first refinement of the twelve-room studio with bounded-error packaging.
 
 Uses the editable, pre-bake scene produced by build-skills-studio-v2.py --preview.
 Four independent 4K lightmaps preserve room detail without one giant bake.
@@ -243,7 +243,7 @@ if '--render-only' not in __import__('sys').argv:
     for o in scene.objects:
         if o.type=='MESH' and not o.name.startswith('Studio ground'):o.select_set(True)
     bpy.ops.export_scene.gltf(filepath=str(WORK/'studio-unreduced.glb'),export_format='GLB',use_selection=True,export_yup=True,export_extras=True,export_image_format='JPEG',export_materials='EXPORT')
-    subprocess.run(['npx','--yes','gltfpack@1.3.0','-i',str(WORK/'studio-unreduced.glb'),'-o',str(OUT/'studio.glb'),'-cc','-vpf','-vtf','-vnf','-kn','-km','-ke'],check=True)
+    subprocess.run([__import__('sys').executable,str(ROOT/'scripts/optimize-skills-studio.py'),str(WORK/'studio-unreduced.glb')],check=True)
     print('HD MODEL EXPORTED',flush=True)
 
 
