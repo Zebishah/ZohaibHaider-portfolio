@@ -350,10 +350,10 @@ a svg {
 }
 .hero-portrait-scene {
   position: absolute;
-  left: 17%;
-  top: 19%;
-  width: 45%;
-  height: 66%;
+  left: 23%;
+  top: calc(clamp(127.5px, 17vw, 267.75px) + 40px);
+  width: 35%;
+  height: 55%;
   z-index: 2;
 }
 .portrait-tilt {
@@ -365,18 +365,7 @@ a svg {
 .portrait-sheet {
   position: absolute;
   inset: 0;
-  clip-path: polygon(
-    0 43%,
-    13% 43%,
-    13% 29%,
-    27% 29%,
-    27% 15%,
-    42% 15%,
-    42% 0,
-    100% 0,
-    100% 87%,
-    0 100%
-  );
+  clip-path: polygon(0 12%, 14% 12%, 14% 6%, 28% 6%, 28% 0, 100% 0, 100% 87%, 0 100%);
   background: #f9f1e3;
 }
 .sheet-back {
@@ -395,7 +384,7 @@ a svg {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 50% 26%;
+  object-position: 50% 22%;
   clip-path: inherit;
 }
 .hero-platform {
@@ -1918,10 +1907,10 @@ a svg {
     font-size: 16.7vw;
   }
   .hero-portrait-scene {
-    top: 23%;
-    height: 63%;
-    left: 16%;
-    width: 47%;
+    top: calc(17.425vw + 40px);
+    height: 55%;
+    left: 23%;
+    width: 35%;
   }
   .hero-statement {
     top: 36%;

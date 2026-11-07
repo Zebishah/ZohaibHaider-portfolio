@@ -30,7 +30,6 @@ export function Hero() {
                 fetchPriority="high"
               />
             </div>
-            <span className="portrait-caption">ZOHAIB HAIDER / ENGINEERING WITH INTENT</span>
           </Tilt>
         </motion.div>
         <div className="hero-statement">
