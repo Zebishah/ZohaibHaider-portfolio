@@ -49,8 +49,14 @@ export function SkillsStudio({
       // Never deliberately lose a context during capability detection.
       const context = document
         .createElement("canvas")
-        .getContext("webgl2", { failIfMajorPerformanceCaveat: false, powerPreference: "default" });
-      setMode(context ? "webgl" : "software");
+        .getContext("webgl2", { failIfMajorPerformanceCaveat: true, powerPreference: "default" });
+      const debug = context?.getExtension("WEBGL_debug_renderer_info");
+      const renderer =
+        context && debug ? String(context.getParameter(debug.UNMASKED_RENDERER_WEBGL)) : "";
+      // CPU-backed WebGL can stall detailed frames. Use the dedicated worker instead.
+      const softwareGPU =
+        /swiftshader|llvmpipe|softpipe|software rasterizer|basic render driver/i.test(renderer);
+      setMode(context && !softwareGPU ? "webgl" : "software");
     } catch {
       setMode("software");
     }

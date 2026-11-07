@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { OrthographicCamera, Vector3 } from "three";
+import { Matrix4, OrthographicCamera, Vector3 } from "three";
 import { skillDomains } from "./skillWorld";
 import {
   cameraMatrix,
@@ -59,15 +59,14 @@ export default function SoftwareStudio(
   const state = useRef(controls),
     canvas = useRef<HTMLCanvasElement>(null),
     worker = useRef<Worker | null>(null),
-    busy = useRef(false),
     loaded = useRef(false),
     reported = useRef(false),
-    queued = useRef<any>(null),
     timer = useRef<ReturnType<typeof setTimeout> | null>(null),
     serial = useRef(0),
     generation = useRef(0);
   const [layout, setLayout] = useState<StudioLayout | null>(null),
     [hover, setHover] = useState<number | null>(null);
+  const [display, setDisplay] = useState<{ matrix: Matrix4; front: boolean } | null>(null);
   const propsRef = useRef(props);
   propsRef.current = props;
   const camera = useMemo(() => makeCamera(controls), [controls]);
@@ -76,24 +75,29 @@ export default function SoftwareStudio(
   function post(quality = false) {
     if (!loaded.current || !canvas.current) return;
     const rect = canvas.current.getBoundingClientRect();
+    const frameCamera = makeCamera(state.current);
+    const desktop = window.matchMedia("(min-width: 900px)").matches;
     const width = Math.max(
       240,
-      Math.min(quality ? 1920 : 720, rect.width * (quality ? Math.min(devicePixelRatio, 1.25) : 1)),
+      quality
+        ? desktop
+          ? 3840
+          : Math.min(1920, rect.width * Math.min(3, Math.max(2, devicePixelRatio)))
+        : Math.min(desktop ? 1440 : 960, rect.width * (desktop ? 1.1 : 1.5)),
     );
     const message = {
       type: "render",
       width: Math.round(width),
       height: Math.round(width / studioAspect),
-      matrix: cameraMatrix(makeCamera(state.current)),
+      matrix: cameraMatrix(frameCamera),
+      front: frameCamera.position.z > 0,
       quality,
       selected: propsRef.current.selected,
       serial: ++serial.current,
     };
-    if (busy.current) {
-      queued.current = message;
-      return;
-    }
-    busy.current = true;
+    canvas.current.dataset.requestSerial = String(message.serial);
+    canvas.current.dataset.quality = "pending";
+    // The worker cancels obsolete detail frames between triangle batches.
     worker.current?.postMessage(message);
   }
   sendRef.current = post;
@@ -111,6 +115,7 @@ export default function SoftwareStudio(
           type: "init",
           url: new URL(studioAsset + "studio.glb", location.href).href,
           layout: data,
+          textureSize: window.matchMedia("(min-width: 900px)").matches ? 4096 : 2048,
         });
       })
       .catch(() => propsRef.current.onUnavailable());
@@ -118,30 +123,39 @@ export default function SoftwareStudio(
       const m = event.data;
       if (m.type === "ready") {
         loaded.current = true;
+        if (canvas.current) {
+          canvas.current.dataset.modelTriangles = String(m.triangles);
+          canvas.current.dataset.lightmaps = String(m.textures);
+          canvas.current.dataset.textureSize = String(m.textureSize);
+        }
         sendRef.current(true);
       } else if (m.type === "frame") {
+        if (m.quality && m.serial < serial.current) return;
         const c = canvas.current;
         if (!c) return;
         c.width = m.width;
         c.height = m.height;
         c.dataset.frameMs = String(Math.round(m.ms));
         c.dataset.frameSerial = String(m.serial);
+        c.dataset.quality = m.quality ? "detail" : "interactive";
         c.getContext("2d")!.putImageData(new ImageData(m.pixels, m.width, m.height), 0, 0);
         // A thin frame follows real room geometry, never a flat image position.
-        const index = propsRef.current.selected,
-          camera = makeCamera(state.current),
+        const index = m.selected,
+          projection = new Matrix4().fromArray(m.matrix),
           ctx = c.getContext("2d")!;
+        // Labels and geometry must use the same completed camera frame.
+        setDisplay({ matrix: projection, front: m.front });
         const points = [
           [-2.14, 0.03],
           [2.14, 0.03],
           [2.14, 2.12],
           [-2.14, 2.12],
         ].map(([x, y]) =>
-          new Vector3(roomCenters[index] + x, roomBases[index] + y, 1.48).project(camera),
+          new Vector3(roomCenters[index] + x, roomBases[index] + y, 1.48).applyMatrix4(projection),
         );
-        if (camera.position.z > 0) {
+        if (m.front) {
           ctx.strokeStyle = "#bacf62";
-          ctx.lineWidth = 1.5;
+          ctx.lineWidth = Math.max(1.5, m.width / c.getBoundingClientRect().width);
           ctx.beginPath();
           points.forEach((p, i) => {
             const x = ((p.x + 1) * m.width) / 2,
@@ -151,16 +165,9 @@ export default function SoftwareStudio(
           ctx.closePath();
           ctx.stroke();
         }
-        if (!reported.current) {
+        if (!reported.current && m.quality) {
           reported.current = true;
           propsRef.current.onReady();
-        }
-        busy.current = false;
-        if (queued.current) {
-          const next = queued.current;
-          queued.current = null;
-          busy.current = true;
-          w.postMessage(next);
         }
       } else if (m.type === "pick") {
         if (m.click) {
@@ -189,7 +196,7 @@ export default function SoftwareStudio(
   useEffect(() => {
     sendRef.current(false);
     if (timer.current) clearTimeout(timer.current);
-    timer.current = setTimeout(() => sendRef.current(true), 180);
+    timer.current = setTimeout(() => sendRef.current(true), 350);
   }, [controls, props.selected]);
   useEffect(() => {
     const id = ++generation.current,
@@ -337,6 +344,12 @@ export default function SoftwareStudio(
     };
   }, []);
   const hovered = hover === null ? null : layout?.hotspots[hover];
+  const front = display?.front ?? camera.position.z > 0;
+  function project(point: Vector3) {
+    if (!display) return screenPoint(point, camera);
+    const p = point.clone().applyMatrix4(display.matrix);
+    return { left: `${(p.x + 1) * 50}%`, top: `${(1 - p.y) * 50}%` };
+  }
   return (
     <div
       ref={surface}
@@ -350,13 +363,13 @@ export default function SoftwareStudio(
         style={{ cursor: hovered ? "pointer" : "grab", touchAction: "none" }}
       />
       <div className="studio-preview-labels">
-        {camera.position.z > 0 &&
+        {front &&
           skillDomains.map((item, index) =>
             props.pose.room !== null && props.pose.room !== index ? null : (
               <button
                 key={item.name}
                 className={"studio-room-label" + (props.selected === index ? " is-selected" : "")}
-                style={screenPoint(roomLabel(index), camera)}
+                style={project(roomLabel(index))}
                 onClick={() => props.onSelect(index)}
                 aria-pressed={props.selected === index}
               >
@@ -366,16 +379,16 @@ export default function SoftwareStudio(
               </button>
             ),
           )}
-        {props.pose.room !== null &&
+        {front &&
+          props.pose.room !== null &&
           layout?.hotspots
             .filter((h) => h.room === props.selected)
             .map((h, index) => (
               <button
                 className="studio-object-pin"
                 key={h.tool}
-                style={screenPoint(
+                style={project(
                   new Vector3(...h.center).add(new Vector3(0, h.size[1] / 2 + 0.08, 0)),
-                  camera,
                 )}
                 onClick={() => props.onInspect(h.tool, h.room)}
                 aria-label={"Inspect " + h.tool + " object"}

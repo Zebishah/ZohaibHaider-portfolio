@@ -1,5 +1,5 @@
 import { Matrix4, OrthographicCamera, Vector3 } from "three";
-export const studioAsset = "/models/skills-studio-v2/";
+export const studioAsset = "/models/skills-studio-hd/";
 export const studioAspect = 1.5;
 export const studioWidth = 20.7;
 export const roomBases = Array.from(

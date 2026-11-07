@@ -30,10 +30,50 @@ import {
 import { createStudioEnvironment } from "./stackStudio";
 import type { StudioProps } from "./SkillsStudio";
 type Props = StudioProps & { onReady: () => void; onUnavailable: () => void };
-function Architecture(props: Props) {
+function Architecture(props: Props & { onDprChange: (dpr: number) => void }) {
   const gltf = useGLTF(studioAsset + "studio.glb", false, true);
   const model = useMemo(() => gltf.scene.clone(true), [gltf.scene]);
-  const { camera, gl, scene, invalidate } = useThree();
+  const { camera, gl, scene, invalidate, size } = useThree();
+  const detailTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const resolution = useRef({ moving: 1, detail: 1 });
+  const appliedDpr = useRef(0);
+  function applyDpr(value: number) {
+    if (Math.abs(appliedDpr.current - value) < 0.001) return;
+    appliedDpr.current = value;
+    props.onDprChange(value);
+  }
+  useEffect(() => {
+    const desktop = window.matchMedia("(min-width: 900px)").matches;
+    resolution.current = {
+      moving: Math.min(desktop ? 1920 / size.width : 1.5, 2),
+      detail: desktop ? 3840 / size.width : Math.min(2.5, 1920 / size.width),
+    };
+    appliedDpr.current = resolution.current.detail;
+    props.onDprChange(resolution.current.detail);
+    gl.domElement.dataset.quality = "detail";
+    invalidate();
+    return () => {
+      if (detailTimer.current) clearTimeout(detailTimer.current);
+    };
+  }, [size.width, props.onDprChange, gl, invalidate]);
+  function cameraMoving() {
+    applyDpr(resolution.current.moving);
+    gl.domElement.dataset.quality = "interactive";
+    if (detailTimer.current) clearTimeout(detailTimer.current);
+    detailTimer.current = setTimeout(() => {
+      applyDpr(resolution.current.detail);
+      gl.domElement.dataset.quality = "detail";
+      invalidate();
+    }, 350);
+  }
+  const annotationPortal = useMemo(
+    () => ({ current: gl.domElement.parentElement as HTMLElement }),
+    [gl],
+  );
+  const connectEvents = useThree((state) => state.events.connect);
+  useEffect(() => {
+    connectEvents?.(gl.domElement);
+  }, [connectEvents, gl]);
   const controls = useRef<OrbitControlsImpl>(null);
   const [layout, setLayout] = useState<StudioLayout | null>(null),
     [hover, setHover] = useState<number | null>(null),
@@ -50,6 +90,66 @@ function Architecture(props: Props) {
     moving: boolean;
   } | null>(null);
   const animations = useRef<{ neural?: Group; cloud?: Group; cloudY?: number }>({});
+  useEffect(() => {
+    const surface = gl.domElement.closest(".studio-renderer");
+    if (!surface) return;
+    const touches = new Map<number, { event: PointerEvent; button: boolean }>();
+    const wheel = (event: Event) => {
+      const e = event as WheelEvent;
+      if (!(e.target as HTMLElement).closest("button")) return;
+      e.preventDefault();
+      e.stopPropagation();
+      gl.domElement.dispatchEvent(
+        new WheelEvent("wheel", {
+          deltaX: e.deltaX,
+          deltaY: e.deltaY,
+          deltaMode: e.deltaMode,
+          clientX: e.clientX,
+          clientY: e.clientY,
+          ctrlKey: e.ctrlKey,
+          bubbles: true,
+          cancelable: true,
+        }),
+      );
+    };
+    const down = (event: Event) => {
+      const e = event as PointerEvent;
+      if (e.pointerType !== "touch" || !e.isTrusted) return;
+      touches.set(e.pointerId, { event: e, button: !!(e.target as HTMLElement).closest("button") });
+      if (touches.size < 2) return;
+      for (const [id, touch] of touches)
+        if (touch.button) {
+          const p = touch.event;
+          const forwarded = new PointerEvent("pointerdown", {
+            pointerId: p.pointerId,
+            pointerType: "touch",
+            clientX: p.clientX,
+            clientY: p.clientY,
+            buttons: 1,
+            isPrimary: p.isPrimary,
+            bubbles: true,
+            cancelable: true,
+          });
+          Object.defineProperties(forwarded, {
+            pageX: { value: p.pageX },
+            pageY: { value: p.pageY },
+          });
+          gl.domElement.dispatchEvent(forwarded);
+          touches.set(id, { event: p, button: false });
+        }
+    };
+    const up = (event: Event) => touches.delete((event as PointerEvent).pointerId);
+    surface.addEventListener("wheel", wheel, { capture: true, passive: false });
+    surface.addEventListener("pointerdown", down, true);
+    surface.addEventListener("pointerup", up, true);
+    surface.addEventListener("pointercancel", up, true);
+    return () => {
+      surface.removeEventListener("wheel", wheel, true);
+      surface.removeEventListener("pointerdown", down, true);
+      surface.removeEventListener("pointerup", up, true);
+      surface.removeEventListener("pointercancel", up, true);
+    };
+  }, [gl]);
   useEffect(() => {
     loadStudioLayout()
       .then(setLayout)
@@ -82,10 +182,23 @@ function Architecture(props: Props) {
       }
       if (!Array.isArray(item.material) && item.material.name.startsWith("Baked daylight")) {
         const material = item.material as MeshStandardMaterial;
+        let map = material.emissiveMap ?? material.map;
+        if (map && window.matchMedia("(max-width: 899px)").matches) {
+          const image = document.createElement("canvas");
+          image.width = image.height = 2048;
+          image.getContext("2d")!.drawImage(map.image as CanvasImageSource, 0, 0, 2048, 2048);
+          map = map.clone();
+          map.image = image;
+          map.needsUpdate = true;
+          item.userData.ownedMap = true;
+        }
         item.material = new MeshBasicMaterial({
-          map: material.emissiveMap ?? material.map,
+          map,
           side: DoubleSide,
+          toneMapped: false,
         });
+        const lightmap = (item.material as MeshBasicMaterial).map;
+        if (lightmap) lightmap.anisotropy = Math.min(16, gl.capabilities.getMaxAnisotropy());
         item.userData.ownedMaterial = true;
       }
       if (item.userData.frame !== undefined) {
@@ -112,10 +225,12 @@ function Architecture(props: Props) {
     invalidate();
     return () =>
       model.traverse((item) => {
-        if (item instanceof Mesh && item.userData.ownedMaterial)
+        if (item instanceof Mesh && item.userData.ownedMaterial) {
+          if (item.userData.ownedMap) (item.material as MeshBasicMaterial).map?.dispose();
           (item.material as MeshStandardMaterial).dispose();
+        }
       });
-  }, [model, invalidate]);
+  }, [model, invalidate, gl]);
   useEffect(() => {
     model.traverse((item) => {
       if (!(item instanceof Mesh) || item.userData.frame === undefined) return;
@@ -153,9 +268,13 @@ function Architecture(props: Props) {
   }, [props.pose, camera, invalidate]);
   useEffect(() => {
     if (!props.active) return;
-    let frame = 0;
+    let frame = 0,
+      previous = 0;
     const tick = () => {
-      invalidate();
+      if (performance.now() - previous > 32) {
+        previous = performance.now();
+        invalidate();
+      }
       frame = requestAnimationFrame(tick);
     };
     frame = requestAnimationFrame(tick);
@@ -232,6 +351,7 @@ function Architecture(props: Props) {
         skillDomains.map((item, index) =>
           props.pose.room !== null && props.pose.room !== index ? null : (
             <Html
+              portal={annotationPortal}
               key={item.name}
               position={roomLabel(index)}
               zIndexRange={[9, 1]}
@@ -258,6 +378,7 @@ function Architecture(props: Props) {
           .filter((h) => h.room === props.selected)
           .map((h, index) => (
             <Html
+              portal={annotationPortal}
               key={h.tool}
               position={new Vector3(...h.center).add(new Vector3(0, h.size[1] / 2 + 0.08, 0))}
               zIndexRange={[10, 2]}
@@ -273,7 +394,12 @@ function Architecture(props: Props) {
             </Html>
           ))}
       {hoverTool && (
-        <Html fullscreen zIndexRange={[8, 1]} style={{ pointerEvents: "none" }}>
+        <Html
+          portal={annotationPortal}
+          fullscreen
+          zIndexRange={[8, 1]}
+          style={{ pointerEvents: "none" }}
+        >
           <p className="studio-object-tooltip">
             {hoverTool}
             <span>Click the object to explore this skill ↗</span>
@@ -281,6 +407,7 @@ function Architecture(props: Props) {
         </Html>
       )}
       <OrbitControls
+        domElement={gl.domElement}
         ref={controls}
         makeDefault
         target={[0.7, 5.05, 0]}
@@ -297,8 +424,11 @@ function Architecture(props: Props) {
         zoomSpeed={0.85}
         onStart={() => {
           if (transition.current) transition.current.moving = false;
+          cameraMoving();
         }}
         onChange={() => {
+          cameraMoving();
+          gl.domElement.dataset.zoom = String((camera as OrthographicCamera).zoom);
           setFront(camera.position.z > 0);
           invalidate();
         }}
@@ -331,6 +461,7 @@ function RenderHealth({ onReady, onUnavailable }: Pick<Props, "onReady" | "onUna
 }
 
 export default function StudioModel(props: Props) {
+  const [dpr, setDpr] = useState(1);
   const camera = useMemo(
     () => studioCamera({ room: null, angle: 0, zoom: 1, serial: 0 }).camera,
     [],
@@ -338,13 +469,13 @@ export default function StudioModel(props: Props) {
   return (
     <Canvas
       camera={camera}
-      dpr={[1, 1.35]}
+      dpr={dpr}
       frameloop="demand"
       gl={{
         antialias: true,
         alpha: true,
         powerPreference: "high-performance",
-        failIfMajorPerformanceCaveat: false,
+        failIfMajorPerformanceCaveat: true,
       }}
       onCreated={({ gl }) => {
         gl.toneMapping = AgXToneMapping;
@@ -354,7 +485,7 @@ export default function StudioModel(props: Props) {
     >
       <RenderHealth onReady={props.onReady} onUnavailable={props.onUnavailable} />
       <Suspense fallback={null}>
-        <Architecture {...props} />
+        <Architecture {...props} onDprChange={setDpr} />
       </Suspense>
     </Canvas>
   );

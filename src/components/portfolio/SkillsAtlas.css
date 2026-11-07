@@ -103,6 +103,7 @@
 .studio-renderer {
   overflow: hidden;
   border-radius: 14px;
+  touch-action: none;
 }
 .studio-live-model {
   z-index: 2;

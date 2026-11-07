@@ -374,10 +374,19 @@ export function SkillsAtlas() {
         [...project.stack, ...project.tags].some((item) => item.toLowerCase().includes(keyword)),
       )
     : [];
+  const domainProjects: Record<number, string[]> = {
+    3: ["ops-pilot", "hr-intelligence"],
+    4: ["ops-pilot"],
+    5: ["ops-pilot"],
+    6: ["ops-pilot"],
+    8: ["ops-pilot", "hr-intelligence", "rta-mark"],
+    10: ["dsp"],
+    11: ["ops-pilot"],
+  };
   const related = exactProjects.length
     ? exactProjects
-    : [3, 4, 5, 6].includes(domain)
-      ? projects.filter((p) => ["ops-pilot", "hr-intelligence"].includes(p.slug))
+    : domainProjects[domain]
+      ? projects.filter((project) => domainProjects[domain].includes(project.slug))
       : projects;
   const archive = normalized ? matches : skillGroups;
 
@@ -805,7 +814,9 @@ export function SkillsAtlas() {
                 <p className="studio-detail-label">{note.label}</p>
                 <Dialog.Description>{note.description}</Dialog.Description>
                 <div className="circuit-project-links">
-                  <span>SEE IT IN THE WORK</span>
+                  <span>
+                    {exactProjects.length ? "SEE IT IN THE WORK" : "RELATED ENGINEERING WORK"}
+                  </span>
                   <div>
                     {related.map((project) => (
                       <Link key={project.slug} to="/projects/$slug" params={{ slug: project.slug }}>
