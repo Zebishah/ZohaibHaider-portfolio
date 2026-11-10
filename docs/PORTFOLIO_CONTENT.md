@@ -30,7 +30,7 @@ GitHub repository identities and access were checked using the connected GitHub 
 
 ## Content maintenance
 
-- Canonical case studies use `/projects/trace-ops`, `/projects/case-lens`, `/projects/drive-pilot`, and `/projects/dealer-flow`. Former paths permanently redirect to their renamed case studies. GitHub links use the verified renamed `Zebishah/TraceOps`, `Zebishah/CaseLens`, `Zebishah/DrivePilot`, and `Zebishah/DealerFlow` repositories. Working Vercel demo URLs are retained until replacement deployment URLs are supplied.
+- Canonical case studies use `/projects/trace-ops`, `/projects/case-lens`, `/projects/drive-pilot`, and `/projects/dealer-flow`. Former paths permanently redirect to their renamed case studies. GitHub links use the verified renamed `Zebishah/TraceOps`, `Zebishah/CaseLens`, `Zebishah/DrivePilot`, and `Zebishah/DealerFlow` repositories. Live demo links use the replacement deployments supplied by the user: `trace-ops-pearl.vercel.app`, `case-lens-amber.vercel.app`, `drive-pilot-topaz.vercel.app`, and `dealer-flow-kappa.vercel.app`.
 
 - `src/lib/projects.ts`: the four case studies, exact GitHub/live URLs, stack, capability boundaries, and interactive workflow stages.
 - `src/lib/skills.ts`: categorized, searchable tools and engineering techniques from the résumé and additional skills. The displayed total is computed, not separately hard-coded.

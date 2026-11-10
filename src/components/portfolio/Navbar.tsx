@@ -3,20 +3,18 @@ import { Menu, X, Pause, Play, ArrowUpRight } from "lucide-react";
 import { usePortfolioMotion } from "./Motion";
 import { socials } from "@/lib/socials";
 import { RoleTitle } from "./RoleTitle";
+import "./Navbar.css";
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const { enabled, toggle } = usePortfolioMotion();
   return (
-    <header className="site-header">
+    <header className="site-header reference-header">
       <nav className="nav-inner" aria-label="Main navigation">
         <a href="/" className="wordmark" aria-label="Zohaib Haider, home">
           Zohaib Haider
         </a>
         <span className="nav-role">
           <RoleTitle />
-        </span>
-        <span className="nav-line" aria-hidden="true">
-          <i />
         </span>
         <div className={`nav-links ${open ? "is-open" : ""}`} id="main-nav-links">
           {[
@@ -33,6 +31,9 @@ export function Navbar() {
             Résumé <ArrowUpRight size={15} />
           </a>
         </div>
+        <a className="nav-contact-button" href="/#contact" onClick={() => setOpen(false)}>
+          Let's Work Together <ArrowUpRight size={19} aria-hidden="true" />
+        </a>
         <button
           className="icon-button motion-toggle"
           onClick={toggle}

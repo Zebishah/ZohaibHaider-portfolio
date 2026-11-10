@@ -1,0 +1,141 @@
+.reference-header {
+  border-bottom: 1px solid #d6cebc;
+  background: #f6efe5ed;
+  color: #0c3326;
+}
+.reference-header .nav-inner {
+  width: min(88%, 1472px);
+  max-width: none;
+  height: 67px;
+  gap: 34px;
+  padding: 0;
+}
+.reference-header .wordmark {
+  font-size: 31px;
+  font-weight: 800;
+  letter-spacing: -0.065em;
+}
+.reference-header .nav-role {
+  padding-left: 34px;
+  font-size: 15px;
+  font-weight: 550;
+  line-height: 1.6;
+}
+.reference-header .nav-links {
+  gap: 41px;
+  margin-left: auto;
+  font-size: 15px;
+  font-weight: 800;
+}
+.nav-contact-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  gap: 12px;
+  min-height: 42px;
+  margin-left: 9px;
+  padding: 9px 20px;
+  border: 1px solid #48745a;
+  border-radius: 14px;
+  background: linear-gradient(115deg, #205e41, #0b3e2c);
+  box-shadow: 0 4px 6px #183c2314;
+  color: #fffef7;
+  font-size: 13px;
+  font-weight: 800;
+  transition: background 0.2s;
+}
+.nav-contact-button:hover {
+  background: #176044;
+}
+/* Keep the existing motion control available to keyboard users. */
+.reference-header .motion-toggle {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.reference-header .motion-toggle:focus {
+  top: 78px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
+  margin: 0;
+  clip-path: none;
+  background: var(--paper);
+}
+@media (max-width: 1400px) {
+  .reference-header .nav-inner {
+    gap: 24px;
+  }
+  .reference-header .nav-role {
+    padding-left: 24px;
+    font-size: 12px;
+  }
+  .reference-header .nav-links {
+    gap: 26px;
+    font-size: 13px;
+  }
+  .reference-header .wordmark {
+    font-size: 27px;
+  }
+  .nav-contact-button {
+    margin-left: 0;
+    padding-inline: 16px;
+    font-size: 12px;
+  }
+}
+@media (max-width: 1100px) {
+  .reference-header .nav-inner {
+    width: 92%;
+  }
+  .reference-header .nav-role {
+    display: none;
+  }
+}
+@media (max-width: 760px) {
+  .reference-header .nav-inner {
+    width: calc(100% - 40px);
+    height: 68px;
+    gap: 12px;
+  }
+  .reference-header .wordmark {
+    margin-right: auto;
+    font-size: 24px;
+  }
+  .reference-header .nav-links {
+    top: 67px;
+    gap: 22px;
+    margin-left: 0;
+    background: #f6f0e7;
+    font-size: 18px;
+  }
+  .nav-contact-button {
+    min-height: 35px;
+    gap: 6px;
+    padding: 7px 10px;
+    border-radius: 10px;
+    font-size: 10px;
+  }
+  .nav-contact-button svg {
+    width: 14px;
+    height: 14px;
+  }
+  .reference-header .menu-toggle {
+    width: 25px;
+    height: 32px;
+  }
+}
+@media (max-width: 380px) {
+  .reference-header .wordmark {
+    font-size: 21px;
+  }
+  .nav-contact-button {
+    max-width: 95px;
+    font-size: 9px;
+  }
+}
