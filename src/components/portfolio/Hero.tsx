@@ -1,4 +1,4 @@
-import { ArrowUpRight, Github, Linkedin, Mail, MessageCircle, Phone } from "lucide-react";
+import { ArrowUpRight, BriefcaseBusiness, Github, Layers3, Linkedin, Mail, MessageCircle, Phone } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { socials } from "@/lib/socials";
 import { usePortfolioMotion } from "./Motion";
@@ -6,10 +6,10 @@ import { RoleTitle } from "./RoleTitle";
 import { PortraitCard } from "./PortraitCard";
 import "./Hero.css";
 
-const focusAreas = ["Production platforms.", "Payment integrations.", "AI-powered features."];
+const focusAreas = ["Production Platforms.", "Payment Integrations.", "Intelligent AI Systems."];
 const coreStack = [
   "React / Next.js",
-  "JavaScript / TypeScript",
+  "TypeScript",
   "Node.js / NestJS",
   "Python / FastAPI",
   "PostgreSQL / MongoDB",
@@ -89,6 +89,7 @@ export function Hero() {
         </div>
       </div>
       <div className="hero-intro-grid">
+        <div className="hero-specialty"><Layers3 size={18} aria-hidden="true" /><span>FULL-STACK &amp; AI ENGINEER</span></div>
         <h1
           className="hero-intro-title"
           id="hero-title"
@@ -111,33 +112,38 @@ export function Hero() {
             </p>
           </div>
           <p className="hero-intro-description">
-            Full Stack Software Engineer with 2+ years of experience building and shipping 12+
-            production applications. I specialize in secure web platforms, dashboards, and payment
-            integrations, with experience implementing LLM integrations and workflow automations in
-            professional projects. Recently, I’ve expanded into AI systems by building RAG
-            assistants and LangGraph agents with human-in-the-loop workflows. I work across the full
-            lifecycle — architecture, development, testing, deployment, and production support.
+            Full-Stack &amp; AI Software Engineer with 2+ years of experience delivering 12+
+            production-grade applications. I build modern frontends, scalable backends, secure
+            APIs, payment systems, and third-party integrations. My expertise includes AI/LLM
+            integrations, RAG, LangChain, LangGraph agents, MCP, human-in-the-loop workflows, and
+            LLM fine-tuning. From architecture and testing to cloud deployment, I deliver
+            reliable, scalable, end-to-end software solutions.
           </p>
           <div className="hero-action-slot">
             <div className="hero-actions hero-intro-actions">
               <a className="button button-green" href="#work">
-                Explore my work <ArrowUpRight size={22} />
+                Explore My Work <ArrowUpRight size={20} />
               </a>
               <a className="text-link" href={socials.resume} target="_blank" rel="noreferrer">
-                View résumé <ArrowUpRight size={19} />
+                View Resume <ArrowUpRight size={19} />
               </a>
             </div>
           </div>
-          <div className="hero-core-stack">
-            <span className="hero-strip-label">Core stack</span>
-            <ul aria-label="Selected core technologies">
-              {coreStack.map((technology) => (
-                <li key={technology}>{technology}</li>
-              ))}
-            </ul>
+          <div className="hero-proof" aria-label="Professional experience highlights">
+            <div className="hero-proof-item"><Layers3 size={24} aria-hidden="true" /><strong>12+</strong><span>Apps Shipped</span></div>
+            <div className="hero-proof-item"><BriefcaseBusiness size={24} aria-hidden="true" /><strong>2+</strong><span>Years Experience</span></div>
           </div>
         </div>
         <PortraitCard className="hero-profile" priority availability />
+        <div className="hero-core-stack">
+          <span className="hero-strip-label">Core stack</span>
+          <ul aria-label="Selected core technologies">
+            {coreStack.map((technology) => (
+              <li key={technology}>{technology}</li>
+            ))}
+          </ul>
+        </div>
+
       </div>
     </section>
   );
