@@ -1,3 +1,4 @@
+import { projectCaseStudies } from "./projectCaseStudies";
 import { getArchitectureFlow } from "./projectArchitectures";
 import { getProjectStack, projectStacks, type ProjectStackGroup } from "./projectStacks";
 
@@ -32,8 +33,7 @@ export const projects: Project[] = [
     shortTitle: "Trace Ops",
     category: "Agentic AI · Operations",
     tagline: "From operational incident to evidence-backed action.",
-    overview:
-      "A multi-tenant AI platform that investigates incidents using company knowledge and live business data. Stateful agents retrieve evidence, inspect operational records, recommend actions, pause for human approval, and verify execution before recording incident memory.",
+    overview: projectCaseStudies["trace-ops"].card.overview,
     role: "Full-stack AI engineering across FastAPI services, LangGraph orchestration, retrieval, operational tools, approvals, voice interfaces, the frontend, and an isolated classifier fine-tuning pipeline.",
     tags: ["LangGraph", "FastAPI", "RAG", "Qdrant", "Human-in-the-loop"],
     stack: getProjectStack("trace-ops"),
@@ -51,8 +51,7 @@ export const projects: Project[] = [
       "One investigation graph connects retrieval, live tools, explicit approval, verified execution, and reusable incident memory.",
     engineering:
       "The model reasons about evidence; deterministic logic validates transactions, amounts, authorization, idempotency, and execution outcomes.",
-    impact:
-      "Connects investigation and controlled execution in an auditable workflow, with tenant boundaries and recovery paths built into the backend.",
+    impact: projectCaseStudies["trace-ops"].card.impact,
     note: "Active development. The fine-tuning pipeline is implemented; no production model-quality or customer-scale results are claimed. Voice features depend on configuration.",
     github: "https://github.com/Zebishah/TraceOps",
     demo: "https://trace-ops-pearl.vercel.app/",
@@ -66,8 +65,7 @@ export const projects: Project[] = [
     shortTitle: "Case Lens",
     category: "Applied AI · HR Operations",
     tagline: "The right employee context. Inside the conversation.",
-    overview:
-      "An Intercom-integrated HR case intelligence platform that identifies employees, classifies cases, surfaces related histories, and recommends stakeholders inside the support workflow, with a separate operations dashboard for review.",
+    overview: projectCaseStudies["case-lens"].card.overview,
     role: "Full-stack development across the Next.js dashboard, TypeScript API, Intercom Canvas and webhooks, Gemini intelligence, Box directory sync, durable ingestion, and background processing.",
     tags: ["Next.js", "Gemini", "Intercom", "PostgreSQL", "Apify"],
     stack: getProjectStack("case-lens"),
@@ -85,8 +83,7 @@ export const projects: Project[] = [
       "Resolve identity, gather related evidence, and bring useful recommendations directly into Intercom Inbox.",
     engineering:
       "Durable webhook ingestion and revision-aware processing prevent repeated events and older analyses from silently overwriting newer context.",
-    impact:
-      "Connects identity resolution, related-case evidence, and stakeholder routing to the agent's existing workflow, with human review and traceable processing.",
+    impact: projectCaseStudies["case-lens"].card.impact,
     note: "The public walkthrough uses synthetic reviewer data. Apify is the active deployment path; BullMQ is a supported alternative architecture.",
     github: "https://github.com/Zebishah/CaseLens",
     demo: "https://case-lens-amber.vercel.app/",
@@ -100,8 +97,7 @@ export const projects: Project[] = [
     shortTitle: "Drive Pilot",
     category: "Full-stack · Marketplace & Payments",
     tagline: "A lesson marketplace with a serious payment engine.",
-    overview:
-      "An end-to-end driving lesson marketplace connecting students, instructors, and administrators. Instructor discovery, timezone-aware booking, real-time messaging, learning progress, and document verification meet a complete Stripe payment lifecycle.",
+    overview: projectCaseStudies["drive-pilot"].card.overview,
     role: "Full-stack engineering across role-based dashboards, GraphQL APIs, scheduling, messaging, Stripe checkout and Connect payouts, refund consistency, and background processing.",
     tags: ["React", "GraphQL", "Stripe Connect", "MongoDB", "Redis"],
     stack: getProjectStack("drive-pilot"),
@@ -119,8 +115,7 @@ export const projects: Project[] = [
       "A complete marketplace built around explicit booking transitions, scoped APIs, durable events, and a carefully guarded Stripe lifecycle.",
     engineering:
       "Financial-operation records, webhook deduplication, reconciliation, and transactional outbox processing address duplicate delivery and partial failures.",
-    impact:
-      "Connects the customer booking experience to dependable payment and instructor workflows, including refund and payout handling.",
+    impact: projectCaseStudies["drive-pilot"].card.impact,
     note: "The public demo shows the product experience. Payment capabilities describe implemented integration paths, not claims of public transaction volume.",
     github: "https://github.com/Zebishah/DrivePilot",
     demo: "https://drive-pilot-topaz.vercel.app/",
@@ -134,8 +129,7 @@ export const projects: Project[] = [
     shortTitle: "Dealer Flow",
     category: "Full-stack · Automotive Intelligence",
     tagline: "Dealership operations, connected to vehicle intelligence.",
-    overview:
-      "An automotive sales CRM and vehicle-intelligence platform combining leads, appointments, follow-ups, deals, commissions, analytics, inventory comparisons, and a role-aware AI assistant.",
+    overview: projectCaseStudies["dealer-flow"].card.overview,
     role: "Full-stack engineering across dealership workflows, React interfaces, typed APIs, PostgreSQL data models, vehicle acquisition, AI tools, and asynchronous ingestion architectures.",
     tags: ["React", "PostgreSQL", "Apify", "Puppeteer", "AI Tools"],
     stack: getProjectStack("dealer-flow"),
@@ -153,9 +147,8 @@ export const projects: Project[] = [
       "Separate operational APIs from on-demand acquisition, and ground the assistant in authorized persisted records.",
     engineering:
       "PostgreSQL enforces listing identity and run idempotency. Redis stays ephemeral; typed adapters and bounded AI tools preserve application boundaries.",
-    impact:
-      "Connects CRM operations, inventory acquisition, and explainable assistance while keeping long-running scraping outside interactive requests.",
-    note: "Reviewed from portfolio-hardening. The current demo uses Apify; SQS/Lambda and BullMQ/Azure are retained earlier paths, separate from the active runtime.",
+    impact: projectCaseStudies["dealer-flow"].card.impact,
+    note: "Current main-branch architecture uses Apify, Neon, and ephemeral Upstash Redis. SQS/Lambda and BullMQ/Azure remain retained reference paths.",
     github: "https://github.com/Zebishah/DealerFlow",
     demo: "https://dealer-flow-kappa.vercel.app/",
     accent: ["#e9ddcb", "#634e30"],

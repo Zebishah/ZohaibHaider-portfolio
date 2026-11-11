@@ -116,6 +116,11 @@ import {
   SiSupabase,
   SiFirebase,
   SiDrizzle,
+  SiApachekafka,
+  SiRabbitmq,
+  SiSentry,
+  SiSelenium,
+  SiCheerio,
 } from "react-icons/si";
 import type { IconType } from "react-icons";
 import { skillGroups, totalSkills } from "@/lib/skills";
@@ -191,6 +196,21 @@ const profiles: Record<SkillGroup["name"], { icon: LucideIcon; description: stri
     description:
       "Design for duplicate events, interrupted jobs, concurrent requests, and recovery. The important work beyond the happy path.",
   },
+  "Distributed systems & messaging": {
+    icon: Workflow,
+    description:
+      "Queues, brokers, events, and durable background work, with idempotency, coordination, retries, and recovery across services.",
+  },
+  "Observability & debugging": {
+    icon: ChartNoAxesCombined,
+    description:
+      "Application logging, error tracking, and Sentry integrations that make failures visible and help trace their causes.",
+  },
+  "Methodologies & practices": {
+    icon: UserRoundCheck,
+    description:
+      "Iterative delivery, test-driven development, code review, and collaborative engineering supported by a consistent Git workflow.",
+  },
   "Cloud & deployment": {
     icon: Cloud,
     description:
@@ -215,6 +235,9 @@ const toolIcons: Record<string, IconType | LucideIcon> = {
   QLoRA: Cpu,
   React: SiReact,
   "Next.js": SiNextdotjs,
+  "Next.js App Router": SiNextdotjs,
+  "React Server Components": SiReact,
+  "Next.js Server Actions": SiNextdotjs,
   Python: SiPython,
   TypeScript: SiTypescript,
   "JavaScript (ES6+)": SiJavascript,
@@ -296,6 +319,17 @@ const toolIcons: Record<string, IconType | LucideIcon> = {
   Supabase: SiSupabase,
   Firebase: SiFirebase,
   "Drizzle ORM": SiDrizzle,
+  Zustand: Layers3,
+  RabbitMQ: SiRabbitmq,
+  Kafka: SiApachekafka,
+  Sentry: SiSentry,
+  Selenium: SiSelenium,
+  Cheerio: SiCheerio,
+  "Oracle Cloud": Cloud,
+  "Git Flow": GitBranch,
+  "Code Review": UserRoundCheck,
+  "Pair Programming": UserRoundCheck,
+  "Test-Driven Development (TDD)": FlaskConical,
 };
 
 function SkillItems({ items }: { items: readonly string[] }) {

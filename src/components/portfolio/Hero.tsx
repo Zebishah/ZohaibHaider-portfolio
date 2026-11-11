@@ -1,41 +1,22 @@
 import {
   ArrowUpRight,
   Calendar,
-  Database,
   Download,
   Layers3,
   Mail,
   MapPin,
-  Network,
   Phone,
   Rocket,
 } from "lucide-react";
-import { FaAws, FaLinkedinIn } from "react-icons/fa6";
-import {
-  SiGithub,
-  SiNodedotjs,
-  SiPython,
-  SiReact,
-  SiRedis,
-  SiStripe,
-  SiTypescript,
-  SiWhatsapp,
-} from "react-icons/si";
+import { FaLinkedinIn } from "react-icons/fa6";
+import { SiGithub, SiWhatsapp } from "react-icons/si";
+import { useRef } from "react";
+import { useInView } from "framer-motion";
 import { socials } from "@/lib/socials";
-import { PortraitCard } from "./PortraitCard";
+import { HeroAtmosphere } from "./HeroAtmosphere";
+import { HeroPortrait } from "./HeroPortrait";
+import { HeroStack } from "./HeroStack";
 import "./Hero.css";
-
-const coreStack = [
-  { label: "React / Next.js", icon: SiReact, color: "#00b9ed" },
-  { label: "TypeScript", icon: SiTypescript, color: "#087fc8" },
-  { label: "Node.js / NestJS", icon: SiNodedotjs, color: "#68a82e" },
-  { label: "Python / FastAPI", icon: SiPython, color: "#2586b9" },
-  { label: "PostgreSQL / MongoDB", icon: Database, color: "#07503a" },
-  { label: "Redis / BullMQ", icon: SiRedis, color: "#cf3425" },
-  { label: "Stripe / Payments", icon: SiStripe, color: "#7960ff" },
-  { label: "AWS / Docker", icon: FaAws, color: "#25313c" },
-  { label: "RAG / LangGraph", icon: Network, color: "#174c37" },
-];
 
 function HeroBackdrop() {
   return (
@@ -88,14 +69,40 @@ function HeroBackdrop() {
           />
         ))}
       </g>
+      <g
+        className="hero-contour-flow"
+        fill="none"
+        stroke="#d6edaa"
+        strokeWidth="1.6"
+        opacity="0.55"
+      >
+        {[0, 40].map((offset) => (
+          <path
+            key={offset}
+            d="M1010 899C1307 829 1419 585 1679 472"
+            transform={`translate(0 ${offset})`}
+          />
+        ))}
+      </g>
+      <g className="hero-contour-sparks" fill="none" stroke="#e1f4b3" strokeWidth="3" opacity="0.8">
+        <path d="M1010 919C1307 849 1419 605 1679 492" />
+      </g>
     </svg>
   );
 }
 
 export function Hero() {
+  const ref = useRef<HTMLElement>(null);
+  const inView = useInView(ref, { margin: "120px" });
   return (
-    <section className="hero hero-intro" aria-labelledby="hero-title">
+    <section
+      className="hero hero-intro"
+      aria-labelledby="hero-title"
+      ref={ref}
+      data-in-view={inView}
+    >
       <HeroBackdrop />
+      <HeroAtmosphere />
       <div className="hero-content">
         <div className="hero-contact-bar" role="group" aria-label="Contact and social links">
           <div className="hero-direct-contacts">
@@ -176,21 +183,9 @@ export function Hero() {
               </div>
             </div>
           </div>
-          <PortraitCard className="hero-profile" priority availability />
+          <HeroPortrait />
         </div>
-        <div className="hero-core-stack">
-          <span className="hero-strip-label">
-            <Layers3 size={22} aria-hidden="true" /> CORE STACK
-          </span>
-          <ul aria-label="Selected core technologies">
-            {coreStack.map(({ label, icon: Icon, color }) => (
-              <li key={label}>
-                <Icon size={22} color={color} aria-hidden="true" />
-                <span>{label}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <HeroStack />
       </div>
     </section>
   );

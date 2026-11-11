@@ -1,29 +1,81 @@
 import { Link } from "@tanstack/react-router";
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowUpRight, ArrowDownRight, Github } from "lucide-react";
+import { useRef, useState, type KeyboardEvent } from "react";
+import { ArrowUpRight, ArrowDownRight, Code2, Github, Layers3 } from "lucide-react";
 import { projects, type Project } from "@/lib/projects";
 import { Reveal } from "./Reveal";
 import { Tilt } from "./Tilt";
-import { usePortfolioMotion } from "./Motion";
 import { ProjectTechStack } from "./ProjectTechStack";
-function ProjectCard({ project, index }: { project: Project; index: number }) {
-  const ref = useRef<HTMLElement>(null);
-  const { enabled } = usePortfolioMotion();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const scale = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.96, 1, 1, 0.98]);
-  const rotateX = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [5, 0, 0, -2]);
+import { projectCaseStudies } from "@/lib/projectCaseStudies";
+import "./ProjectsGrid.css";
+function ProjectStory({ project }: { project: Project }) {
+  const [selected, setSelected] = useState(0);
+  const refs = useRef<(HTMLButtonElement | null)[]>([]);
+  const tabs = [
+    { label: "Overview", key: "overview" },
+    { label: "My work", key: "build" },
+    { label: "Impact", key: "impact" },
+  ] as const;
+  function navigate(event: KeyboardEvent<HTMLButtonElement>, index: number) {
+    const next =
+      event.key === "ArrowRight"
+        ? (index + 1) % tabs.length
+        : event.key === "ArrowLeft"
+          ? (index + tabs.length - 1) % tabs.length
+          : event.key === "Home"
+            ? 0
+            : event.key === "End"
+              ? tabs.length - 1
+              : null;
+    if (next === null) return;
+    event.preventDefault();
+    setSelected(next);
+    refs.current[next]?.focus();
+  }
   return (
-    <motion.article
-      ref={ref}
+    <div className="project-story">
+      <div
+        className="project-story-tabs"
+        role="tablist"
+        aria-label={`${project.title} project details`}
+      >
+        {tabs.map((tab, index) => (
+          <button
+            type="button"
+            role="tab"
+            key={tab.key}
+            id={`${project.slug}-story-${tab.key}`}
+            aria-controls={`${project.slug}-story-panel`}
+            aria-selected={selected === index}
+            tabIndex={selected === index ? 0 : -1}
+            ref={(element) => {
+              refs.current[index] = element;
+            }}
+            onClick={() => setSelected(index)}
+            onKeyDown={(event) => navigate(event, index)}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+      <div
+        className="project-story-panel"
+        id={`${project.slug}-story-panel`}
+        role="tabpanel"
+        aria-labelledby={`${project.slug}-story-${tabs[selected].key}`}
+        tabIndex={0}
+      >
+        <p>{projectCaseStudies[project.slug].card[tabs[selected].key]}</p>
+      </div>
+    </div>
+  );
+}
+
+function ProjectCard({ project, index }: { project: Project; index: number }) {
+  const study = projectCaseStudies[project.slug];
+  return (
+    <article
       className={`project-card project-${project.slug}`}
-      style={{
-        top: `${92 + index * 12}px`,
-        zIndex: index + 1,
-        scale: enabled ? scale : 1,
-        rotateX: enabled ? rotateX : 0,
-        transformPerspective: 1400,
-      }}
+      style={{ top: `${92 + index * 12}px`, zIndex: index + 1 }}
     >
       <div
         className="project-visual"
@@ -64,13 +116,21 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
           <span>SELECTED WORK</span>
           <strong>
             0{index + 1}
-            <small>/ 04</small>
+            <small>/ {String(projects.length).padStart(2, "0")}</small>
           </strong>
         </div>
         <span className="eyebrow">{project.category}</span>
         <h3>{project.title}</h3>
         <p className="project-tagline">{project.tagline}</p>
-        <p className="project-description">{project.overview}</p>
+        <ProjectStory project={project} />
+        <div className="project-build-meta">
+          <span>
+            <Code2 size={13} aria-hidden="true" /> Full-stack engineering
+          </span>
+          <span>
+            <Layers3 size={13} aria-hidden="true" /> {study.capabilities.length} product areas
+          </span>
+        </div>
         <ProjectTechStack project={project} />
         <div className="project-links">
           <Link
@@ -78,7 +138,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             to="/projects/$slug"
             params={{ slug: project.slug }}
           >
-            Inside the build <ArrowUpRight size={18} />
+            Read full case study <ArrowUpRight size={18} />
           </Link>
           <a className="text-link" href={project.demo} target="_blank" rel="noreferrer">
             Live demo <ArrowUpRight size={16} />
@@ -94,7 +154,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
           </a>
         </div>
       </div>
-    </motion.article>
+    </article>
   );
 }
 export function ProjectsGrid() {

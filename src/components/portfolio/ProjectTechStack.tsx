@@ -46,6 +46,9 @@ function StackGroups({ groups }: { groups: ProjectStackGroup[] }) {
             <h4>
               <Icon size={13} aria-hidden="true" />
               {group.title}
+              {group.reference && (
+                <small className="project-tech-reference">Alternative path</small>
+              )}
               <span>{group.items.length}</span>
             </h4>
             {group.note && <p>{group.note}</p>}
@@ -98,7 +101,9 @@ export function ProjectTechStack({ project, full = false }: { project: Project; 
           <h4 id={`project-stack-${project.slug}`}>
             <Layers3 size={13} /> THE FULL STACK
           </h4>
-          <span>{project.stack.length} tools & techniques</span>
+          <span>
+            {project.stack.length} tools · {project.stackGroups.length} layers
+          </span>
         </div>
         <div
           className="project-tech-window"

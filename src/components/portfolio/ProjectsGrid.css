@@ -1,0 +1,212 @@
+.project-card .project-copy {
+  padding: clamp(23px, 2.2vw, 33px);
+}
+.project-card .project-number {
+  align-items: center;
+  padding-bottom: 13px;
+  margin-bottom: 17px;
+}
+.project-card .project-number > span {
+  font-size: 8px;
+  font-weight: 750;
+  color: #7a8c6a;
+}
+.project-card .project-number > strong {
+  font-size: 29px;
+  color: #365b3b;
+}
+.project-card .project-copy > .eyebrow {
+  font-size: 8px;
+  letter-spacing: 0.08em;
+}
+.project-card .project-copy > h3 {
+  margin: 9px 0 11px;
+  font-size: clamp(30px, 2.7vw, 40px);
+}
+.project-card .project-tagline {
+  font-size: clamp(16px, 1.25vw, 19px);
+  margin-bottom: 17px;
+}
+.project-story {
+  width: 100%;
+  min-width: 0;
+}
+.project-story-tabs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  border: 1px solid #cdd4bd;
+  border-radius: 9px;
+  background: #edeedc;
+}
+.project-story-tabs > button {
+  flex: 1;
+  min-width: 0;
+  min-height: 31px;
+  padding: 6px 9px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: #6c8055;
+  font-size: 10px;
+  font-weight: 750;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.project-story-tabs > button:hover {
+  background: #e2e8cd;
+}
+.project-story-tabs > button[aria-selected="true"] {
+  border-color: #cbd5b7;
+  background: #fffdf4;
+  color: #244f32;
+  box-shadow: 0 2px 3px #26482a0b;
+}
+.project-story-panel {
+  min-height: 99px;
+  padding: 13px 1px 0;
+}
+.project-story-panel > p {
+  color: #617456;
+  font-size: 12px;
+  line-height: 1.85;
+}
+.project-build-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 17px;
+  width: 100%;
+  margin-top: 11px;
+  color: #829368;
+}
+.project-build-meta > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 8px;
+  font-weight: 650;
+}
+.project-card .project-tech-stack {
+  margin-block: 17px 19px;
+  border-radius: 13px;
+  box-shadow: inset 0 1px 0 #fff9;
+}
+.project-card .project-tech-heading {
+  padding: 11px 13px;
+}
+.project-card .project-tech-heading h4 {
+  font-size: 9px;
+}
+.project-card .project-tech-heading > span {
+  font-size: 8px;
+}
+.project-card .project-tech-window {
+  max-height: clamp(145px, 21svh, 205px);
+}
+.project-card .project-tech-group li {
+  font-size: 10px;
+  padding: 4px 7px;
+}
+.project-card .project-tech-group h4 {
+  font-size: 10px;
+}
+.project-card .project-links {
+  gap: 15px;
+  padding-top: 0;
+}
+.project-card .project-links .button {
+  border-radius: 11px;
+  font-size: 10px;
+  padding: 12px 16px;
+  gap: 10px;
+}
+.project-card .project-links .text-link {
+  font-size: 10px;
+}
+.project-card .project-source {
+  margin-left: auto;
+  color: #788b63;
+  font-size: 8px;
+}
+.project-tech-reference {
+  margin-left: 3px;
+  padding: 2px 5px;
+  border: 1px solid #c9ba9766;
+  border-radius: 4px;
+  background: #e8ddc744;
+  color: #8b714b;
+  font-size: 7px;
+  font-weight: 650;
+}
+.project-story-tabs > button:focus-visible,
+.project-story-panel:focus-visible {
+  outline: 2px solid #90aa5e;
+  outline-offset: 3px;
+}
+@media (max-height: 900px) {
+  .project-card {
+    position: relative;
+    top: 0 !important;
+  }
+}
+@media (max-width: 1100px) {
+  .project-card .project-copy {
+    padding: 23px;
+  }
+  .project-card .project-copy > h3 {
+    font-size: 32px;
+  }
+  .project-card .project-tagline {
+    font-size: 16px;
+  }
+  .project-story-panel {
+    min-height: 122px;
+  }
+  .project-story-panel > p {
+    font-size: 11px;
+  }
+  .project-card .project-links {
+    gap: 11px;
+  }
+  .project-card .project-source {
+    margin-left: 0;
+  }
+}
+@media (max-width: 760px) {
+  .project-card .project-copy {
+    padding: 24px;
+  }
+  .project-story-panel {
+    min-height: 135px;
+  }
+  .project-story-panel > p {
+    font-size: 12px;
+  }
+  .project-card .project-tech-window {
+    max-height: 230px;
+  }
+  .project-card .project-links {
+    gap: 15px;
+  }
+  .project-card .project-source {
+    margin-left: auto;
+  }
+  .project-card .project-links .button {
+    font-size: 10px;
+  }
+  .project-card .project-copy > h3 {
+    font-size: 35px;
+  }
+}
+@media (max-width: 380px) {
+  .project-card .project-copy {
+    padding: 20px;
+  }
+  .project-card .project-source {
+    margin-left: 0;
+  }
+  .project-card .project-links {
+    row-gap: 14px;
+  }
+}

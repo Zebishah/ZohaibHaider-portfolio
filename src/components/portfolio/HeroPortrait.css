@@ -1,0 +1,188 @@
+@property --portrait-light-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+.hero-portrait-stage {
+  position: relative;
+  min-width: 0;
+}
+.hero-portrait-aura {
+  position: absolute;
+  z-index: -1;
+  inset: -36px -40px -45px;
+  border-radius: 45%;
+  background: radial-gradient(ellipse, #c4d5684d, #41744a1a 50%, transparent 72%);
+  animation: hero-portrait-breathe 8s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+.hero-portrait-effects {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+.hero-portrait-rim,
+.hero-portrait-sheen,
+.hero-portrait-spotlight {
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  pointer-events: none;
+}
+.hero-portrait-rim {
+  inset: -1px;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--portrait-light-angle),
+    transparent 0% 58%,
+    #c5e78088 66%,
+    #f3ffd8 73%,
+    #b8d47088 80%,
+    transparent 88%
+  );
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  transform: translateZ(2px);
+  animation: hero-portrait-border 9s linear infinite;
+}
+.hero-portrait-sheen {
+  overflow: hidden;
+  padding: 2px;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    #f5ffdc00 40%,
+    #f5ffdc26 49%,
+    #fff9 50%,
+    #f5ffdc1a 51%,
+    transparent 60%
+  );
+  background-size: 300% 100%;
+  opacity: 0.3;
+  mix-blend-mode: screen;
+  transform: translateZ(3px);
+  animation: hero-portrait-sheen 10s ease-in-out infinite;
+}
+.hero-portrait-spotlight {
+  padding: 2px;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  transform: translateZ(4px);
+  mix-blend-mode: screen;
+}
+.hero-portrait-tag {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 35px;
+  padding: 8px 12px;
+  border: 1px solid #e7eed2a6;
+  border-radius: 11px;
+  background: linear-gradient(130deg, #fffef6f5, #e8eed9ed);
+  box-shadow:
+    0 3px 0 #849b6d61,
+    0 10px 20px #0c332623,
+    inset 0 1px 0 #fff;
+  color: #194a34;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.4;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translateZ(45px);
+  animation: hero-portrait-tag-float 6s ease-in-out infinite;
+}
+.hero-portrait-tag > svg {
+  color: #396d43;
+}
+.hero-portrait-tag > i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #9fbc48;
+  box-shadow: 0 0 7px #9fbc4855;
+}
+.hero-portrait-tag-code {
+  top: 18%;
+  left: -34px;
+}
+.hero-portrait-tag-ai {
+  right: -29px;
+  bottom: 33%;
+  animation-delay: -3s;
+}
+@keyframes hero-portrait-breathe {
+  to {
+    opacity: 0.5;
+    transform: scale(1.08) translateY(-8px);
+  }
+}
+@keyframes hero-portrait-border {
+  to {
+    --portrait-light-angle: 360deg;
+  }
+}
+@keyframes hero-portrait-sheen {
+  0%,
+  18% {
+    background-position: 140% 0;
+  }
+  55%,
+  100% {
+    background-position: -40% 0;
+  }
+}
+@keyframes hero-portrait-tag-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 45px);
+  }
+  50% {
+    transform: translate3d(0, -6px, 55px);
+  }
+}
+@media (max-width: 1100px) {
+  .hero-portrait-tag {
+    gap: 6px;
+    padding: 7px 9px;
+    font-size: 9px;
+  }
+  .hero-portrait-tag-code {
+    left: -17px;
+  }
+  .hero-portrait-tag-ai {
+    right: -15px;
+  }
+}
+@media (max-width: 760px) {
+  .hero-portrait-stage {
+    justify-self: center;
+    width: min(100% - 12px, 440px);
+    margin-right: 12px;
+  }
+  .hero-intro .hero-portrait-stage .hero-profile {
+    width: 100%;
+    margin: 0;
+  }
+  .hero-portrait-tag {
+    font-size: 10px;
+  }
+  .hero-portrait-tag-code {
+    top: 15%;
+    left: -11px;
+  }
+  .hero-portrait-tag-ai {
+    right: -12px;
+    bottom: 35%;
+  }
+}

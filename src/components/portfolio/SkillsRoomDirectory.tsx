@@ -11,11 +11,11 @@ const roomNotes = [
   "Retrieval, embeddings & knowledge",
   "Training, adaptation & evaluation",
   "Speech, audio & conversation",
-  "Infrastructure, containers & delivery",
+  "Infrastructure, delivery & observability",
   "Workflows, events & integrations",
-  "Testing, validation & confidence",
+  "Testing, code review & team practices",
   "Payments, subscriptions & payouts",
-  "Identity, permissions & reliability",
+  "Security, architecture & messaging",
 ];
 
 export function SkillsRoomDirectory({

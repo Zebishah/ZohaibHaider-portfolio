@@ -6,6 +6,7 @@ This implementation uses the user's résumé, additional skills, personal-projec
 
 - Supplied `Zohaib_Haider_Resume.pdf`: Jidat IT role and dates, 12+ commercial applications, 4+ payment-integrated applications, education, CGPA, and the software/cloud stack. The downloadable file is an unchanged copy at `public/resume.pdf`.
 - User's portfolio brief: 16–18 total projects, additional applied-AI skills, four featured repositories, contact details, and the selected cream/forest-green hero direction. The public statistic uses the conservative **16+ total projects**; commercial work is described separately.
+- User-supplied Technical Skills inventory: additional Next.js rendering features, state management, database techniques, messaging, architecture, cloud, observability, scraping, and development practices. These entries populate the categorized All Skills index, room inventories, and scrolling skills list from the shared skills data; equivalent existing names are retained rather than duplicated.
 - [Trace Ops](https://github.com/Zebishah/TraceOps): dependency manifests; incident workflow graph; operational and approval services; fine-tuning modules; tests; project-knowledge documents; voice/fine-tuning implementation notes. The initial README labels many capabilities as planned, so descriptions were checked against the implementation and later documentation.
 - [Case Lens](https://github.com/Zebishah/CaseLens): README, Intercom/identity/intelligence modules, processing code, dependency manifests, and `docs/RECRUITER_EVIDENCE.md`.
 - [Drive Pilot](https://github.com/Zebishah/DrivePilot): manifests, architecture and payment documentation, booking state-machine code, financial/outbox/cache services, and their test structure.
@@ -32,10 +33,12 @@ GitHub repository identities and access were checked using the connected GitHub 
 
 - Canonical case studies use `/projects/trace-ops`, `/projects/case-lens`, `/projects/drive-pilot`, and `/projects/dealer-flow`. Former paths permanently redirect to their renamed case studies. GitHub links use the verified renamed `Zebishah/TraceOps`, `Zebishah/CaseLens`, `Zebishah/DrivePilot`, and `Zebishah/DealerFlow` repositories. Live demo links use the replacement deployments supplied by the user: `trace-ops-pearl.vercel.app`, `case-lens-amber.vercel.app`, `drive-pilot-topaz.vercel.app`, and `dealer-flow-kappa.vercel.app`.
 
-- `src/lib/projects.ts`: the four case studies, exact GitHub/live URLs, stack, capability boundaries, and interactive workflow stages.
+- `src/lib/projects.ts`: canonical project metadata, exact GitHub/live URLs, stack, and interactive workflow stages.
+- `src/lib/projectCaseStudies.ts`: expanded case-study content and shared card summaries for all four projects, based on the repository review recorded in `docs/project-case-study-sources.md`. Detailed pages include the complete workflow maps and stack inventories, with commit-pinned implementation references.
 - `src/lib/skills.ts`: categorized, searchable tools and engineering techniques from the résumé and additional skills. The displayed total is computed, not separately hard-coded.
 - `src/lib/socials.ts`: portrait, résumé, email, phone, WhatsApp, GitHub, and LinkedIn destinations.
 - `src/components/portfolio/Experience.tsx`: résumé employment and education dates.
+- `src/components/portfolio/About.tsx`: the profile, education, and experience statistics. The 16+ total projects include commercial and personal work; the 12+ commercial applications and 4+ payment-integrated applications are separate résumé-backed counts. The engineering explorer links each focus area to an existing case study, and its case-study total is computed from `projects`.
 
 ## Motion references
 

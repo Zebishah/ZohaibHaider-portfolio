@@ -165,8 +165,15 @@ export const skillDomains = [
   domain(
     "Cloud & DevOps",
     Cloud,
-    "Cloud infrastructure, containers, deployments, build tooling, version control, and continuous delivery.",
-    [...group("Cloud & deployment"), ...group("Build & developer tools"), "Bash"],
+    "Cloud infrastructure, containers, deployments, observability, build tooling, version control, and continuous delivery.",
+    [
+      ...group("Cloud & deployment"),
+      ...group("Build & developer tools"),
+      ...group("Observability & debugging"),
+      "AWS SQS",
+      "Git Flow",
+      "Bash",
+    ],
     [
       "Docker",
       "AWS Lambda",
@@ -188,8 +195,11 @@ export const skillDomains = [
   domain(
     "Testing & Quality",
     FlaskConical,
-    "Unit, integration, regression, and end-to-end tests, supported by static analysis and API verification.",
-    group("Testing & quality"),
+    "Testing, static analysis, code review, and collaborative development practices that support dependable software delivery.",
+    [
+      ...group("Testing & quality"),
+      ...group("Methodologies & practices").filter((item) => item !== "Git Flow"),
+    ],
     [
       "pytest",
       "Playwright",
@@ -220,10 +230,11 @@ export const skillDomains = [
   domain(
     "Security & Systems",
     ShieldCheck,
-    "Identity, tenant boundaries, permissions, resilient architecture, concurrency, recovery, and reliable background processing.",
+    "Identity, tenant boundaries, permissions, distributed messaging, resilient architecture, concurrency, and reliable background processing.",
     [
       ...group("Authentication & security"),
-      ...group("Architecture & reliability").filter((x) => x !== "AWS SQS"),
+      ...group("Architecture & reliability"),
+      ...group("Distributed systems & messaging").filter((x) => x !== "AWS SQS"),
     ],
     [
       "OAuth 2.0",

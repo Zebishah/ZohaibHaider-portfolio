@@ -1,0 +1,383 @@
+.hero-backdrop {
+  z-index: -3;
+}
+.hero-atmosphere {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.hero-ambient-glow {
+  position: absolute;
+  width: 650px;
+  height: 650px;
+  border-radius: 50%;
+  opacity: 0.65;
+  filter: blur(24px);
+  animation: hero-ambient-drift 17s ease-in-out infinite alternate;
+}
+.hero-ambient-glow-forest {
+  right: -210px;
+  bottom: -270px;
+  background: radial-gradient(circle, #c0d8834d, #78ac6820 35%, transparent 65%);
+}
+.hero-ambient-glow-sun {
+  top: -180px;
+  left: 23%;
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, #e6e8bd42, #f7edcf1a 40%, transparent 65%);
+  animation-duration: 23s;
+  animation-delay: -8s;
+}
+.hero-contour-flow {
+  stroke-dasharray: 75 1000;
+  stroke-linecap: round;
+  animation: hero-contour-run 13s linear infinite;
+}
+.hero-contour-sparks {
+  stroke-dasharray: 1 260;
+  stroke-linecap: round;
+  animation: hero-sparks-run 19s linear infinite reverse;
+}
+.hero-cube-stage {
+  --cube-half: 25px;
+  position: absolute;
+  width: calc(var(--cube-half) * 2);
+  height: calc(var(--cube-half) * 2);
+  perspective: 500px;
+  animation: hero-cube-drift 10s ease-in-out infinite alternate;
+}
+.hero-cube-forest {
+  top: 34%;
+  right: 3.8%;
+  color: #d1e2a8;
+  opacity: 0.32;
+}
+.hero-cube-paper {
+  --cube-half: 14px;
+  bottom: 19%;
+  left: 2.6%;
+  color: #5c8058;
+  opacity: 0.24;
+  animation-delay: -5s;
+}
+.hero-cube-small {
+  --cube-half: 12px;
+  top: 13%;
+  left: 56%;
+  color: #92a861;
+  opacity: 0.28;
+  animation-delay: -2s;
+}
+.hero-cube-left-top {
+  --cube-half: 17px;
+  top: 17%;
+  left: 3.2%;
+  color: #62804d;
+  opacity: 0.3;
+  animation-delay: -3s;
+}
+.hero-cube-left-middle {
+  --cube-half: 22px;
+  top: 51%;
+  left: 5%;
+  color: #759052;
+  opacity: 0.25;
+  animation-delay: -7s;
+}
+.hero-cube-lower {
+  --cube-half: 15px;
+  bottom: 5.5%;
+  left: 44%;
+  color: #71874e;
+  opacity: 0.24;
+  animation-delay: -4s;
+}
+.hero-wire-cube {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: hero-cube-turn 26s linear infinite;
+}
+.hero-cube-paper .hero-wire-cube {
+  animation-duration: 32s;
+  animation-direction: reverse;
+}
+.hero-cube-small .hero-wire-cube {
+  animation-duration: 23s;
+}
+.hero-cube-face {
+  position: absolute;
+  inset: 0;
+  border: 1px solid currentColor;
+  background: linear-gradient(135deg, #d1e2a808, #d1e2a81a);
+  backface-visibility: visible;
+}
+.hero-cube-face-front {
+  transform: translateZ(var(--cube-half));
+}
+.hero-cube-face-back {
+  transform: rotateY(180deg) translateZ(var(--cube-half));
+}
+.hero-cube-face-right {
+  transform: rotateY(90deg) translateZ(var(--cube-half));
+}
+.hero-cube-face-left {
+  transform: rotateY(-90deg) translateZ(var(--cube-half));
+}
+.hero-cube-face-top {
+  transform: rotateX(90deg) translateZ(var(--cube-half));
+}
+.hero-cube-face-bottom {
+  transform: rotateX(-90deg) translateZ(var(--cube-half));
+}
+.hero-orbit-dot {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #b3ce73;
+  box-shadow:
+    0 0 0 5px #b3ce7310,
+    0 0 16px #b3ce734d;
+  opacity: 0.65;
+  animation: hero-particle-drift 12s ease-in-out infinite alternate;
+}
+.hero-orbit-dot-one {
+  top: 28%;
+  right: 7%;
+}
+.hero-orbit-dot-two {
+  top: 11%;
+  left: 49%;
+  animation-delay: -5s;
+  width: 3px;
+  height: 3px;
+}
+.hero-orbit-dot-three {
+  bottom: 12%;
+  left: 39%;
+  animation-delay: -8s;
+  width: 4px;
+  height: 4px;
+}
+.hero-particle-field {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: min(57%, 940px);
+  height: 100%;
+  overflow: visible;
+  mask-image: linear-gradient(90deg, #000 0%, #000 15%, #0009 30%, #0002 65%, transparent 100%);
+}
+.hero-particle-cluster {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: hero-constellation-drift 18s ease-in-out infinite alternate;
+}
+.hero-particle-cluster-middle {
+  animation-duration: 23s;
+  animation-delay: -8s;
+}
+.hero-particle-cluster-lower {
+  animation-duration: 21s;
+  animation-delay: -13s;
+}
+.hero-particle-connections {
+  stroke: #7b945b;
+  stroke-width: 0.7;
+  opacity: 0.2;
+}
+.hero-particle-node {
+  fill: #78994b;
+  opacity: 0.55;
+}
+.hero-particle-halo {
+  stroke: #93ab65;
+  stroke-width: 0.8;
+  fill: #a8bd7912;
+  animation: hero-particle-glimmer 6s ease-in-out infinite alternate;
+}
+.hero-particle-cluster-middle .hero-particle-halo {
+  animation-delay: -2s;
+}
+.hero-particle-cluster-lower .hero-particle-halo {
+  animation-delay: -4s;
+}
+.hero-particle-signal {
+  stroke: #90ae55;
+  stroke-width: 1.1;
+  stroke-dasharray: 14 600;
+  stroke-linecap: round;
+  opacity: 0.4;
+  animation: hero-particle-signal 16s linear infinite;
+}
+.hero-particle-cluster-middle .hero-particle-signal {
+  animation-delay: -6s;
+}
+.hero-particle-cluster-lower .hero-particle-signal {
+  animation-delay: -11s;
+}
+.hero-particle-dust {
+  stroke: #9bad6e;
+  stroke-width: 0.8;
+  fill: #8fa75d;
+  opacity: 0.4;
+  animation: hero-particle-dust 20s ease-in-out infinite alternate;
+}
+.hero-particle-orbit {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  border: 1px dashed #8ca2665c;
+  border-radius: 50%;
+  animation: hero-particle-orbit 38s linear infinite;
+}
+.hero-particle-orbit::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: calc(50% - 2px);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #9bb167;
+  box-shadow: 0 0 0 4px #a1b77012;
+}
+.hero-particle-orbit-left {
+  top: 35%;
+  left: 2%;
+}
+.hero-particle-orbit-bottom {
+  bottom: 6%;
+  left: 25%;
+  width: 27px;
+  height: 27px;
+  opacity: 0.6;
+  animation-direction: reverse;
+}
+.hero-intro[data-in-view="false"] *,
+.hero-intro[data-in-view="false"] *::before,
+.hero-intro[data-in-view="false"] *::after {
+  animation-play-state: paused !important;
+}
+@keyframes hero-contour-run {
+  to {
+    stroke-dashoffset: -1075;
+  }
+}
+@keyframes hero-sparks-run {
+  to {
+    stroke-dashoffset: -1044;
+  }
+}
+@keyframes hero-ambient-drift {
+  to {
+    transform: translate3d(-70px, -65px, 0) scale(1.13);
+    opacity: 0.9;
+  }
+}
+@keyframes hero-cube-turn {
+  from {
+    transform: rotateX(-18deg) rotateY(0deg) rotateZ(12deg);
+  }
+  to {
+    transform: rotateX(342deg) rotateY(360deg) rotateZ(12deg);
+  }
+}
+@keyframes hero-cube-drift {
+  to {
+    transform: translate3d(8px, -24px, 0);
+  }
+}
+@keyframes hero-particle-drift {
+  to {
+    transform: translate3d(25px, -38px, 0);
+    opacity: 0.2;
+  }
+}
+@keyframes hero-constellation-drift {
+  from {
+    transform: translate3d(0, 7px, 0);
+  }
+  to {
+    transform: translate3d(9px, -9px, 0);
+  }
+}
+@keyframes hero-particle-glimmer {
+  from {
+    opacity: 0.25;
+  }
+  to {
+    opacity: 0.8;
+  }
+}
+@keyframes hero-particle-signal {
+  to {
+    stroke-dashoffset: -614;
+  }
+}
+@keyframes hero-particle-dust {
+  to {
+    transform: translate3d(-12px, -17px, 0);
+    opacity: 0.2;
+  }
+}
+@keyframes hero-particle-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (max-width: 760px) {
+  .hero-cube-small {
+    display: none;
+  }
+  .hero-cube-forest {
+    --cube-half: 17px;
+    right: 2%;
+    top: 33%;
+    opacity: 0.2;
+  }
+  .hero-cube-paper {
+    bottom: 8%;
+    left: 5%;
+  }
+  .hero-orbit-dot-two {
+    left: 89%;
+    top: 10%;
+  }
+  .hero-ambient-glow {
+    width: 400px;
+    height: 400px;
+  }
+  .hero-particle-field {
+    width: 100%;
+    opacity: 0.55;
+    mask-image: linear-gradient(90deg, #000 0%, #0007 15%, transparent 52%);
+  }
+  .hero-cube-left-top {
+    --cube-half: 11px;
+    top: 11%;
+    left: -7px;
+    opacity: 0.2;
+  }
+  .hero-cube-left-middle {
+    display: none;
+  }
+  .hero-cube-lower {
+    --cube-half: 11px;
+    left: 85%;
+    bottom: 4%;
+    opacity: 0.17;
+  }
+  .hero-particle-orbit-left {
+    left: -17px;
+    top: 31%;
+    opacity: 0.5;
+  }
+  .hero-particle-orbit-bottom {
+    left: 12%;
+    bottom: 2%;
+  }
+}
