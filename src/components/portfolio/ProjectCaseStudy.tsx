@@ -89,9 +89,16 @@ export function ProjectCaseStudy({ project }: { project: Project }) {
                 <a href={project.demo} target="_blank" rel="noreferrer" className="study-primary">
                   Explore the live product <ArrowUpRight size={18} />
                 </a>
-                <a href={project.github} target="_blank" rel="noreferrer" className="study-source">
-                  <Github size={17} /> Repository <span>Private</span>
-                  <ArrowUpRight size={14} />
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="study-source"
+                  aria-label={`View ${project.title} source code on GitHub (opens in new tab)`}
+                >
+                  <Github size={17} aria-hidden="true" />
+                  View source on GitHub
+                  <ArrowUpRight size={15} aria-hidden="true" />
                 </a>
               </div>
             </div>
@@ -431,7 +438,7 @@ export function ProjectCaseStudy({ project }: { project: Project }) {
                   <h3>Follow the implementation.</h3>
                 </div>
                 <span>
-                  <Github size={15} /> Private repository · snapshot {study.commit.slice(0, 7)}
+                  <Github size={15} /> Public source · snapshot {study.commit.slice(0, 7)}
                 </span>
               </header>
               <div>
