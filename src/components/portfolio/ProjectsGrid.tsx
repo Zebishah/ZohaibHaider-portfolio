@@ -148,9 +148,11 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             href={project.github}
             target="_blank"
             rel="noreferrer"
-            aria-label={`${project.title} GitHub repository (private)`}
+            aria-label={`View ${project.title} public GitHub source code (opens in new tab)`}
           >
-            <Github size={15} /> Code · private
+            <Github size={16} aria-hidden="true" />
+            <span>View source</span>
+            <ArrowUpRight size={15} aria-hidden="true" />
           </a>
         </div>
       </div>
